@@ -4,7 +4,7 @@ import java.awt.Font;
 import java.io.File;
 import java.util.HashMap;
 import javax.swing.*;
-
+//comment
 public class JavaLabel extends JLabel {
 
 	private static final long serialVersionUID = 1L;
