@@ -8,5 +8,4 @@ public class startClass {
 		JavaLabel.setupButtonImages();
 		new MainMenu();
 	}
-
 }
