@@ -11,43 +11,59 @@ public class Mouse implements MouseListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
-		((JavaLabel) e.getSource()).setIcon(2, true); // buttonIcon_Pressed.png
+		((JavaLabel) e.getSource()).setIcon(2, true); // buttonPressed.png
 	}
 
 	public void mouseReleased(MouseEvent e) {
 		JavaLabel button = (JavaLabel) e.getSource();
-		if ("Play".equals(button.name)) {
+		// MAIN MENU ::
+		if ("Play".equals(button.name) && button.inZone) {
 			new GameScreen();
 			MainMenu.screen.setVisible(false);
 		}
-		if ("Back".equals(button.name)) {
+		if ("Upgrades".equals(button.name) && button.inZone) {
+			MainMenu.buttons.get("Main Menu").setVisible(true);
+			MainMenu.switchScreens("Upgrades");
+		}
+		if ("Settings".equals(button.name) && button.inZone) {
+			MainMenu.buttons.get("Main Menu").setVisible(true);
+			MainMenu.switchScreens("Settings");
+		}
+		if ("Main Menu".equals(button.name) && button.inZone) {
+			MainMenu.buttons.get("Main Menu").setVisible(false);
+			MainMenu.switchScreens("Main");
+		}
+		if ("Exit".equals(button.name) && button.inZone) {
+			System.exit(0);
+		}
+		// GAME SCREEN ::
+		if ("Back".equals(button.name) && button.inZone) {
 			gameClose();
 			MainMenu.screen.setVisible(true);
 		}
-		if (button.inZone && !button.selected) {
-			button.setIcon(1, true); // buttonIcon_ON.png
+		if (button.inZone && !button.selected) { // FOR ALL BUTTONS
+			button.setIcon(1, true); // buttonOn.png
 		}
 	}
 
 	void gameClose() {
-		GameScreen.timer.stop();
+		GameScreen.gameTimer.stop();
 		GameScreen.screen.removeAll();
 		GameScreen.screen.dispose();
 	}
 
 	public void mouseEntered(MouseEvent e) {
 		if ((boolean) ((JavaLabel) e.getSource()).selected == false) {
-			((JavaLabel) e.getSource()).setIcon(1, true); // buttonIcon_ON.png
+			((JavaLabel) e.getSource()).setIcon(1, true); // buttonON.png
 		}
 	}
 
 	public void mouseExited(MouseEvent e) {
 		if ((boolean) ((JavaLabel) e.getSource()).selected == false) {
-			((JavaLabel) e.getSource()).setIcon(0, false); // buttonIcon.png
+			((JavaLabel) e.getSource()).setIcon(0, false); // button.png
 		}
 	}
 
 	public void mouseClicked(MouseEvent e) { // UNNECESSARY METHOD (NEEDS TO EXISTS, BECAUSE OF IMPLEMENTATION)
 	}
 }
-// 1 konstruktors; 7 metodes; 112 rindas

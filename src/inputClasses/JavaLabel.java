@@ -1,9 +1,11 @@
 package inputClasses;
 
+import java.awt.Color;
 import java.awt.Font;
 import java.io.File;
 import java.util.HashMap;
 import javax.swing.*;
+//import java.awt.Image; WILL BE NEEDED FOR SCALING
 
 public class JavaLabel extends JLabel {
 
@@ -22,17 +24,22 @@ public class JavaLabel extends JLabel {
 		buttonIcon[2] = new ImageIcon(routeButtons + "buttonPressed.png");
 	}
 
-	public JavaLabel(String name, JLayeredPane location, int x, int y, int width, int height,
+	public JavaLabel(String name, Object location, int x, int y, int width, int height,
 			HashMap<String, JavaLabel> list) {// CONSTRUCTS BUTTON
 		super(name, buttonIcon[0], JLabel.CENTER);
 		this.name = name;
 		this.setHorizontalTextPosition(JLabel.CENTER);
 		this.setFont(new Font("Verdana", Font.BOLD, 42));
+		this.setForeground(Color.white);
 		this.setBounds(x, y, width, height);
 		this.setIcon(buttonIcon[0]);
 		this.inZone = false;
 		this.selected = false;
-		location.add(this, (Integer) 20);
+		try {
+			((JavaLayeredPane) location).add(this, (Integer) 20);
+		} catch (Exception e) {
+			((JFrame) location).add(this);
+		}
 		new Mouse(this);
 		list.put(name, this);
 	}
@@ -41,6 +48,9 @@ public class JavaLabel extends JLabel {
 			Integer layer, String folderRoute) {// CONSTRUCTS JLABEL
 		super(new ImageIcon(fileRoute + folderRoute + name + ".png"), JLabel.CENTER);
 		this.name = name;
+		this.setHorizontalTextPosition(JLabel.CENTER);
+		this.setFont(new Font("Verdana", Font.BOLD, 16));
+		this.setForeground(Color.white);
 		this.setBounds(x, y, width, height);
 		try {
 			((JavaLayeredPane) location).add(this, layer);
@@ -48,6 +58,9 @@ public class JavaLabel extends JLabel {
 			((JLabel) location).add(this);
 		}
 		list.put(name, this);
+		// NEXT LINE WILL BE FOR SCALING
+		//this.setIcon(new ImageIcon(new javax.swing.ImageIcon(fileRoute + folderRoute + name + ".png").getImage().getScaledInstance(200, 50, Image.SCALE_SMOOTH)));
+
 	}
 
 	public void setIcon(int iconNumber, boolean inZone) {
