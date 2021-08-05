@@ -38,18 +38,12 @@ public class Mouse implements MouseListener {
 		}
 		// GAME SCREEN ::
 		if ("Back".equals(button.name) && button.inZone) {
-			gameClose();
+			GameScreen.gameClose();
 			MainMenu.screen.setVisible(true);
 		}
 		if (button.inZone && !button.selected) { // FOR ALL BUTTONS
 			button.setIcon(1, true); // buttonOn.png
 		}
-	}
-
-	void gameClose() {
-		GameScreen.gameTimer.stop();
-		GameScreen.screen.removeAll();
-		GameScreen.screen.dispose();
 	}
 
 	public void mouseEntered(MouseEvent e) {

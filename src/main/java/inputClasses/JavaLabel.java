@@ -17,6 +17,7 @@ public class JavaLabel extends JLabel {
 	public boolean inZone;
 	public boolean selected;
 	static ImageIcon[] buttonIcon = new ImageIcon[3];
+	public int startX, startY;
 
 	public static void setupButtonImages() {
 		buttonIcon[0] = new ImageIcon(routeButtons + "button.png");
@@ -52,6 +53,8 @@ public class JavaLabel extends JLabel {
 		this.setFont(new Font("Verdana", Font.BOLD, 16));
 		this.setForeground(Color.white);
 		this.setBounds(x, y, width, height);
+		this.startX = x;
+		this.startY = y;
 		try {
 			((JavaLayeredPane) location).add(this, layer);
 		} catch (Exception e) {
