@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class GameScreen implements ActionListener {
-	public static String filePath = "//GameAssets//";
+	public static String fPath = "//GameAssets//";
 	public static JFrame screen;
 	public static ImageIcon ground, stars;
 	public static Timer gameTimer, preGameTimer;
@@ -24,7 +24,7 @@ public class GameScreen implements ActionListener {
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
 			objects = new HashMap<String, JavaLabel>(), //
 			buttons = new HashMap<String, JavaLabel>(), //
-			backgrounds = new HashMap<String, JavaLabel>(); //
+			backgr = new HashMap<String, JavaLabel>(); //
 	public static Set<String> backgrKeys, objectKeys;
 
 	static DecimalFormat df = new DecimalFormat("0.00");
@@ -83,7 +83,7 @@ public class GameScreen implements ActionListener {
 			yPlayer += verticalDir * (boundCheck(yPlayer + verticalDir, frameWidth / 4, -verticalDir));
 			labels.get("Player").setLocation((int) xPlayer, (int) (yPlayer + speedMove));
 		}
-		if (yPlayer + 1 < frameHeight / 2 + frameHeight / 4 && verticalDir != -1 && controllable) {
+		if (yPlayer + 1 < frameHeight / 2 + frameHeight / 4 && verticalDir != -1 && controllable) { // PLAYER GRAVITI
 			yPlayer += 1;
 		}
 		labels.get("Player").setLocation(xPlayer, yPlayer);
@@ -103,7 +103,7 @@ public class GameScreen implements ActionListener {
 		playerSpeedX += -playerSpeedX * drag;
 		playerSpeedY += (-playerSpeedY * drag);
 		if (controllable) {
-			if (playerSpeedY - 0.5 > -maxSpeed && distanceY + playerSpeedY > 0) {
+			if (playerSpeedY - 0.5 > -maxSpeed && distanceY + playerSpeedY > 0) { // BACKGROUND GRAVITY
 				playerSpeedY -= 0.5;
 			} else {
 				playerSpeedY = 0;
@@ -113,7 +113,7 @@ public class GameScreen implements ActionListener {
 		distanceX -= playerSpeedX;
 		for (String backgroundKey : backgrKeys) {
 			changeBG = false;
-			JavaLabel background = backgrounds.get(backgroundKey);
+			JavaLabel background = backgr.get(backgroundKey);
 			int tempX = setBackgroundPos((int) Math.round(-playerSpeedX), frameWidth, background.getX());
 			int tempY = setBackgroundPos((int) Math.round(-playerSpeedY), frameHeight, background.getY());
 			System.out.println(labels.get("Player").getLocation());
@@ -213,7 +213,7 @@ public class GameScreen implements ActionListener {
 			if (key == KeyEvent.VK_LEFT && pressed && launchAngle - 0.2 > 0) {
 				launchAngle -= 0.2;
 			}
-			objects.get("Indicator").setLocation(xPlayer + (int) (128 * launchAngle),
+			objects.get("Angle").setLocation(xPlayer + (int) (128 * launchAngle),
 					yPlayer - (int) (128 * (1 - launchAngle)));
 			System.out.println("X speed = " + startSpeed * launchAngle);
 			System.out.println("Y speed = " + startSpeed * (1 - launchAngle));
@@ -240,8 +240,8 @@ public class GameScreen implements ActionListener {
 	}
 
 	static void setupParameters() { // GIVES VARIABLES THEIR START VALUES
-		ground = new ImageIcon(JavaLabel.fileRoute + filePath + "BackgroundGrass.png");
-		stars = new ImageIcon(JavaLabel.fileRoute + filePath + "BackgroundStars.png");
+		ground = new ImageIcon(JavaLabel.fileRoute + fPath + "BackgroundGrass.png");
+		stars = new ImageIcon(JavaLabel.fileRoute + fPath + "BackgroundStars.png");
 		paused = false;
 		controllable = false;
 		gameStarted = false;
@@ -266,21 +266,21 @@ public class GameScreen implements ActionListener {
 	}
 
 	static void setupLabels() {
-		new JavaLabel("Player", layers.get("gameLayer"), xPlayer, yPlayer, 32, 32, labels, 5, filePath);
-		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - 16, yPlayer - 16, 64, 64, objects, 4, filePath);
-		new JavaLabel("Indicator", layers.get("gameLayer"), xPlayer + 64, yPlayer - 64, 32, 32, objects, 5, filePath);
-		new JavaLabel("Backgr1", layers.get("gameLayer"), 0, frameHeight - 548, 1000, 500, backgrounds, 0, filePath);
-		new JavaLabel("Backgr2", layers.get("gameLayer"), 1000, frameHeight - 548, 1000, 500, backgrounds, 0, filePath);
-		new JavaLabel("Backgr3", layers.get("gameLayer"), 1000, frameHeight - 48, 1000, 500, backgrounds, 0, filePath);
-		new JavaLabel("Backgr4", layers.get("gameLayer"), 0, frameHeight - 48, 1000, 500, backgrounds, 0, filePath);
-		new JavaLabel("Distance", layers.get("gameLayer"), xBounds * 9 / 10, 0, 400, 50, labels, 10, filePath);
+		new JavaLabel("Player", layers.get("gameLayer"), xPlayer, yPlayer, 32, 32, labels, 5, fPath, false);
+		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - 16, yPlayer - 16, 64, 64, objects, 4, fPath, false);
+		new JavaLabel("Angle", layers.get("gameLayer"), xPlayer + 64, yPlayer - 64, 32, 32, objects, 5, fPath, false);
+		new JavaLabel("Backgr1", layers.get("gameLayer"), 0, frameHeight - 548, 1000, 500, backgr, 0, fPath, false);
+		new JavaLabel("Backgr2", layers.get("gameLayer"), 1000, frameHeight - 548, 1000, 500, backgr, 0, fPath, false);
+		new JavaLabel("Backgr3", layers.get("gameLayer"), 1000, frameHeight - 48, 1000, 500, backgr, 0, fPath, false);
+		new JavaLabel("Backgr4", layers.get("gameLayer"), 0, frameHeight - 48, 1000, 500, backgr, 0, fPath, false);
+		new JavaLabel("Distance", layers.get("gameLayer"), xBounds * 9 / 10, 0, 400, 50, labels, 10, fPath, true);
 		new JavaLabel("Back", layers.get("gameLayer"), xBounds * 9 / 10, 0, 400, 100, buttons);
-		backgrounds.get("Backgr1").setIcon(stars);
-		backgrounds.get("Backgr2").setIcon(stars);
-		backgrounds.get("Backgr3").setIcon(ground);
-		backgrounds.get("Backgr4").setIcon(ground);
+		backgr.get("Backgr1").setIcon(stars);
+		backgr.get("Backgr2").setIcon(stars);
+		backgr.get("Backgr3").setIcon(ground);
+		backgr.get("Backgr4").setIcon(ground);
 		buttons.get("Back").setVisible(false);
-		backgrKeys = backgrounds.keySet();
+		backgrKeys = backgr.keySet();
 		objectKeys = objects.keySet();
 	}
 

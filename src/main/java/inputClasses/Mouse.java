@@ -17,6 +17,12 @@ public class Mouse implements MouseListener {
 	public void mouseReleased(MouseEvent e) {
 		JavaLabel button = (JavaLabel) e.getSource();
 		// MAIN MENU ::
+		if ("Log In".equals(button.name) && button.inZone) {
+			MainMenu.checkLogin(false);
+		}
+		if ("Create User".equals(button.name) && button.inZone) {
+			MainMenu.checkLogin(true);
+		}
 		if ("Play".equals(button.name) && button.inZone) {
 			new GameScreen();
 			MainMenu.screen.setVisible(false);

@@ -46,8 +46,11 @@ public class JavaLabel extends JLabel {
 	}
 
 	public JavaLabel(String name, Object location, int x, int y, int width, int height, HashMap<String, JavaLabel> list,
-			Integer layer, String folderRoute) {// CONSTRUCTS JLABEL
-		super(new ImageIcon(fileRoute + folderRoute + name + ".png"), JLabel.CENTER);
+			Integer layer, String folderPath, boolean setText) {// CONSTRUCTS JLABEL
+		super(new ImageIcon(fileRoute + folderPath + name + ".png"), JLabel.CENTER);
+		if (setText) {
+			this.setText(name);
+		}
 		this.name = name;
 		this.setHorizontalTextPosition(JLabel.CENTER);
 		this.setFont(new Font("Verdana", Font.BOLD, 16));
