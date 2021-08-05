@@ -62,6 +62,7 @@ public class SettingsBuilder {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void addSettings(Settings settings, String user) {
 		
 		if(user.length() < 3)System.out.println("Username too short!");

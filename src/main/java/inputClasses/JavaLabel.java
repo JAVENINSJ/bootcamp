@@ -1,38 +1,35 @@
 package inputClasses;
 
-import java.awt.Color;
-import java.awt.Font;
+import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
 import javax.swing.*;
-//import java.awt.Image; WILL BE NEEDED FOR SCALING
 
 public class JavaLabel extends JLabel {
 
 	private static final long serialVersionUID = 1L;
-	public static File fileRoute = new File(System.getProperty("user.dir"));
-	public static String routeButtons = fileRoute + "//Buttons//";
+	public static File fRoute = new File(System.getProperty("user.dir"));
+	public static String routeButtons = fRoute + "//Buttons//";
 
 	public String name;
 	public boolean inZone;
 	public boolean selected;
-	static ImageIcon[] buttonIcon = new ImageIcon[3];
+	public ImageIcon[] buttonIcon = new ImageIcon[3];
 	public int startX, startY;
 
 	public static void setupButtonImages() {
-		buttonIcon[0] = new ImageIcon(routeButtons + "button.png");
-		buttonIcon[1] = new ImageIcon(routeButtons + "buttonOn.png");
-		buttonIcon[2] = new ImageIcon(routeButtons + "buttonPressed.png");
+
 	}
 
 	public JavaLabel(String name, Object location, int x, int y, int width, int height,
 			HashMap<String, JavaLabel> list) {// CONSTRUCTS BUTTON
-		super(name, buttonIcon[0], JLabel.CENTER);
-		this.name = name;
-		this.setHorizontalTextPosition(JLabel.CENTER);
-		this.setFont(new Font("Verdana", Font.BOLD, 42));
-		this.setForeground(Color.white);
-		this.setBounds(x, y, width, height);
+		super(name);
+		this.buttonIcon[0] = new ImageIcon(new ImageIcon(routeButtons + "button.png").getImage()
+				.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+		this.buttonIcon[1] = new ImageIcon(new ImageIcon(routeButtons + "buttonOn.png").getImage()
+				.getScaledInstance(width, height, Image.SCALE_SMOOTH));
+		this.buttonIcon[2] = new ImageIcon(new ImageIcon(routeButtons + "buttonPressed.png").getImage()
+				.getScaledInstance(width, height, Image.SCALE_SMOOTH));
 		this.setIcon(buttonIcon[0]);
 		this.inZone = false;
 		this.selected = false;
@@ -42,20 +39,17 @@ public class JavaLabel extends JLabel {
 			((JFrame) location).add(this);
 		}
 		new Mouse(this);
-		list.put(name, this);
+		this.setFont(new Font("Verdana", Font.BOLD, 46));
+		addCommonProperties(name, x, y, width, height, list);
 	}
 
 	public JavaLabel(String name, Object location, int x, int y, int width, int height, HashMap<String, JavaLabel> list,
-			Integer layer, String folderPath, boolean setText) {// CONSTRUCTS JLABEL
-		super(new ImageIcon(fileRoute + folderPath + name + ".png"), JLabel.CENTER);
+			Integer layer, String fPath, boolean setText) {// CONSTRUCTS JLABEL
+		super(new ImageIcon(new ImageIcon(fRoute + fPath + name + ".png").getImage().getScaledInstance(width, height,
+				Image.SCALE_SMOOTH)), JLabel.CENTER);
 		if (setText) {
 			this.setText(name);
 		}
-		this.name = name;
-		this.setHorizontalTextPosition(JLabel.CENTER);
-		this.setFont(new Font("Verdana", Font.BOLD, 16));
-		this.setForeground(Color.white);
-		this.setBounds(x, y, width, height);
 		this.startX = x;
 		this.startY = y;
 		try {
@@ -63,10 +57,16 @@ public class JavaLabel extends JLabel {
 		} catch (Exception e) {
 			((JLabel) location).add(this);
 		}
-		list.put(name, this);
-		// NEXT LINE WILL BE FOR SCALING
-		//this.setIcon(new ImageIcon(new javax.swing.ImageIcon(fileRoute + folderRoute + name + ".png").getImage().getScaledInstance(200, 50, Image.SCALE_SMOOTH)));
+		this.setFont(new Font("Verdana", Font.BOLD, 16));
+		addCommonProperties(name, x, y, width, height, list);
+	}
 
+	public void addCommonProperties(String name, int x, int y, int width, int height, HashMap<String, JavaLabel> list) {
+		this.name = name;
+		this.setHorizontalTextPosition(JLabel.CENTER);
+		this.setForeground(Color.white);
+		this.setBounds(x, y, width, height);
+		list.put(name, this);
 	}
 
 	public void setIcon(int iconNumber, boolean inZone) {
