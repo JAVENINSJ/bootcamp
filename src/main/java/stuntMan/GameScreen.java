@@ -67,7 +67,6 @@ public class GameScreen implements ActionListener {
 			moveBackground();
 			moveObjects();
 			labels.get("Distance").setText("X = " + (int) distanceX + "; Y = " + (int) distanceY);
-			// System.out.println("X = "+playerSpeedX+"; Y = "+playerSpeedY);
 		}
 
 	}
@@ -96,6 +95,8 @@ public class GameScreen implements ActionListener {
 		return speedMove;
 	}
 
+	
+			
 	public static void moveBackground() {
 		if (Math.abs(playerSpeedX) < minSpeed) {
 			playerSpeedX = 0;
@@ -116,9 +117,8 @@ public class GameScreen implements ActionListener {
 			JavaLabel background = backgrounds.get(backgroundKey);
 			int tempX = setBackgroundPos((int) Math.round(-playerSpeedX), frameWidth, background.getX());
 			int tempY = setBackgroundPos((int) Math.round(-playerSpeedY), frameHeight, background.getY());
-			System.out.println(labels.get("Player").getLocation());
 			if (changeBG) {
-				if (distanceY <= 16 && background.getY() > 300) {
+				if (tempY >= frameHeight - 50 && distanceY < 100) {
 					background.setIcon(ground);
 				} else {
 					background.setIcon(stars);
@@ -138,7 +138,6 @@ public class GameScreen implements ActionListener {
 		pos -= speed;
 		if ((pos < (-bound * direction)) == check) {
 			pos = pos + (-bound * direction) + bound * 3 * direction;
-			System.out.println(pos);
 			changeBG = true;
 		}
 		return pos;

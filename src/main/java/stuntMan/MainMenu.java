@@ -22,7 +22,7 @@ public class MainMenu implements ActionListener {
 	public static Set<String> backgrKeys;
 
 	public MainMenu() {
-		screen = setupScreen(fWidth + 16, fHeight + 40);// +16 and +40 because JFrame has sizing issues
+		screen = setupScreen(fWidth, fHeight);// +16 and +40 because JFrame has sizing issues
 		setupLayers();
 		setupLabels();
 	}
