@@ -4,6 +4,7 @@ import javax.swing.*;
 
 import inputClasses.*;
 
+import java.awt.Graphics2D;
 import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.HashMap;
@@ -66,12 +67,31 @@ public class GameScreen implements ActionListener {
 			movePlayer();
 			moveBackground();
 			moveObjects();
+			
+			Graphics2D g = (Graphics2D) labels.get("Player").getGraphics();
+			if(playerSpeedX > 0) {
+				System.out.println(1);
+				g.rotate(Math.atan2(playerSpeedY, playerSpeedX));
+			}else if(playerSpeedX < 0) {
+				System.out.println(2);
+				g.rotate(Math.atan2(playerSpeedY, playerSpeedX) + Math.PI);
+			}else {
+				if(playerSpeedY < 0) {
+					System.out.println(3);
+					g.rotate(Math.PI/2);
+				}
+				System.out.println(4);
+				g.rotate(Math.PI/2);
+			}
+			
 			labels.get("Distance").setText("X = " + (int) distanceX + "; Y = " + (int) distanceY);
+			labels.get("Player").setLocation(xPlayer, yPlayer);
+			
 		}
 
 	}
 
-	public static void movePlayer() {
+	public static void movePlayer() {		
 		if (Math.abs(playerSpeedX) < maxSpeed) {
 			playerSpeedX -= horizontalDir;
 			xPlayer += horizontalDir * (boundCheck(xPlayer + horizontalDir, frameHeight / 2, -horizontalDir));
@@ -85,7 +105,7 @@ public class GameScreen implements ActionListener {
 		if (yPlayer + 1 < frameHeight / 2 + frameHeight / 4 && verticalDir != -1 && controllable) {
 			yPlayer += 1;
 		}
-		labels.get("Player").setLocation(xPlayer, yPlayer);
+		
 	}
 
 	static double boundCheck(int pos, int bound, int direction) {

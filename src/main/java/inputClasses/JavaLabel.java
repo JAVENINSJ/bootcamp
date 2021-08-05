@@ -2,6 +2,7 @@ package inputClasses;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Graphics2D;
 import java.io.File;
 import java.util.HashMap;
 import javax.swing.*;
@@ -55,6 +56,8 @@ public class JavaLabel extends JLabel {
 		this.setBounds(x, y, width, height);
 		this.startX = x;
 		this.startY = y;
+		Graphics2D g = (Graphics2D) this.getGraphics();
+		
 		try {
 			((JavaLayeredPane) location).add(this, layer);
 		} catch (Exception e) {
