@@ -1,12 +1,9 @@
 package inputClasses;
 
-<<<<<<< HEAD
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
-=======
 import java.awt.*;
->>>>>>> 79c70151d94ece389776283a3139832310561c27
 import java.io.File;
 import java.util.HashMap;
 import javax.swing.*;

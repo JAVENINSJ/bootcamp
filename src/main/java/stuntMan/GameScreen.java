@@ -3,11 +3,8 @@ package stuntMan;
 import javax.swing.*;
 import inputClasses.*;
 
-<<<<<<< HEAD
 import java.awt.Graphics2D;
-=======
 import java.awt.Rectangle;
->>>>>>> 79c70151d94ece389776283a3139832310561c27
 import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -77,12 +74,7 @@ public class GameScreen implements ActionListener {
 			}
 			
 			labels.get("Distance").setText("X = " + (int) distanceX + "; Y = " + (int) distanceY);
-<<<<<<< HEAD
 			labels.get("Player").setLocation(xPlayer, yPlayer);
-			
-=======
-			System.out.println(playerSpeedY);
->>>>>>> 79c70151d94ece389776283a3139832310561c27
 		}
 	}
 
