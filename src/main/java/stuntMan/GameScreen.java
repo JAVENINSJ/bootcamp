@@ -305,7 +305,7 @@ public class GameScreen implements ActionListener {
 		labels.get("Distance").setText("X:" + df.format(distanceX / 100) + " m;Y:" + df.format(distanceY / 100) + " m");
 		labels.get("Speed").setText("X = " + df.format(Math.abs(playerSpeedX * 3600 / 1000)) + " km/h; Y = "
 				+ df.format(Math.abs(playerSpeedY * 3600 / 1000)) + " km/h");
-		labels.get("Coins").setText("Collected coins = " + coinCount);
+		labels.get("Coins").setText("Coins = " + coinCount);
 	}
 
 	static void setupParameters() { // GIVES VARIABLES THEIR START VALUES

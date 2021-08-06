@@ -33,6 +33,7 @@ public class Mouse implements MouseListener {
 		if ("Upgrades".equals(button.name) && button.inZone) {
 			MainMenu.buttons.get("Main Menu").setVisible(true);
 			MainMenu.switchScreens("Upgrades");
+			MainMenu.labels.get("Coins").setText("" + MainMenu.coins);
 		}
 		if ("Settings".equals(button.name) && button.inZone) {
 			MainMenu.buttons.get("Main Menu").setVisible(true);
@@ -47,6 +48,7 @@ public class Mouse implements MouseListener {
 		}
 		// GAME SCREEN ::
 		if ("Back".equals(button.name) && button.inZone) {
+			MainMenu.coins += GameScreen.coinCount;
 			GameScreen.gameClose();
 			MainMenu.screen.setVisible(true);
 		}
