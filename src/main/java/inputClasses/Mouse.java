@@ -23,8 +23,11 @@ public class Mouse implements MouseListener {
 		if ("Create User".equals(button.name) && button.inZone) {
 			MainMenu.checkLogin(true);
 		}
+		if ("Skip".equals(button.name) && button.inZone) {
+			MainMenu.switchScreens("Main");
+		}
 		if ("Play".equals(button.name) && button.inZone) {
-			new GameScreen();
+			GameScreen.startGame();
 			MainMenu.screen.setVisible(false);
 		}
 		if ("Upgrades".equals(button.name) && button.inZone) {
@@ -46,6 +49,10 @@ public class Mouse implements MouseListener {
 		if ("Back".equals(button.name) && button.inZone) {
 			GameScreen.gameClose();
 			MainMenu.screen.setVisible(true);
+		}
+		if ("Reset".equals(button.name) && button.inZone) {
+			GameScreen.gameClose();
+			GameScreen.startGame();
 		}
 		if (button.inZone && !button.selected) { // FOR ALL BUTTONS
 			button.setIcon(1, true); // buttonOn.png

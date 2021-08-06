@@ -48,6 +48,7 @@ public class Password {
 
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void addPassword(String user, String password) {
 		if (json == null)
 			return;

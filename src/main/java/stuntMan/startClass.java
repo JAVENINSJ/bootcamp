@@ -7,6 +7,7 @@ public class startClass {
 
 	public static void main(String[] args) {
 		JavaLabel.setupButtonImages();
+		new GameScreen();
 		new Password();
 		new MainMenu();
 	}

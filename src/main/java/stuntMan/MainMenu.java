@@ -25,7 +25,7 @@ public class MainMenu implements ActionListener {
 	public static Set<String> backgrKeys;
 
 	public MainMenu() {
-		screen = setupScreen(fWidth, fHeight);// +16 and +40 because JFrame has sizing issues
+		screen = setupScreen(fWidth + 16, fHeight + 40);// +16 and +40 because JFrame has sizing issues
 		setupLayers();
 		setupLabels();
 		enterName = setupInputBox(enterName, "Enter Username", xBounds * 16 / 10, 168);
@@ -114,6 +114,8 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void setupLabels() {
+		new JavaLabel("Skip", layers.get("Login"), xBounds * 6 / 10, 50 * 0, 200, 50, buttons);
+		
 		new JavaLabel("BackGroundLogin", layers.get("Login"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
 		new JavaLabel("Log In", layers.get("Login"), xBounds * 3 / 10, 100, 400, 100, buttons);
 		new JavaLabel("Create User", layers.get("Login"), xBounds * 3 / 10, 300, 400, 100, buttons);
@@ -125,19 +127,24 @@ public class MainMenu implements ActionListener {
 				layers.get("Login"), xBounds * 3 / 10, 250, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("User not found!", layers.get("Login"), xBounds * 16 / 10, 200, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Wrong Password!", layers.get("Login"), xBounds * 16 / 10, 332, 400, 32, labels, 1, fPath, true);
+		
 		new JavaLabel("BackGroundMain", layers.get("Main"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Play", layers.get("Main"), xBounds * 9 / 10, 50 * 1, 400, 100, buttons);
-		new JavaLabel("Upgrades", layers.get("Main"), xBounds * 9 / 10, 50 * 3, 400, 100, buttons);
-		new JavaLabel("Settings", layers.get("Main"), xBounds * 9 / 10, 50 * 5, 400, 100, buttons);
-		new JavaLabel("Exit", layers.get("Main"), xBounds * 9 / 10, 50 * 7, 400, 100, buttons);
+		new JavaLabel("Play", layers.get("Main"), xBounds * 9 / 10, 50 * 1, 400, 80, buttons);
+		new JavaLabel("Upgrades", layers.get("Main"), xBounds * 9 / 10, 50 * 3, 400, 80, buttons);
+		new JavaLabel("Settings", layers.get("Main"), xBounds * 9 / 10, 50 * 5, 400, 80, buttons);
+		new JavaLabel("Exit", layers.get("Main"), xBounds * 9 / 10, 50 * 7, 400, 80, buttons);
+		
 		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
 		new JavaLabel("Main Menu", layers.get("Upgrades"), xBounds * 9 / 10, fHeight - 100, 400, 100, buttons);
+		
 		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
+		
 		labels.get("User not found!").setVisible(false);
 		labels.get("User not found!").setForeground(Color.red);
 		labels.get("Wrong Password!").setVisible(false);
 		labels.get("Wrong Password!").setForeground(Color.red);
 		buttons.get("Main Menu").setVisible(false);
+		
 	}
 
 	static void setupLayers() {
@@ -148,8 +155,7 @@ public class MainMenu implements ActionListener {
 		backgrKeys = layers.keySet();
 	}
 
-	static JFrame setupScreen(int frameWidth, int frameHeight) {// FUN FACT : JFRAME WIDTH IS SMALLER BY 16 PIXELS IN
-		// WIDTH AND 40 PIXELS IN HEIGHT THAN THE GIVEN SIZE VALUES
+	static JFrame setupScreen(int frameWidth, int frameHeight) {
 		JFrame frame = new JFrame("Game");
 		frame.setSize(frameWidth, frameHeight);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
