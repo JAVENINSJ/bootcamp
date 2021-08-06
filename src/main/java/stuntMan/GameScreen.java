@@ -98,12 +98,8 @@ public class GameScreen implements ActionListener {
 		}
 	}
 
-<<<<<<< HEAD
-	public static void movePlayer() {		
-=======
 	public static void movePlayer() {
 		collisionCheck();
->>>>>>> 79c70151d94ece389776283a3139832310561c27
 		if (Math.abs(playerSpeedX) < maxSpeed) {
 			playerSpeedX -= horizontalDir;
 			xPlayer += horizontalDir * (boundCheck(xPlayer + horizontalDir, frameHeight / 2, -horizontalDir));

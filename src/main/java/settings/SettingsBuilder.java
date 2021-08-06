@@ -9,7 +9,7 @@ public class SettingsBuilder {
 	
 	static JSONObject json = null;
 	
-	SettingsBuilder(){
+	public SettingsBuilder(){
 		
 		JSONParser jsonParser = new JSONParser();
 		

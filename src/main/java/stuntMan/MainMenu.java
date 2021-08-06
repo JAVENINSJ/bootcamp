@@ -4,14 +4,19 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Set;
-
 import javax.swing.*;
 
+import inputClasses.Audio;
 import inputClasses.JavaLabel;
 import inputClasses.JavaLayeredPane;
 import passwords.Password;
+import settings.Settings;
+import settings.SettingsBuilder;
 
 public class MainMenu implements ActionListener {
+	public static Settings settings;
+	public static boolean audio = true, trail = true;
+	public static Audio music = new Audio();
 	public static String fPath = "//MenuAssets//";
 	public static String mainButtonPos = "Upgrades";
 	public static JFrame screen;
@@ -82,6 +87,15 @@ public class MainMenu implements ActionListener {
 		}
 	}
 	
+	static void updateSettings() {
+		audio = settings.getAudio();
+		settings.getDayTime();
+		settings.getTrail();
+		String resolution = settings.getResolution();
+		fWidth = Integer.parseInt(resolution.substring(0,resolution.indexOf('x')));
+		fHeight = Integer.parseInt(resolution.substring(resolution.indexOf('x')+1));
+	}
+	
 	static boolean fail(String labelName) {
 		labels.get(labelName).setForeground(Color.red);
 		return false;
@@ -97,6 +111,9 @@ public class MainMenu implements ActionListener {
 			return;
 		}
 		switchScreens("Main");
+		settings = new SettingsBuilder().getSettings(username);
+		updateSettings();
+		music.play("happyRock.wav");
 	}
 
 	static void createUser(String username, String password) {

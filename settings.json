@@ -1,1 +1,3 @@
-{"template":{"trail":["0","1"],"audio":["0","1"],"clouds":["0","1"],"resolution":["1000x500","750x375","500x250"],"dayTime":["0","1"]},"default":{"trail":"1","audio":"1","clouds":"1","resolution":"1000x500","dayTime":"1"}}
+{"template":{"trail":["0","1"],"audio":["0","1"],"clouds":["0","1"],"resolution":["1000x500","750x375","500x250"],"dayTime":["0","1"]},
+ "default":{"trail":"1","audio":"1","clouds":"1","resolution":"1000x500","dayTime":"1"}, 
+ "admin":{"trail":"1","audio":"1","clouds":"1","resolution":"750x375","dayTime":"1"}}
