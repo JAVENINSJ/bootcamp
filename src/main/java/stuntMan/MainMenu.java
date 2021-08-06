@@ -115,14 +115,14 @@ public class MainMenu implements ActionListener {
 
 	static void setupLabels() {
 		new JavaLabel("BackGroundLogin", layers.get("Login"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Log In", layers.get("Login"), xBounds * 3 / 10, 50 * 2, 400, 100, buttons);
-		new JavaLabel("Create User", layers.get("Login"), xBounds * 3 / 10, 50 * 6, 400, 100, buttons);
+		new JavaLabel("Log In", layers.get("Login"), xBounds * 3 / 10, 100, 400, 100, buttons);
+		new JavaLabel("Create User", layers.get("Login"), xBounds * 3 / 10, 300, 400, 100, buttons);
 		new JavaLabel("Enter Username", layers.get("Login"), xBounds * 16 / 10, 136, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Enter Password", layers.get("Login"), xBounds * 16 / 10, 268, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), xBounds * 3 / 10, 216, 400,
-				32, labels, 1, fPath, true);
-		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), xBounds * 3 / 10, 250, 400,
-				32, labels, 1, fPath, true);
+		new JavaLabel("Username must be atleast 3 characters long!", 
+				layers.get("Login"), xBounds * 3 / 10, 216, 400, 32, labels, 1, fPath, true);
+		new JavaLabel("Password must be atleast 3 characters long!",
+				layers.get("Login"), xBounds * 3 / 10, 250, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("User not found!", layers.get("Login"), xBounds * 16 / 10, 200, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Wrong Password!", layers.get("Login"), xBounds * 16 / 10, 332, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("BackGroundMain", layers.get("Main"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
