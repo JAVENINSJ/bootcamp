@@ -62,7 +62,7 @@ public class JavaLabel extends JLabel {
 		} catch (Exception e) {
 			((JLabel) location).add(this);
 		}
-		this.setFont(new Font("Verdana", Font.BOLD, 16));
+		this.setFont(new Font("Verdana", Font.BOLD, 20));
 		addCommonProperties(name, x, y, width, height, list);
 	}
 

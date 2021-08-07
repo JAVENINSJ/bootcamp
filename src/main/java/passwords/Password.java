@@ -12,8 +12,8 @@ import org.json.simple.parser.JSONParser;
 public class Password {
 
 	public static JSONObject json = null;
-
-	public Password() {
+	
+	public static void getLoginFile() {
 		try (FileReader reader = new FileReader("pass.json")) {
 			JSONParser jsonParser = new JSONParser();
 			json = (JSONObject) jsonParser.parse(reader);

@@ -23,7 +23,8 @@ public class MainMenu implements ActionListener {
 	public static Timer timer;
 	static JTextField enterName;
 	static JPasswordField enterPassword;
-	public static int fWidth = 1000, fHeight = 500, xBounds = fWidth / 2 - 180, yBounds = fHeight - 276;
+	public static int fWidth = 1000, fHeight = 500;
+	public static int coins = 7420;
 	public static HashMap<String, JLayeredPane> layers = new HashMap<String, JLayeredPane>();
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
 			buttons = new HashMap<String, JavaLabel>(), //
@@ -34,8 +35,8 @@ public class MainMenu implements ActionListener {
 		screen = setupScreen(fWidth + 16, fHeight + 40);// +16 and +40 because JFrame has sizing issues
 		setupLayers();
 		setupLabels();
-		enterName = (JTextField) setupInputFields(enterName, xBounds * 16 / 10, 168, false);
-		enterPassword = (JPasswordField) setupInputFields(enterPassword, xBounds * 16 / 10, 50 * 6, true);
+		enterName = (JTextField) setupInputFields(enterName, fWidth * 11 / 20, 168, false);
+		enterPassword = (JPasswordField) setupInputFields(enterPassword, fWidth * 11 / 20, 50 * 6, true);
 	}
 
 	public Object setupInputFields(Object field, int x, int y, boolean password) {
@@ -68,6 +69,7 @@ public class MainMenu implements ActionListener {
 			layers.get(screenName).add(buttons.get("Main Menu"));
 		}
 	}
+
 	@SuppressWarnings("deprecation")
 	public static void checkLogin(boolean createUser) {
 		String name = enterName.getText();
@@ -134,28 +136,29 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void setupLabels() {
-		new JavaLabel("Skip", layers.get("Login"), xBounds * 6 / 10, 50 * 0, 200, 50, buttons);
+		new JavaLabel("Skip", layers.get("Login"), fWidth *2/ 10, 50 * 0, 200, 50, buttons);
 
 		new JavaLabel("BackGroundLogin", layers.get("Login"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Log In", layers.get("Login"), xBounds * 3 / 10, 50 * 2, 400, 100, buttons);
-		new JavaLabel("Create User", layers.get("Login"), xBounds * 3 / 10, 50 * 6, 400, 100, buttons);
-		new JavaLabel("Enter Username", layers.get("Login"), xBounds * 16 / 10, 136, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Enter Password", layers.get("Login"), xBounds * 16 / 10, 268, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), xBounds * 3 / 10, 216, 400,
-				32, labels, 1, fPath, true);
-		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), xBounds * 3 / 10, 250, 400,
-				32, labels, 1, fPath, true);
-		new JavaLabel("User not found!", layers.get("Login"), xBounds * 16 / 10, 200, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Wrong Password!", layers.get("Login"), xBounds * 16 / 10, 332, 400, 32, labels, 1, fPath, true);
+		new JavaLabel("Log In", layers.get("Login"), fWidth / 10, 50 * 2, 400, 100, buttons);
+		new JavaLabel("Create User", layers.get("Login"), fWidth /10, 50 * 6, 400, 100, buttons);
+		new JavaLabel("Enter Username", layers.get("Login"), fWidth * 11 / 20, 136, 400, 32, labels, 1, fPath, true);
+		new JavaLabel("Enter Password", layers.get("Login"), fWidth * 11 / 20, 268, 400, 32, labels, 1, fPath, true);
+		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), 0, 216, 520, 32, labels, 1,
+				fPath, true);
+		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), 0, 250, 520, 32, labels, 1,
+				fPath, true);
+		new JavaLabel("User not found!", layers.get("Login"), fWidth * 11 / 20, 200, 400, 32, labels, 1, fPath, true);
+		new JavaLabel("Wrong Password!", layers.get("Login"), fWidth * 11 / 20, 332, 400, 32, labels, 1, fPath, true);
 
 		new JavaLabel("BackGroundMain", layers.get("Main"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Play", layers.get("Main"), xBounds * 9 / 10, 50 * 1, 400, 80, buttons);
-		new JavaLabel("Upgrades", layers.get("Main"), xBounds * 9 / 10, 50 * 3, 400, 80, buttons);
-		new JavaLabel("Settings", layers.get("Main"), xBounds * 9 / 10, 50 * 5, 400, 80, buttons);
-		new JavaLabel("Exit", layers.get("Main"), xBounds * 9 / 10, 50 * 7, 400, 80, buttons);
+		new JavaLabel("Play", layers.get("Main"), fWidth * 3 / 10, 50 * 1, 400, 80, buttons);
+		new JavaLabel("Upgrades", layers.get("Main"), fWidth * 3 / 10, 50 * 3, 400, 80, buttons);
+		new JavaLabel("Settings", layers.get("Main"), fWidth * 3 / 10, 50 * 5, 400, 80, buttons);
+		new JavaLabel("Exit", layers.get("Main"), fWidth * 3 / 10, 50 * 7, 400, 80, buttons);
 
 		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Main Menu", layers.get("Upgrades"), xBounds * 9 / 10, fHeight - 100, 400, 100, buttons);
+		new JavaLabel("Main Menu", layers.get("Upgrades"), fWidth * 3 / 10, fHeight - 100, 400, 100, buttons);
+		new JavaLabel("Coins", layers.get("Upgrades"),fWidth * 3 / 10, 0, 400, 38, labels, 1, fPath, true);
 
 		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
 
@@ -164,7 +167,6 @@ public class MainMenu implements ActionListener {
 		labels.get("Wrong Password!").setVisible(false);
 		labels.get("Wrong Password!").setForeground(Color.red);
 		buttons.get("Main Menu").setVisible(false);
-
 	}
 
 	static void setupLayers() {
