@@ -1,6 +1,8 @@
-package stuntMan;
+package objects;
 
-public class Cloud extends Coin {
+import stuntMan.GameScreen;
+
+public class Cloud extends JavaObject {
 	private static final long serialVersionUID = 1L;
 	
 	public static int width = 128, height = 128;
@@ -29,5 +31,9 @@ public class Cloud extends Coin {
 		return super.checkForDespawn(distanceX, distanceY);
 	}
 	
-	
+	@Override
+	public int despawn() {
+		GameScreen.clouds.remove(this);
+		return super.despawn();
+	}
 }

@@ -24,11 +24,12 @@ public class Mouse implements MouseListener {
 			MainMenu.checkLogin(true);
 		}
 		if ("Skip".equals(button.name) && button.inZone) {
-			MainMenu.switchScreens("Main");
+			MainMenu.setupMenuSettings();
 		}
 		if ("Play".equals(button.name) && button.inZone) {
 			GameScreen.startGame();
 			MainMenu.screen.setVisible(false);
+			MainMenu.timer.stop();
 		}
 		if ("Upgrades".equals(button.name) && button.inZone) {
 			MainMenu.buttons.get("Main Menu").setVisible(true);
@@ -41,7 +42,7 @@ public class Mouse implements MouseListener {
 		}
 		if ("Main Menu".equals(button.name) && button.inZone) {
 			MainMenu.buttons.get("Main Menu").setVisible(false);
-			MainMenu.switchScreens("Main");
+			MainMenu.switchScreens("Menu");
 		}
 		if ("Exit".equals(button.name) && button.inZone) {
 			System.exit(0);

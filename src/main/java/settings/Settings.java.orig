@@ -17,7 +17,11 @@ public class Settings {
 		return resolution;
 	}
 	
+<<<<<<< HEAD
+	public void setResolution() {
+=======
 	public void setResolution(String resolution) {
+>>>>>>> e6697d7987cf982411aec2ed9fce810dfc622513
 		this.resolution = resolution;
 	}
 	

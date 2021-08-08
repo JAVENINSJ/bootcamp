@@ -6,25 +6,21 @@ import java.util.HashMap;
 import java.util.Set;
 import javax.swing.*;
 
-import inputClasses.Audio;
-import inputClasses.JavaLabel;
-import inputClasses.JavaLayeredPane;
+import inputClasses.*;
 import passwords.Password;
-import settings.Settings;
-import settings.SettingsBuilder;
+import settings.*;
 
 public class MainMenu implements ActionListener {
 	public static Settings settings;
 	public static boolean audio = true, trail = true;
 	public static Audio music = new Audio();
 	public static String fPath = "//MenuAssets//";
-	public static String mainButtonPos = "Upgrades";
+	public static String MenuButtonPos = "Upgrades";
 	public static JFrame screen;
 	public static Timer timer;
 	static JTextField enterName;
 	static JPasswordField enterPassword;
-	public static int fWidth = 1000, fHeight = 500;
-	public static int coins = 7420;
+	public static int fWidth = 1000, fHeight = 500, coins = 7420, moveToX = -fWidth, moveToY = 0;
 	public static HashMap<String, JLayeredPane> layers = new HashMap<String, JLayeredPane>();
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
 			buttons = new HashMap<String, JavaLabel>(), //
@@ -37,6 +33,8 @@ public class MainMenu implements ActionListener {
 		setupLabels();
 		enterName = (JTextField) setupInputFields(enterName, fWidth * 11 / 20, 168, false);
 		enterPassword = (JPasswordField) setupInputFields(enterPassword, fWidth * 11 / 20, 50 * 6, true);
+		timer = new Timer(5, this);
+		timer.start();
 	}
 
 	public Object setupInputFields(Object field, int x, int y, boolean password) {
@@ -53,19 +51,32 @@ public class MainMenu implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) { // Timer Execution
+		layers.get("Main").setLocation(moveScreens(layers.get("Main").getX(), moveToX),
+				moveScreens(layers.get("Main").getY(), moveToY));
+	}
 
+	public static int moveScreens(int pos, int destinationPos) {
+		if (pos != destinationPos) {
+			int direction = -1;
+			if (pos - destinationPos < 0) {
+				direction = 1;
+			}
+			if ((pos > destinationPos) == (direction == -1)) {
+				pos += direction * 50;
+			}
+		}
+		return pos;
 	}
 
 	public static void switchScreens(String screenName) {
 		for (String backgrKey : backgrKeys) {
-			if (backgrKey.equals(screenName)) {
-				layers.get(backgrKey).setLocation(0, 0);
-			} else {
-				layers.get(backgrKey).setLocation(0, -fHeight);
+			if (screenName.equals(backgrKey)) {
+				moveToX = -layers.get(backgrKey).getX();
+				moveToY = -layers.get(backgrKey).getY();
 			}
 		}
-		if (!screenName.equals("Main") && !screenName.equals(mainButtonPos)) {
-			mainButtonPos = screenName;
+		if (!screenName.equals("Menu") && !screenName.equals(MenuButtonPos)) {
+			MenuButtonPos = screenName;
 			layers.get(screenName).add(buttons.get("Main Menu"));
 		}
 	}
@@ -110,7 +121,7 @@ public class MainMenu implements ActionListener {
 		fWidth = Integer.parseInt(resolution.substring(0,resolution.indexOf('x')));
 		fHeight = Integer.parseInt(resolution.substring(resolution.indexOf('x')+1));
 	}
-	
+
 	static boolean fail(String labelName) {
 		labels.get(labelName).setForeground(Color.red);
 		return true;
@@ -125,22 +136,27 @@ public class MainMenu implements ActionListener {
 			labels.get("Wrong Password!").setVisible(true);
 			return;
 		}
-		switchScreens("Main");
-		settings = new SettingsBuilder().getSettings(username);
+		setupMenuSettings();
+		settings = SettingsBuilder.getSettings(username);
 		updateSettings();
-		music.play("happyRock.wav");
+	}
+	
+	public static void setupMenuSettings() {
+		switchScreens("Menu");
+		new SettingsBuilder();
+		music.play(JavaLabel.fRoute+"//happyRock.wav");
 	}
 
 	static void createUser(String username, String password) {
-
+		// TODO DO THIS WHEN REINIS IS DONE WITH DATABASE
 	}
 
 	static void setupLabels() {
-		new JavaLabel("Skip", layers.get("Login"), fWidth *2/ 10, 50 * 0, 200, 50, buttons);
+		new JavaLabel("Skip", layers.get("Login"), fWidth * 2 / 10, 50 * 0, 200, 50, buttons);
 
 		new JavaLabel("BackGroundLogin", layers.get("Login"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
 		new JavaLabel("Log In", layers.get("Login"), fWidth / 10, 50 * 2, 400, 100, buttons);
-		new JavaLabel("Create User", layers.get("Login"), fWidth /10, 50 * 6, 400, 100, buttons);
+		new JavaLabel("Create User", layers.get("Login"), fWidth / 10, 50 * 6, 400, 100, buttons);
 		new JavaLabel("Enter Username", layers.get("Login"), fWidth * 11 / 20, 136, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Enter Password", layers.get("Login"), fWidth * 11 / 20, 268, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), 0, 216, 520, 32, labels, 1,
@@ -150,15 +166,15 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("User not found!", layers.get("Login"), fWidth * 11 / 20, 200, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Wrong Password!", layers.get("Login"), fWidth * 11 / 20, 332, 400, 32, labels, 1, fPath, true);
 
-		new JavaLabel("BackGroundMain", layers.get("Main"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Play", layers.get("Main"), fWidth * 3 / 10, 50 * 1, 400, 80, buttons);
-		new JavaLabel("Upgrades", layers.get("Main"), fWidth * 3 / 10, 50 * 3, 400, 80, buttons);
-		new JavaLabel("Settings", layers.get("Main"), fWidth * 3 / 10, 50 * 5, 400, 80, buttons);
-		new JavaLabel("Exit", layers.get("Main"), fWidth * 3 / 10, 50 * 7, 400, 80, buttons);
+		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
+		new JavaLabel("Play", layers.get("Menu"), fWidth * 3 / 10, 50 * 1, 400, 80, buttons);
+		new JavaLabel("Upgrades", layers.get("Menu"), fWidth * 3 / 10, 50 * 3, 400, 80, buttons);
+		new JavaLabel("Settings", layers.get("Menu"), fWidth * 3 / 10, 50 * 5, 400, 80, buttons);
+		new JavaLabel("Exit", layers.get("Menu"), fWidth * 3 / 10, 50 * 7, 400, 80, buttons);
 
 		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
 		new JavaLabel("Main Menu", layers.get("Upgrades"), fWidth * 3 / 10, fHeight - 100, 400, 100, buttons);
-		new JavaLabel("Coins", layers.get("Upgrades"),fWidth * 3 / 10, 0, 400, 38, labels, 1, fPath, true);
+		new JavaLabel("Coins", layers.get("Upgrades"), fWidth * 3 / 10, 0, 400, 38, labels, 1, fPath, true);
 
 		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
 
@@ -170,10 +186,11 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void setupLayers() {
-		new JavaLayeredPane("Login", screen, 0, 0, fWidth, fHeight, layers, 0);
-		new JavaLayeredPane("Main", screen, 0, -fHeight, fWidth, fHeight, layers, 0);
-		new JavaLayeredPane("Upgrades", screen, 0, -fHeight, fWidth, fHeight, layers, 0);
-		new JavaLayeredPane("Settings", screen, 0, -fHeight, fWidth, fHeight, layers, 0);
+		new JavaLayeredPane("Main", screen, -fWidth, 0, fWidth * 3, fHeight * 3, layers, 0);
+		new JavaLayeredPane("Login", layers.get("Main"), fWidth, 0, fWidth, fHeight, layers, 0);
+		new JavaLayeredPane("Menu", layers.get("Main"), fWidth, fHeight, fWidth, fHeight, layers, 0);
+		new JavaLayeredPane("Upgrades", layers.get("Main"), 0, fHeight, fWidth, fHeight, layers, 0);
+		new JavaLayeredPane("Settings", layers.get("Main"), 2 * fWidth, fHeight, fWidth, fHeight, layers, 0);
 		backgrKeys = layers.keySet();
 	}
 

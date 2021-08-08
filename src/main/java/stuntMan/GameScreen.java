@@ -2,6 +2,8 @@ package stuntMan;
 
 import javax.swing.*;
 import inputClasses.*;
+import objects.Cloud;
+import objects.Coin;
 
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
@@ -19,7 +21,7 @@ public class GameScreen implements ActionListener {
 	public static int xPlayer, yPlayer, horizontalDir, verticalDir, coinCount, frameWidth, frameHeight, time,
 			groundLevel;
 	public static double speedMove, playerSpeedX, playerSpeedY, xBackgr, yBackgr, minSpeed, maxSpeed;
-	public static double drag, gravity, distanceX, distanceY, startSpeed, launchAngle;
+	public static double drag, gravity, distanceX, distanceY, startSpeed, launchAngle, powerLevel, powerGain;
 	public static boolean changeBG, paused, controllable, gameStarted;
 	public static boolean up, left, right, down;
 	public static HashMap<String, JLayeredPane> layers = new HashMap<String, JLayeredPane>();
@@ -27,8 +29,9 @@ public class GameScreen implements ActionListener {
 			objects = new HashMap<String, JavaLabel>(), //
 			buttons = new HashMap<String, JavaLabel>(), //
 			backgrs = new HashMap<String, JavaLabel>(); //
-	static ArrayList<Cloud> clouds = new ArrayList<Cloud>();
-	static ArrayList<Coin> coins = new ArrayList<Coin>();
+	static JavaLabel player;
+	public static ArrayList<Cloud> clouds = new ArrayList<Cloud>();
+	public static ArrayList<Coin> coins = new ArrayList<Coin>();
 	public static Set<String> backgrKeys, objectKeys;
 	public static Rectangle playerHitbox;
 
@@ -51,7 +54,12 @@ public class GameScreen implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) { // Timer Execution
 		if (e.getSource() == preGameTimer) { // CANNON TIME
-			//
+			if (powerLevel + powerGain > 101 || powerLevel + powerGain < 0) {
+				powerGain *= -1;
+			}
+			powerLevel += powerGain;
+			labels.get("PowerSlider").setLocation((int) (labels.get("PowerSlider").getWidth() / 75 * powerLevel), 0);
+			System.out.println("POWAH =" + powerLevel);
 		} else { // FLYING TIME
 			movePlayerIcon();
 			moveBackground();
@@ -62,18 +70,17 @@ public class GameScreen implements ActionListener {
 
 	public static void movePlayerIcon() {
 		checkPlayerMovement();
-		collisionCheck();
 		if (Math.abs(playerSpeedX) < maxSpeed) {
 			playerSpeedX -= horizontalDir;
 			xPlayer += horizontalDir * (boundCheck(xPlayer + horizontalDir, frameHeight / 2, horizontalDir));
-			labels.get("Player").setLocation((int) (xPlayer + speedMove), (int) yPlayer);
+			player.setLocation((int) (xPlayer + speedMove), (int) yPlayer);
 		}
 		if (Math.abs(playerSpeedY) < maxSpeed) {
 			if (verticalDir == -1) {
 				playerSpeedY -= verticalDir;
 			}
 			yPlayer += verticalDir * (boundCheck(yPlayer + verticalDir, frameWidth / 4, verticalDir));
-			labels.get("Player").setLocation((int) xPlayer, (int) (yPlayer + speedMove));
+			player.setLocation((int) xPlayer, (int) (yPlayer + speedMove));
 		}
 		if (yPlayer + 1 < frameHeight / 2 + frameHeight / 4 && verticalDir != -1 && controllable && gravity != 0) {
 			if (playerSpeedY == 0) { // Drop player icon faster when background is stationary
@@ -81,7 +88,8 @@ public class GameScreen implements ActionListener {
 			}
 			yPlayer += 1;
 		}
-		labels.get("Player").setLocation(xPlayer, yPlayer);
+		player.setLocation(xPlayer, yPlayer);
+		playerHitbox = player.getBounds();
 	}
 
 	static double boundCheck(int pos, int bound, int direction) {
@@ -111,42 +119,23 @@ public class GameScreen implements ActionListener {
 		}
 	}
 
-	static void collisionCheck() {
-		playerHitbox = labels.get("Player").getBounds();
-		for (Cloud cloud : clouds) {
-			cloud.hitbox = cloud.getBounds();
-			if (playerHitbox.intersects(cloud.hitbox)) {
-				cloud.speedX = 0.5 * playerSpeedX;
-				cloud.speedY = 0.5 * playerSpeedY;
-				playerSpeedX = 0.95 * playerSpeedX;
-				playerSpeedY = 0.95 * playerSpeedY;
-			}
-		}
-		for (int i = 0; i < coins.size(); i++) {
-			coins.get(i).hitbox = coins.get(i).getBounds();
-			if (playerHitbox.intersects(coins.get(i).hitbox)) {
-				coinCount++;
-				layers.get("gameLayer").remove(coins.get(i));
-				coins.remove(coins.get(i));
-				i--;
-			}
-		}
-	}
-
 	public static void moveBackground() {
 		gravity = 1 * 0.5;
 		boolean setToGround = false;
 		for (String backgroundKey : backgrKeys) {
 			JavaLabel background = backgrs.get(backgroundKey);
-			if (background.getIcon().equals(ground) && verticalDir != -1 && background.getY() <= groundLevel) {
-				verticalDir = 0;
-				gravity = 0;
-				playerSpeedY = 0;
-				yPlayer = groundLevel -32;
-				distanceY = 0;
-				setToGround = true;
-				break;
+			if (time > 10) {
+				if (background.getIcon().equals(ground) && verticalDir != -1 && background.getY() <= groundLevel) {
+					verticalDir = 0;
+					gravity = 0;
+					playerSpeedY = 0;
+					yPlayer = groundLevel - 32;
+					distanceY = 0;
+					setToGround = true;
+					break;
+				}
 			}
+
 		}
 		for (String backgroundKey : backgrKeys) {
 			changeBG = false;
@@ -155,10 +144,10 @@ public class GameScreen implements ActionListener {
 			int tempY = setBackgroundPos((int) Math.round(-playerSpeedY), frameHeight, background.getY());
 			if (setToGround) {
 				tempY = groundLevel;
-				if( background.getIcon().equals(stars)) {
-					tempY = groundLevel-500;
+				if (background.getIcon().equals(stars)) {
+					tempY = groundLevel - 500;
 				}
-				
+
 			}
 			if (changeBG) {
 				if (tempY >= groundLevel && distanceY < 500) {
@@ -168,7 +157,7 @@ public class GameScreen implements ActionListener {
 					if (distanceY > 2500) {
 						new Cloud(tempX, tempY, background.getWidth(), background.getHeight(), -distanceX, distanceY);
 					}
-					new Coin(tempX, tempY, 32, 32, background.getWidth(), background.getHeight(), -distanceX, distanceY,
+					new Coin(tempX, tempY, 64, 64, background.getWidth(), background.getHeight(), -distanceX, distanceY,
 							"CoinBase");
 				}
 			}
@@ -181,7 +170,6 @@ public class GameScreen implements ActionListener {
 		if (distanceY < 1) {
 			drag *= 10;
 		}
-		System.out.println(playerSpeedX+"   "+playerSpeedY);
 		playerSpeedX -= playerSpeedX * drag;
 		playerSpeedY -= playerSpeedY * drag;
 		if (controllable && playerSpeedY - gravity > -maxSpeed) {// BACKGROUND GRAVITY
@@ -213,21 +201,26 @@ public class GameScreen implements ActionListener {
 		}
 		for (int i = 0; i < clouds.size(); i++) {
 			if (clouds.get(i).checkForDespawn(-distanceX, distanceY)) {
-				clouds.remove(clouds.get(i));
-				i--;
+				i -= clouds.get(i).despawn();
+				continue;
+			}
+			if (clouds.get(i).colisionCheck()) {
+				clouds.get(i).speedX = 0.5 * playerSpeedX;
+				clouds.get(i).speedY = 0.5 * playerSpeedY;
+				playerSpeedX = 0.95 * playerSpeedX;
+				playerSpeedY = 0.95 * playerSpeedY;
 			}
 		}
 		for (int i = 0; i < coins.size(); i++) {
 			coins.get(i).animate();
 			if (coins.get(i).checkForDespawn(-distanceX, distanceY)) {
-				coins.remove(coins.get(i));
-				i--;
+				i -= coins.get(i).despawn();
+				continue;
 			}
-		}
-		if (Coin.animationFrame == 39) {
-			Coin.animationFrame = 0;
-		} else {
-			Coin.animationFrame++;
+			if (coins.get(i).colisionCheck()) {
+				coinCount++;
+				i -= coins.get(i).despawn();
+			}
 		}
 	}
 
@@ -304,8 +297,8 @@ public class GameScreen implements ActionListener {
 		}
 		if (preGameTimer.isRunning()) {
 			if (key == KeyEvent.VK_SPACE) {
-				playerSpeedX = -(startSpeed * launchAngle);
-				playerSpeedY = startSpeed * (1 - launchAngle);
+				playerSpeedX = -(startSpeed * launchAngle / 100 * powerLevel);
+				playerSpeedY = startSpeed * (1 - launchAngle) / 100 * powerLevel;
 				preGameTimer.stop();
 				gameTimer.start();
 				gameStarted = true;
@@ -340,11 +333,13 @@ public class GameScreen implements ActionListener {
 		xPlayer = 64;
 		yPlayer = groundLevel - 32;
 		distanceX = 0;
-		distanceY = 0;
+		distanceY = 16;
 		playerSpeedX = 0;
 		playerSpeedY = 0;
-		startSpeed = 2;
+		startSpeed = 200;
 		launchAngle = 0.5;
+		powerLevel = 1;
+		powerGain = 2;
 		horizontalDir = 0;
 		verticalDir = 0;
 		minSpeed = 0.5;
@@ -354,9 +349,13 @@ public class GameScreen implements ActionListener {
 	}
 
 	static void setupLabels() {
-		new JavaLabel("Player", layers.get("gameLayer"), xPlayer, yPlayer, 32, 32, labels, 5, fPath, false);
-		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - 16, yPlayer - 32, 64, 64, objects, 4, fPath, false);
-		new JavaLabel("Angle", layers.get("gameLayer"), xPlayer + 64, yPlayer - 64, 16, 16, objects, 5, fPath, false);
+		player = new JavaLabel("Player", layers.get("gameLayer"), xPlayer, yPlayer, 32, 32, labels, 2, fPath, false);
+		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - 16, yPlayer - 32, 64, 64, objects, 3, fPath, false);
+		new JavaLabel("PowerBase", layers.get("gameLayer"), xPlayer - 16, yPlayer + 32, 196, 32, objects, 1, fPath,
+				false);
+		new JavaLabel("PowerFrame", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
+		new JavaLabel("PowerSlider", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
+		new JavaLabel("Angle", layers.get("gameLayer"), xPlayer + 64, yPlayer - 64, 16, 16, objects, 1, fPath, false);
 
 		new JavaLabel("Backgr1", layers.get("gameLayer"), 0, groundLevel - 500, 1000, 500, backgrs, 0, fPath, false);
 		new JavaLabel("Backgr2", layers.get("gameLayer"), 1000, groundLevel - 500, 1000, 500, backgrs, 0, fPath, false);
@@ -376,6 +375,9 @@ public class GameScreen implements ActionListener {
 		buttons.get("Reset").setVisible(false);
 		backgrKeys = backgrs.keySet();
 		objectKeys = objects.keySet();
+		labels.get("Distance").setText("\"W A S D\" FOR MOVEMENT!");
+		labels.get("Speed").setText("ARROW KEYS ADJUST ANGLE!");
+		labels.get("Coins").setText("\"ENTER\" LAUNCHES PLAYER!");
 	}
 
 	public static void gameClose() {
