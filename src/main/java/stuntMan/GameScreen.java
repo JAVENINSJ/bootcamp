@@ -221,6 +221,7 @@ public class GameScreen implements ActionListener {
 				i -= coins.get(i).despawn();
 			}
 		}
+		Coin.setAnimationFrame();
 	}
 
 	public static void keyInput(int key, boolean pressed) {
