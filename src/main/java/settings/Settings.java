@@ -4,7 +4,8 @@ import java.util.Map;
 import java.util.TreeMap;
 
 public class Settings {
-	String resolution, audio, dayTime, trail;	
+	String resolution, audio, dayTime, trail;
+	
 	protected Settings(String resolution, String audio, String dayTime, String trail){
 		this.resolution = resolution;// pixels
 		this.audio = audio;			 // boolean
@@ -12,27 +13,35 @@ public class Settings {
 		this.trail = trail;			 // boolean
 	}
 
-	protected String getAudio() {
-		return audio;
+	public String getResolution() {
+		return resolution;
+	}
+	
+	public void setResolution(String resolution) {
+		this.resolution = resolution;
+	}
+	
+	public boolean getAudio() {
+		return "1".equals(audio) ? true : false;
 	}
 
-	protected void setAudio(String audio) {
+	public void setAudio(String audio) {
 		this.audio = audio;
 	}
 
-	protected String getDayTime() {
-		return dayTime;
+	public boolean getDayTime() {
+		return "1".equals(dayTime) ? true : false;
 	}
 
-	protected void setDayTime(String dayTime) {
+	public void setDayTime(String dayTime) {
 		this.dayTime = dayTime;
 	}
 
-	protected String getTrail() {
-		return trail;
+	public boolean getTrail() {
+		return "1".equals(trail) ? true : false;
 	}
 
-	protected void setTrail(String trail) {
+	public void setTrail(String trail) {
 		this.trail = trail;
 	}
 
@@ -41,8 +50,8 @@ public class Settings {
 		
 		sol.put("resolution", resolution);
 		sol.put("audio",audio);
-		sol.put("dayTime",audio);
-		sol.put("trail",audio);
+		sol.put("dayTime",dayTime);
+		sol.put("trail",trail);
 		
 		return sol;
 	}
