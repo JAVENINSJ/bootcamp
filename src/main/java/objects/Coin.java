@@ -29,7 +29,6 @@ public class Coin extends JavaObject {
 		coin.setBounds(0, 0, width, height * 4);
 		this.add(coin);
 		GameScreen.coins.add(this);
-
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class Coin extends JavaObject {
 		this.coin.setLocation(0, (-animationFrame / 10) * this.getHeight());
 	}
 
-	public void setAnimationFrame() {
+	public static void setAnimationFrame() {
 		if (animationFrame == 39) {
 			animationFrame = 0;
 		} else {
