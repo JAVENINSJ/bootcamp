@@ -20,7 +20,7 @@ public class MainMenu implements ActionListener {
 	public static Timer timer;
 	static JTextField enterName;
 	static JPasswordField enterPassword;
-	public static int fWidth = 1500, fHeight = 750, coins = 7420, moveToX = -fWidth, moveToY = 0;
+	public static int fWidth = 1000, fHeight = 500, coins = 7420, moveToX = -fWidth, moveToY = 0;
 	public static HashMap<String, JLayeredPane> layers = new HashMap<String, JLayeredPane>();
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
 											buttons = new HashMap<String, JavaLabel>(),
@@ -180,7 +180,11 @@ public class MainMenu implements ActionListener {
 
 		
 		
-		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
+		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0					, 0					   , fWidth				 , fHeight				 , backgr , 0, fPath, false);
+		new JavaLabel("Audio"	  		  , layers.get("Settings"), (int) (fWidth * 0.1), (int) (fHeight * 0.1), (int) (fWidth * 0.4), (int) (fHeight * 0.16), buttons);
+		new JavaLabel("Trail"	  		  , layers.get("Settings"), (int) (fWidth * 0.1), (int) (fHeight * 0.25), (int) (fWidth * 0.4), (int) (fHeight * 0.16), buttons);
+		new JavaLabel("Day Time"  		  , layers.get("Settings"), (int) (fWidth * 0.1), (int) (fHeight * 0.4), (int) (fWidth * 0.4), (int) (fHeight * 0.16), buttons);
+		new JavaLabel("Resolution"	  	  , layers.get("Settings"), (int) (fWidth * 0.1), (int) (fHeight * 0.55), (int) (fWidth * 0.4), (int) (fHeight * 0.16), buttons);
 
 		labels.get("User not found!").setVisible(false);
 		labels.get("User not found!").setForeground(Color.red);
