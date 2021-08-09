@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.Set;
 import javax.swing.*;
 
+import org.json.simple.JSONObject;
+
 import inputClasses.*;
 import passwords.Password;
 import settings.*;
@@ -90,7 +92,8 @@ public class MainMenu implements ActionListener {
 
 	public static void checkLogin(boolean createUser) {
 		String name = enterName.getText();
-		String password = enterPassword.getPassword().toString();
+		String password = new String(enterPassword.getPassword());
+		System.out.println(password);
 		boolean fail = false;
 		labels.get("Enter Username:").setForeground(Color.white);
 		labels.get("Enter Password:").setForeground(Color.white);
@@ -114,6 +117,7 @@ public class MainMenu implements ActionListener {
 			if (createUser) {
 				createUser(name, password);
 			} else {
+				System.out.println(password);
 				loginUser(name, password);
 			}
 		}
@@ -142,6 +146,7 @@ public class MainMenu implements ActionListener {
 		
 		if (!Password.checkPassword(username, password)) {
 			labels.get("Wrong Password!").setVisible(true);
+			System.out.println(password.toString());
 			return;
 		}
 		setupMenuSettings();
