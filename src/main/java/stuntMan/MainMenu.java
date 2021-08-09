@@ -5,9 +5,6 @@ import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Set;
 import javax.swing.*;
-
-import org.json.simple.JSONObject;
-
 import inputClasses.*;
 import passwords.Password;
 import settings.*;
