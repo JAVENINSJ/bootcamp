@@ -24,8 +24,9 @@ public class Password {
 	}
 
 	public static boolean checkPassword(String user, String password) {
-		String encryptedPassword = encrypt(password, (String) ((JSONObject) json.get(user)).get("salt"));
+		String encryptedPassword = encrypt(password,(String) ((JSONObject) json.get(user)).get("salt"));
 		encryptedPassword = encryptedPassword.substring(encryptedPassword.indexOf(':') + 1);
+		
 		if (encryptedPassword.equals(((JSONObject) json.get(user)).get("pass"))) {
 			return true;
 		}
