@@ -44,7 +44,8 @@ public class GameScreen implements ActionListener {
 
 	public static void startGame() {
 		setupParameters();
-		screen = MainMenu.setupScreen(frameWidth + 16, frameHeight + 40); // + 16 and + 40 because of JFrame sizing
+		if(System.getProperty("os.name").startsWith("Windows")) screen = MainMenu.setupScreen(frameWidth + 16, frameHeight + 40);// +16 and +40 because JFrame has sizing issues on windows!
+		else screen = MainMenu.setupScreen(frameWidth, frameHeight);	
 		new JavaLayeredPane("gameLayer", screen, 0, 0, frameWidth, frameHeight, layers, 0);
 		setupLabels();
 		new KeyInputListener();
@@ -59,7 +60,6 @@ public class GameScreen implements ActionListener {
 			}
 			powerLevel += powerGain;
 			labels.get("PowerSlider").setLocation((int) (labels.get("PowerSlider").getWidth() / 75 * powerLevel), 0);
-			System.out.println("POWAH =" + powerLevel);
 		} else { // FLYING TIME
 			movePlayerIcon();
 			moveBackground();
@@ -166,7 +166,7 @@ public class GameScreen implements ActionListener {
 		if (Math.abs(playerSpeedX) < minSpeed) {
 			playerSpeedX = 0;
 		}
-		drag = 0.01;
+		drag = 0.008;
 		if (distanceY < 1) {
 			drag *= 10;
 		}
@@ -303,9 +303,9 @@ public class GameScreen implements ActionListener {
 				preGameTimer.stop();
 				gameTimer.start();
 				gameStarted = true;
-			} else if (key == KeyEvent.VK_RIGHT && pressed && launchAngle + 0.2 < 1) {
+			} else if ((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_RIGHT) && pressed && launchAngle + 0.2 < 1) {
 				launchAngle += 0.2;
-			} else if (key == KeyEvent.VK_LEFT && pressed && launchAngle - 0.2 > 0) {
+			} else if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT) && pressed && launchAngle - 0.2 > 0) {
 				launchAngle -= 0.2;
 			}
 			objects.get("Angle").setLocation(xPlayer + (int) (128 * launchAngle),
@@ -315,7 +315,7 @@ public class GameScreen implements ActionListener {
 
 	static void updateLabels() {
 		time += 1000 / gameTimer.getDelay();
-		labels.get("Distance").setText("X:" + df.format(distanceX / 100) + " m;Y:" + df.format(distanceY / 100) + " m");
+		labels.get("Distance").setText("X:" + df.format(distanceX / 100) + " m; Y:" + df.format(distanceY / 100) + " m");
 		labels.get("Speed").setText("X = " + df.format(Math.abs(playerSpeedX * 3600 / 1000)) + " km/h; Y = "
 				+ df.format(Math.abs(playerSpeedY * 3600 / 1000)) + " km/h");
 		labels.get("Coins").setText("Coins = " + coinCount);
@@ -327,9 +327,9 @@ public class GameScreen implements ActionListener {
 		paused = false;
 		controllable = false;
 		gameStarted = false;
-		frameWidth = 1000;
-		frameHeight = 500;
-		groundLevel = frameWidth / 4 + frameWidth / 4 / 2;
+		frameWidth = MainMenu.fWidth;
+		frameHeight = MainMenu.fHeight;
+		groundLevel = (int) (frameWidth * 0.375);
 		speedMove = 5;
 		xPlayer = 64;
 		yPlayer = groundLevel - 32;
@@ -351,6 +351,7 @@ public class GameScreen implements ActionListener {
 
 	static void setupLabels() {
 		player = new JavaLabel("Player", layers.get("gameLayer"), xPlayer, yPlayer, 32, 32, labels, 2, fPath, false);
+		
 		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - 16, yPlayer - 32, 64, 64, objects, 3, fPath, false);
 		new JavaLabel("PowerBase", layers.get("gameLayer"), xPlayer - 16, yPlayer + 32, 196, 32, objects, 1, fPath,
 				false);
@@ -378,7 +379,7 @@ public class GameScreen implements ActionListener {
 		objectKeys = objects.keySet();
 		labels.get("Distance").setText("\"W A S D\" FOR MOVEMENT!");
 		labels.get("Speed").setText("ARROW KEYS ADJUST ANGLE!");
-		labels.get("Coins").setText("\"ENTER\" LAUNCHES PLAYER!");
+		labels.get("Coins").setText("\"SPACE\" LAUNCHES PLAYER!");
 	}
 
 	public static void gameClose() {

@@ -20,19 +20,20 @@ public class MainMenu implements ActionListener {
 	public static Timer timer;
 	static JTextField enterName;
 	static JPasswordField enterPassword;
-	public static int fWidth = 1000, fHeight = 500, coins = 7420, moveToX = -fWidth, moveToY = 0;
+	public static int fWidth = 1500, fHeight = 750, coins = 7420, moveToX = -fWidth, moveToY = 0;
 	public static HashMap<String, JLayeredPane> layers = new HashMap<String, JLayeredPane>();
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
-			buttons = new HashMap<String, JavaLabel>(), //
-			backgr = new HashMap<String, JavaLabel>(); //
+											buttons = new HashMap<String, JavaLabel>(),
+											 backgr = new HashMap<String, JavaLabel>(); 
 	public static Set<String> backgrKeys;
 
 	public MainMenu() {
-		screen = setupScreen(fWidth + 16, fHeight + 40);// +16 and +40 because JFrame has sizing issues
+		if(System.getProperty("os.name").startsWith("Windows")) screen = setupScreen(fWidth + 16, fHeight + 40);// +16 and +40 because JFrame has sizing issues on windows!
+		else screen = setupScreen(fWidth, fHeight);		
 		setupLayers();
 		setupLabels();
-		enterName = (JTextField) setupInputFields(enterName, fWidth * 11 / 20, 168, false);
-		enterPassword = (JPasswordField) setupInputFields(enterPassword, fWidth * 11 / 20, 50 * 6, true);
+		enterName = (JTextField) setupInputFields(enterName, (int) (fWidth * 0.55), (int) (fHeight * 0.33), false);
+		enterPassword = (JPasswordField) setupInputFields(enterPassword, (int) (fWidth * 0.55), (int) (fHeight * 0.6), true);
 		timer = new Timer(5, this);
 		timer.start();
 	}
@@ -81,22 +82,21 @@ public class MainMenu implements ActionListener {
 		}
 	}
 
-	@SuppressWarnings("deprecation")
 	public static void checkLogin(boolean createUser) {
 		String name = enterName.getText();
-		String password = enterPassword.getText();
+		String password = enterPassword.getPassword().toString();
 		boolean fail = false;
-		labels.get("Enter Username").setForeground(Color.white);
-		labels.get("Enter Password").setForeground(Color.white);
+		labels.get("Enter Username:").setForeground(Color.white);
+		labels.get("Enter Password:").setForeground(Color.white);
 		labels.get("Username must be atleast 3 characters long!").setForeground(Color.white);
 		labels.get("Password must be atleast 3 characters long!").setForeground(Color.white);
 		labels.get("User not found!").setVisible(false);
 		labels.get("Wrong Password!").setVisible(false);
 		if (name.isBlank()) {
-			fail = fail("Enter Username");
+			fail = fail("Enter Username:");
 		}
 		if (password.isBlank()) {
-			fail = fail("Enter Password");
+			fail = fail("Enter Password:");
 		}
 		if (name.length() < 3) {
 			fail = fail("Username must be atleast 3 characters long!");
@@ -152,30 +152,34 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void setupLabels() {
-		new JavaLabel("Skip", layers.get("Login"), fWidth * 2 / 10, 50 * 0, 200, 50, buttons);
+		new JavaLabel("Skip",            							 layers.get("Login"), (int) (fWidth * 0.2), 0					  , 200, 50, buttons);
 
-		new JavaLabel("BackGroundLogin", layers.get("Login"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Log In", layers.get("Login"), fWidth / 10, 50 * 2, 400, 100, buttons);
-		new JavaLabel("Create User", layers.get("Login"), fWidth / 10, 50 * 6, 400, 100, buttons);
-		new JavaLabel("Enter Username", layers.get("Login"), fWidth * 11 / 20, 136, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Enter Password", layers.get("Login"), fWidth * 11 / 20, 268, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), 0, 216, 520, 32, labels, 1,
-				fPath, true);
-		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), 0, 250, 520, 32, labels, 1,
-				fPath, true);
-		new JavaLabel("User not found!", layers.get("Login"), fWidth * 11 / 20, 200, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Wrong Password!", layers.get("Login"), fWidth * 11 / 20, 332, 400, 32, labels, 1, fPath, true);
+		new JavaLabel("BackGroundLogin", 							 layers.get("Login"), 0					  , 0					  , fWidth				 , fHeight			      , backgr , 0, fPath, false);
+		new JavaLabel("Log In",          							 layers.get("Login"), (int) (fWidth * 0.1), (int) (fHeight * 0.2) , (int) (fWidth * 0.4) , (int) (fHeight * 0.2)  , buttons);
+		new JavaLabel("Create User", 	 							 layers.get("Login"), (int) (fWidth * 0.1), (int) (fHeight * 0.6) , (int) (fWidth * 0.4) , (int) (fHeight * 0.2)  , buttons); 
+		new JavaLabel("Enter Username:",  							 layers.get("Login"), (int) (fWidth * 0.5), (int) (fHeight * 0.27), (int) (fWidth * 0.4) , (int) (fHeight * 0.064), labels , 1, fPath, true);
+		new JavaLabel("Enter Password:",  							 layers.get("Login"), (int) (fWidth * 0.5), (int) (fHeight * 0.54), (int) (fWidth * 0.4) , (int) (fHeight * 0.064), labels , 1, fPath, true);
+		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), 0					  , (int) (fHeight * 0.43), (int) (fWidth * 0.52), (int) (fHeight * 0.064), labels , 1, fPath, true);
+		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), 0					  , (int) (fHeight * 0.5) , (int) (fWidth * 0.52), (int) (fHeight * 0.064), labels , 1, fPath, true);
+		new JavaLabel("User not found!", 							 layers.get("Login"), (int) (fWidth * 0.5), (int) (fHeight * 0.45), (int) (fWidth * 0.4) , (int) (fHeight * 0.064), labels , 1, fPath, true);
+		new JavaLabel("Wrong Password!", 							 layers.get("Login"), (int) (fWidth * 0.5), (int) (fHeight * 0.7) , (int) (fWidth * 0.4) , (int) (fHeight * 0.064), labels , 1, fPath, true);
 
-		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Play", layers.get("Menu"), fWidth * 3 / 10, 50 * 1, 400, 80, buttons);
-		new JavaLabel("Upgrades", layers.get("Menu"), fWidth * 3 / 10, 50 * 3, 400, 80, buttons);
-		new JavaLabel("Settings", layers.get("Menu"), fWidth * 3 / 10, 50 * 5, 400, 80, buttons);
-		new JavaLabel("Exit", layers.get("Menu"), fWidth * 3 / 10, 50 * 7, 400, 80, buttons);
+		
+		
+		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0			 		, 0					   , fWidth				 , fHeight				 , backgr , 0, fPath, false);
+		new JavaLabel("Play"		  , layers.get("Menu"), (int) (fWidth * 0.3), (int) (fHeight * 0.1), (int) (fWidth * 0.4), (int) (fHeight * 0.16), buttons);
+		new JavaLabel("Upgrades"	  , layers.get("Menu"), (int) (fWidth * 0.3), (int) (fHeight * 0.3), (int) (fWidth * 0.4), (int) (fHeight * 0.16), buttons);
+		new JavaLabel("Settings"	  , layers.get("Menu"), (int) (fWidth * 0.3), (int) (fHeight * 0.5), (int) (fWidth * 0.4), (int) (fHeight * 0.16), buttons);
+		new JavaLabel("Exit"		  , layers.get("Menu"), (int) (fWidth * 0.3), (int) (fHeight * 0.7), (int) (fWidth * 0.4), (int) (fHeight * 0.16), buttons);
 
-		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Main Menu", layers.get("Upgrades"), fWidth * 3 / 10, fHeight - 100, 400, 100, buttons);
-		new JavaLabel("Coins", layers.get("Upgrades"), fWidth * 3 / 10, 0, 400, 38, labels, 1, fPath, true);
+		
+		
+		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0					, 0			   		   , fWidth				 , fHeight				  , backgr , 0, fPath, false);
+		new JavaLabel("Main Menu"		  , layers.get("Upgrades"), (int) (fWidth * 0.3), (int) (fHeight * 0.8), (int) (fWidth * 0.4), (int) (fHeight * 0.2)  , buttons);
+		new JavaLabel("Coins"			  , layers.get("Upgrades"), (int) (fWidth * 0.3), 0			   		   , (int) (fWidth * 0.4), (int) (fHeight * 0.076), labels , 1, fPath, true);
 
+		
+		
 		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
 
 		labels.get("User not found!").setVisible(false);
@@ -186,11 +190,11 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void setupLayers() {
-		new JavaLayeredPane("Main", screen, -fWidth, 0, fWidth * 3, fHeight * 3, layers, 0);
-		new JavaLayeredPane("Login", layers.get("Main"), fWidth, 0, fWidth, fHeight, layers, 0);
-		new JavaLayeredPane("Menu", layers.get("Main"), fWidth, fHeight, fWidth, fHeight, layers, 0);
-		new JavaLayeredPane("Upgrades", layers.get("Main"), 0, fHeight, fWidth, fHeight, layers, 0);
-		new JavaLayeredPane("Settings", layers.get("Main"), 2 * fWidth, fHeight, fWidth, fHeight, layers, 0);
+		new JavaLayeredPane("Main"	  , screen			  , -fWidth	  , 0	   , fWidth * 3, fHeight * 3, layers, 0);
+		new JavaLayeredPane("Login"	  , layers.get("Main"), fWidth	  , 0	   , fWidth	   , fHeight	, layers, 0);
+		new JavaLayeredPane("Menu"	  , layers.get("Main"), fWidth	  , fHeight, fWidth	   , fHeight	, layers, 0);
+		new JavaLayeredPane("Upgrades", layers.get("Main"), 0		  , fHeight, fWidth	   , fHeight	, layers, 0);
+		new JavaLayeredPane("Settings", layers.get("Main"), 2 * fWidth, fHeight, fWidth	   , fHeight	, layers, 0);
 		backgrKeys = layers.keySet();
 	}
 

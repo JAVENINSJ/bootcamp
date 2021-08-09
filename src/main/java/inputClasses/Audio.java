@@ -17,7 +17,7 @@ public class Audio {
             FloatControl ctrl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             ctrl.setValue(-30.0f);
             clip.start();
-            
+            clip.loop(clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
             e.printStackTrace();
         }
