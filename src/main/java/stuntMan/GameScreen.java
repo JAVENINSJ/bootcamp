@@ -15,9 +15,9 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class GameScreen implements ActionListener {
-	public static String fPath = "//GameAssets//";
+	public static String fPath = "//GameAssets//", theme = "Stars";
 	public static JFrame screen;
-	public static ImageIcon ground, stars;
+	public static ImageIcon ground, backdrop;
 	public static Timer gameTimer, preGameTimer;
 	public static int xPlayer, yPlayer, horizontalDir, verticalDir, coinCount, fWidth, fHeight, time, groundLVL;
 	public static double speedMove, playerSpeedX, playerSpeedY, xBackgr, yBackgr, minSpeed, maxSpeed;
@@ -70,8 +70,8 @@ public class GameScreen implements ActionListener {
 
 	public static void movePlayerIcon() {
 		if (trail) {
-			trails.add(new JavaObject(player.getX(), player.getY(), player.getWidth(), player.getHeight(),
-					player.getIcon(), -distanceX, distanceY));
+			trails.add(new JavaObject(player.getX(), player.getY(), player.getWidth()/2, player.getHeight()/2,
+					"Trail", -distanceX, distanceY));
 			if (trails.size() > 50) {
 				trails.get(0).despawn();
 				trails.remove(0);
@@ -147,7 +147,7 @@ public class GameScreen implements ActionListener {
 			int tempY = setBackgroundPos((int) Math.round(-playerSpeedY), fHeight, background.getY());
 			if (setToGround) {
 				tempY = groundLVL;
-				if (background.getIcon().equals(stars)) {
+				if (background.getIcon().equals(backdrop)) {
 					tempY = groundLVL - fHeight;
 				}
 			}
@@ -155,7 +155,7 @@ public class GameScreen implements ActionListener {
 				if (tempY >= groundLVL && distanceY < 500) {
 					background.setIcon(ground);
 				} else {
-					background.setIcon(stars);
+					background.setIcon(backdrop);
 					if (distanceY > 2500) {
 						new Cloud(tempX, tempY, fWidth, fHeight, -distanceX, distanceY);
 					}
@@ -331,6 +331,15 @@ public class GameScreen implements ActionListener {
 		labels.get("Coins").setText("Coins = " + coinCount);
 	}
 	
+	public static void setTheme() {
+		if ("Stars".equals(theme)) {
+			theme = "DayTime";
+		} else {
+			theme = "Stars";
+		}
+		MainMenu.buttons.get("Theme").setText(theme+"");
+	}
+	
 	public static void setTrail() {
 		trail = !trail;
 		MainMenu.buttons.get("Trail").setText(trail+"");
@@ -362,7 +371,7 @@ public class GameScreen implements ActionListener {
 		coinCount = 0;
 		ground = new ImageIcon(new ImageIcon(JavaLabel.fRoute + fPath + "BackgroundGrass.png").getImage()
 				.getScaledInstance(fWidth, fHeight, Image.SCALE_SMOOTH));
-		stars = new ImageIcon(new ImageIcon(JavaLabel.fRoute + fPath + "BackgroundStars.png").getImage()
+		backdrop = new ImageIcon(new ImageIcon(JavaLabel.fRoute + fPath + "Background"+ theme +".png").getImage()
 				.getScaledInstance(fWidth, fHeight, Image.SCALE_SMOOTH));
 	}
 
@@ -389,8 +398,8 @@ public class GameScreen implements ActionListener {
 		new JavaLabel("Coins", layers.get("gameLayer"), 300, 64, 400, 32, labels, 10, fPath, true);
 		new JavaLabel("Back", layers.get("gameLayer"), 100, 0, 200, 50, buttons);
 		new JavaLabel("Reset", layers.get("gameLayer"), 700, 0, 200, 50, buttons);
-		backgrounds.get("Backgr1").setIcon(stars);
-		backgrounds.get("Backgr2").setIcon(stars);
+		backgrounds.get("Backgr1").setIcon(backdrop);
+		backgrounds.get("Backgr2").setIcon(backdrop);
 		backgrounds.get("Backgr3").setIcon(ground);
 		backgrounds.get("Backgr4").setIcon(ground);
 		buttons.get("Back").setVisible(false);

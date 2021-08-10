@@ -137,18 +137,19 @@ public class MainMenu implements ActionListener {
 		switchScreens("Menu");
 		new SettingsBuilder();
 		Audio.play(JavaLabel.fRoute + "//happyRock.wav");
-		Audio.setAudio(); // TODO REMOVE THIS FOR INSTANT MUSIC
+		//Audio.setAudio(); // TODO REMOVE THIS FOR INSTANT MUSIC
 	}
 
 	static void createUser(String username, String password) {
 		// TODO DO THIS WHEN REINIS IS DONE WITH DATABASE
 	}
 
-	public static int selectSetting(int num, int size) {
-		if (num < size - 1) {
-			return 1;
+	public static void setResolution() {
+		resolutionNR += 1;
+		if (resolutionNR == resolution.length) {
+			resolutionNR = 0;
 		}
-		return 1 - size;
+		buttons.get("Resolution").setText(resolution[resolutionNR] + "");
 	}
 
 	public static void resetScreen() {
@@ -160,7 +161,7 @@ public class MainMenu implements ActionListener {
 		screen.removeAll();
 		screen.dispose();
 		fWidth = resolution[resolutionNR];
-		fHeight = fWidth /2;
+		fHeight = fWidth / 2;
 		new MainMenu();
 		switchScreens("Settings");
 		timer.start();
@@ -208,7 +209,7 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
 		new JavaLabel("Audio", layers.get("Settings"), 100, 50, 300, 75, buttons);
 		new JavaLabel("Trail", layers.get("Settings"), 600, 50, 300, 75, buttons);
-		new JavaLabel("Day Time", layers.get("Settings"), 100, 125, 300, 75, buttons);
+		new JavaLabel("Theme", layers.get("Settings"), 100, 125, 300, 75, buttons);
 		new JavaLabel("Resolution", layers.get("Settings"), 600, 125, 300, 75, buttons);
 		new JavaLabel("Accept Settings", layers.get("Settings"), 250, 275, 500, 75, buttons);
 		new JavaLabel("Main Menu", layers.get("Settings"), 300, 400, 400, 100, buttons);

@@ -7,10 +7,12 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
 
+import stuntMan.MainMenu;
+
 public class Audio {
 	
 	static Clip clip;
-	static boolean running = false;
+	static boolean running = true;
 	
 	public static void play(String filePath) {
         final File file = new File(filePath); 
@@ -26,8 +28,9 @@ public class Audio {
     }
 	
 	public static void setAudio() {
+		MainMenu.buttons.get("Audio").setText(!running+"");
 		running = !running;
-		if (running) {
+		if (!running) {
 			clip.stop();
 			return;
 		}

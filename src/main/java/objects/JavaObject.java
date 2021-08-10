@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
@@ -38,17 +37,18 @@ public class JavaObject extends JLabel {
 		this.distanceY = posY;
 		this.setBounds(x, y, fWidth * width / 1000, fWidth * height / 1000);
 		this.hitbox = this.getBounds();
-		GameScreen.layers.get("gameLayer").add(this, (Integer) 1);
+		GameScreen.layers.get("gameLayer").add(this, (Integer) 2);
 	}
-	
-	public JavaObject(int x, int y, int width, int height, Icon icon, double posX, double posY) {
-		super(icon,JLabel.CENTER);
+
+	public JavaObject(int x, int y, int width, int height, String pngName, double posX, double posY) {
+		super(new ImageIcon(new ImageIcon(JavaLabel.fRoute + "//GameAssets//" + pngName + ".png").getImage()
+				.getScaledInstance(width, height, Image.SCALE_SMOOTH)), JLabel.CENTER);
 		this.setBounds(x, y, width, height);
-		this.x = x;
-		this.y = y;
+		this.x = x + width / 2;
+		this.y = y + height / 2;
 		this.distanceX = posX;
 		this.distanceY = posY;
-		GameScreen.layers.get("gameLayer").add(this, (Integer)2);
+		GameScreen.layers.get("gameLayer").add(this, (Integer) 1);
 	}
 
 	public boolean checkForDespawn(double distanceX, double distanceY) {
