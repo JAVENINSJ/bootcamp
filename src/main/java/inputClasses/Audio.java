@@ -9,17 +9,28 @@ import javax.sound.sampled.FloatControl;
 
 public class Audio {
 	
-	public void play(String filePath) {
+	static Clip clip;
+	static boolean running = false;
+	
+	public static void play(String filePath) {
         final File file = new File(filePath); 
         try (final AudioInputStream in = AudioSystem.getAudioInputStream(file)) {
-            Clip clip = AudioSystem.getClip();
+            clip = AudioSystem.getClip();
             clip.open(in);
             FloatControl ctrl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
             ctrl.setValue(-30.0f);
-            clip.start();
-            clip.loop(clip.LOOP_CONTINUOUSLY);
+            clip.loop(Clip.LOOP_CONTINUOUSLY);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+	
+	public static void setAudio() {
+		running = !running;
+		if (running) {
+			clip.stop();
+			return;
+		}
+		clip.start();
+	}
 }
