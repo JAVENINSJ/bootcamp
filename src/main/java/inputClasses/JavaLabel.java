@@ -83,7 +83,6 @@ public class JavaLabel extends JLabel {
 		} else if (list.equals(GameScreen.objects) || name.equals("Player")) {
 			this.setBounds(x, y,fWidth * width / 1000, fWidth * height / 1000);
 		}
-		System.out.println(this.name + " = " + this.getBounds());
 		list.put(name, this);
 	}
 
