@@ -57,6 +57,9 @@ public class Mouse implements MouseListener {
 		if ("Audio".equals(button.name) && button.inZone) {
 			Audio.setAudio();
 		}
+		if ("Trail".equals(button.name) && button.inZone) {
+			GameScreen.setTrail();
+		}
 		if ("Resolution".equals(button.name) && button.inZone) {
 			MainMenu.resolutionNR += MainMenu.selectSetting(MainMenu.resolutionNR, MainMenu.resolution.length);
 			MainMenu.buttons.get("Resolution").setText(MainMenu.resolution[MainMenu.resolutionNR]+"");
