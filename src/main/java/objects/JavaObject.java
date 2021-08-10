@@ -28,14 +28,14 @@ public class JavaObject extends JLabel {
 	public JavaObject(int x, int y, int width, int height, int rangeX, int rangeY, double posX, double posY,
 			String pngName) {
 		super(new ImageIcon(new ImageIcon(JavaLabel.fRoute + "//GameAssets//" + pngName + ".png").getImage()
-				.getScaledInstance(width, height, Image.SCALE_SMOOTH)), JLabel.CENTER);
-		x = random.nextInt((rangeX - width) / 10) * 10 + x;
-		y = random.nextInt((rangeY - height) / 10) * 10 + y;
+				.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH)), JLabel.CENTER);
+		x = random.nextInt((rangeX - (fWidth * width / 1000)) / 10) * 10 + x;
+		y = random.nextInt((rangeY - (fWidth * height / 1000)) / 10) * 10 + y;
 		this.x = x;
 		this.y = y;
 		this.distanceX = posX;
 		this.distanceY = posY;
-		this.setBounds(x, y, width, height);
+		this.setBounds(x, y, fWidth * width / 1000, fWidth * height / 1000);
 		this.hitbox = this.getBounds();
 		GameScreen.layers.get("gameLayer").add(this, (Integer) 1);
 	}

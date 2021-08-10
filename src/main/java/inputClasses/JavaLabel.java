@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.HashMap;
 import javax.swing.*;
 
+import stuntMan.GameScreen;
 import stuntMan.MainMenu;
 
 public class JavaLabel extends JLabel {
@@ -78,8 +79,11 @@ public class JavaLabel extends JLabel {
 		this.setForeground(Color.white);
 		this.setBounds(fWidth * x / 1000, fHeight * y / 500, fWidth * width / 1000, fWidth * height / 1000);
 		if (width == fWidth && height == fHeight) {
-			this.setBounds(fWidth * x / 1000, fHeight * y / 500, fWidth, fHeight);
+			this.setBounds(x, y, width, height);
+		} else if (list.equals(GameScreen.objects) || name.equals("Player")) {
+			this.setBounds(x, y,fWidth * width / 1000, fWidth * height / 1000);
 		}
+		System.out.println(this.name + " = " + this.getBounds());
 		list.put(name, this);
 	}
 

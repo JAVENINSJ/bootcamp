@@ -59,8 +59,9 @@ public class GameScreen implements ActionListener {
 			powerLevel += powerGain;
 			labels.get("PowerSlider").setLocation((int) (labels.get("PowerSlider").getWidth() / 75 * powerLevel), 0);
 		} else { // FLYING TIME
-			movePlayerIcon();
 			moveBackground();
+			movePlayerIcon();
+
 			moveObjects();
 			updateLabels();
 		}
@@ -118,11 +119,12 @@ public class GameScreen implements ActionListener {
 		for (String backgroundKey : backgrKeys) {
 			JavaLabel background = backgrounds.get(backgroundKey);
 			if (time > 10) {
-				if (background.getIcon().equals(ground) && verticalDir != -1 && background.getY() <= groundLevel) {
+				if (background.getIcon().equals(ground) && verticalDir != -1 && background.getY() <= groundLevel
+						|| distanceY < 0) {
 					verticalDir = 0;
 					gravity = 0;
 					playerSpeedY = 0;
-					yPlayer = groundLevel - 32;
+					yPlayer = groundLevel - fWidth * 32 / 1000;
 					distanceY = 0;
 					setToGround = true;
 					break;
@@ -137,7 +139,7 @@ public class GameScreen implements ActionListener {
 			if (setToGround) {
 				tempY = groundLevel;
 				if (background.getIcon().equals(stars)) {
-					tempY = groundLevel - 500;
+					tempY = groundLevel - fHeight;
 				}
 			}
 			if (changeBG) {
@@ -179,7 +181,7 @@ public class GameScreen implements ActionListener {
 		}
 		pos -= speed;
 		if ((pos < (-bound * direction)) == check) {
-			pos = pos + (-bound * direction) + bound * 3 * direction;
+			pos += 2 * bound * direction;
 			changeBG = true;
 		}
 		return pos;
@@ -294,8 +296,8 @@ public class GameScreen implements ActionListener {
 			} else if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT) && pressed && launchAngle - 0.2 > 0) {
 				launchAngle -= 0.2;
 			}
-			objects.get("Angle").setLocation(xPlayer + (int) (128 * launchAngle),
-					yPlayer - (int) (128 * (1 - launchAngle)));
+			objects.get("Angle").setLocation(xPlayer + (int) (fWidth * 128 / 1000 * launchAngle),
+					yPlayer - (int) (fHeight * 128 / 500 * (1 - launchAngle)));
 		}
 	}
 
@@ -317,12 +319,13 @@ public class GameScreen implements ActionListener {
 	}
 
 	static void setupParameters() { // GIVES VARIABLES THEIR START VALUES
-		
+
 		paused = false;
 		controllable = false;
 		gameStarted = false;
 		fWidth = MainMenu.fWidth;
-		fHeight = MainMenu.fHeight;
+		fHeight = fWidth / 2;
+		System.out.println(fWidth);
 		groundLevel = fHeight / 4 * 3;
 		speedMove = 5;
 		xPlayer = fWidth * 64 / 1000;
@@ -350,20 +353,23 @@ public class GameScreen implements ActionListener {
 	static void setupLabels() {
 		player = new JavaLabel("Player", layers.get("gameLayer"), xPlayer, yPlayer, 32, 32, labels, 2, fPath, false);
 
-		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - 16, yPlayer - 32, 64, 64, objects, 3, fPath, false);
-		new JavaLabel("PowerBase", layers.get("gameLayer"), xPlayer - 16, yPlayer + 32, 196, 32, objects, 1, fPath,
-				false);
+		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - fWidth * 16 / 1000, yPlayer - fWidth * 32 / 1000, 64,
+				64, objects, 3, fPath, false);
+		new JavaLabel("PowerBase", layers.get("gameLayer"), xPlayer - fWidth * 16 / 1000, yPlayer + fWidth * 32 / 1000,
+				196, 32, objects, 1, fPath, false);
 		new JavaLabel("PowerFrame", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
 		new JavaLabel("PowerSlider", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
-		new JavaLabel("Angle", layers.get("gameLayer"), xPlayer + 64, yPlayer - 64, 16, 16, objects, 1, fPath, false);
+		new JavaLabel("Angle", layers.get("gameLayer"), xPlayer + fWidth * 64 / 1000, yPlayer - fWidth * 64 / 1000, 16,
+				16, objects, 1, fPath, false);
 
-		new JavaLabel("Backgr1", layers.get("gameLayer"), 0, groundLevel - fHeight, fWidth, fHeight, backgrounds, 0, fPath,
+		new JavaLabel("Backgr1", layers.get("gameLayer"), 0, groundLevel - fHeight, fWidth, fHeight, backgrounds, 0,
+				fPath, false);
+		new JavaLabel("Backgr2", layers.get("gameLayer"), fWidth, groundLevel - fHeight, fWidth, fHeight, backgrounds,
+				0, fPath, false);
+		new JavaLabel("Backgr3", layers.get("gameLayer"), fWidth, groundLevel, fWidth, fHeight, backgrounds, 0, fPath,
 				false);
-		new JavaLabel("Backgr2", layers.get("gameLayer"), fWidth, groundLevel - fHeight, fWidth, fHeight, backgrounds, 0, fPath,
+		new JavaLabel("Backgr4", layers.get("gameLayer"), 0, groundLevel, fWidth, fHeight, backgrounds, 0, fPath,
 				false);
-		new JavaLabel("Backgr3", layers.get("gameLayer"), fWidth, groundLevel, fWidth, fHeight, backgrounds, 0, fPath, false);
-		new JavaLabel("Backgr4", layers.get("gameLayer"), 0, groundLevel, fWidth, fHeight, backgrounds, 0, fPath, false);
-
 		new JavaLabel("Distance", layers.get("gameLayer"), 300, 0, 400, 32, labels, 10, fPath, true);
 		new JavaLabel("Speed", layers.get("gameLayer"), 300, 32, 400, 32, labels, 10, fPath, true);
 		new JavaLabel("Coins", layers.get("gameLayer"), 300, 64, 400, 32, labels, 10, fPath, true);
