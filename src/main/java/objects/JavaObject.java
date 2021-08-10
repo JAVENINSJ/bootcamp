@@ -9,17 +9,24 @@ import javax.swing.JLabel;
 
 import inputClasses.JavaLabel;
 import stuntMan.GameScreen;
+import stuntMan.MainMenu;
 
 public class JavaObject extends JLabel {
 	private static final long serialVersionUID = 1L;
 	static Random random = new Random();
-	static int frameWidth = GameScreen.frameWidth, frameHeight = GameScreen.frameHeight;
+	static int fWidth = GameScreen.fWidth, fHeight = GameScreen.fHeight;
 	String name;
 	int x, y;
 	public double speedX = 0, speedY = 0, distanceX, distanceY;
 	public Rectangle hitbox;
 
-	public JavaObject(int x, int y, int width, int height, int rangeX, int rangeY, double posX, double posY, String pngName) {
+	public static void setSizing(int size) {
+		fWidth = MainMenu.fWidth;
+		fHeight = fWidth / 2;
+	}
+
+	public JavaObject(int x, int y, int width, int height, int rangeX, int rangeY, double posX, double posY,
+			String pngName) {
 		super(new ImageIcon(new ImageIcon(JavaLabel.fRoute + "//GameAssets//" + pngName + ".png").getImage()
 				.getScaledInstance(width, height, Image.SCALE_SMOOTH)), JLabel.CENTER);
 		x = random.nextInt((rangeX - width) / 10) * 10 + x;
@@ -35,14 +42,13 @@ public class JavaObject extends JLabel {
 
 	public boolean checkForDespawn(double distanceX, double distanceY) {
 		this.setPosition(distanceX, distanceY);
-		if (this.getX() < -frameWidth || this.getX() > 2 * frameWidth || this.getY() < -frameHeight
-				|| this.getY() > 2 * frameHeight) {
+		if (this.getX() < -fWidth || this.getX() > 2 * fWidth || this.getY() < -fHeight || this.getY() > 2 * fHeight) {
 			GameScreen.layers.get("gameLayer").remove(this);
 			return true;
 		}
 		return false;
 	}
-	
+
 	public boolean colisionCheck() {
 		this.hitbox = this.getBounds();
 		if (GameScreen.playerHitbox.intersects(this.hitbox)) {
@@ -50,7 +56,7 @@ public class JavaObject extends JLabel {
 		}
 		return false;
 	}
-	
+
 	public int despawn() {
 		GameScreen.layers.get("gameLayer").remove(this);
 		return 1;

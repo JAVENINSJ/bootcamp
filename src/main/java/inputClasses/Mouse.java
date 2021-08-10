@@ -2,6 +2,7 @@ package inputClasses;
 
 import java.awt.event.*;
 
+import objects.JavaObject;
 import stuntMan.*;
 
 public class Mouse implements MouseListener {
@@ -23,10 +24,11 @@ public class Mouse implements MouseListener {
 		if ("Create User".equals(button.name) && button.inZone) {
 			MainMenu.checkLogin(true);
 		}
-		if ("Skip".equals(button.name) && button.inZone) {
+		if ("Enter As Guest".equals(button.name) && button.inZone) {
 			MainMenu.setupMenuSettings();
 		}
 		if ("Play".equals(button.name) && button.inZone) {
+			JavaObject.setSizing(MainMenu.fWidth);
 			GameScreen.startGame();
 			MainMenu.screen.setVisible(false);
 			MainMenu.timer.stop();
@@ -40,17 +42,34 @@ public class Mouse implements MouseListener {
 			MainMenu.buttons.get("Main Menu").setVisible(true);
 			MainMenu.switchScreens("Settings");
 		}
-		if ("Main Menu".equals(button.name) && button.inZone) {
-			MainMenu.buttons.get("Main Menu").setVisible(false);
-			MainMenu.switchScreens("Menu");
+		if ("Logout".equals(button.name) && button.inZone) {
+			MainMenu.switchScreens("Login");
 		}
 		if ("Exit".equals(button.name) && button.inZone) {
 			System.exit(0);
 		}
+		// UPGRADES ::
+		if ("Main Menu".equals(button.name) && button.inZone) {
+			MainMenu.buttons.get("Main Menu").setVisible(false);
+			MainMenu.switchScreens("Menu");
+		}
+		// SETTINGS ::
+		if ("Audio".equals(button.name) && button.inZone) {
+			Audio.setAudio();
+		}
+		if ("Resolution".equals(button.name) && button.inZone) {
+			MainMenu.resolutionNR += MainMenu.selectSetting(MainMenu.resolutionNR, MainMenu.resolution.length);
+			MainMenu.buttons.get("Resolution").setText(MainMenu.resolution[MainMenu.resolutionNR]+"");
+		}
+		if ("Accept Settings".equals(button.name) && button.inZone) {
+			MainMenu.resetScreen();
+		}
+
 		// GAME SCREEN ::
 		if ("Back".equals(button.name) && button.inZone) {
 			MainMenu.coins += GameScreen.coinCount;
 			GameScreen.gameClose();
+			MainMenu.timer.start();
 			MainMenu.screen.setVisible(true);
 		}
 		if ("Reset".equals(button.name) && button.inZone) {

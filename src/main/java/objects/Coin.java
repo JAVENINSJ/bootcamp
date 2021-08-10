@@ -1,7 +1,6 @@
 package objects;
 
 import java.awt.Image;
-import java.awt.Rectangle;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
@@ -14,12 +13,7 @@ public class Coin extends JavaObject {
 	
 	private static final long serialVersionUID = 1L;
 	static Random random = new Random();
-	static int frameWidth = GameScreen.frameWidth, frameHeight = GameScreen.frameHeight;
 	public static int animationFrame;
-	String name;
-	int x, y;
-	public double speedX = 0, speedY = 0, distanceX, distanceY;
-	public Rectangle hitbox;
 	JLabel coin;
 
 	public Coin(int x, int y, int width, int height, int rangeX, int rangeY, double posX, double posY, String pngName) {
