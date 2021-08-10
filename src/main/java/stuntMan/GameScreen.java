@@ -23,7 +23,7 @@ public class GameScreen implements ActionListener {
 	public static double speedMove, playerSpeedX, playerSpeedY, xBackgr, yBackgr, minSpeed, maxSpeed;
 	public static double drag, gravity, distanceX, distanceY, startSpeed, launchAngle, powerLevel, powerGain;
 	public static boolean changeBG, paused, controllable, gameStarted;
-	public static boolean up, left, right, down, jetpack;
+	public static boolean up, left, right, down, jetpack, trail;
 	public static HashMap<String, JLayeredPane> layers = new HashMap<String, JLayeredPane>();
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
 			objects = new HashMap<String, JavaLabel>(), //
@@ -32,7 +32,7 @@ public class GameScreen implements ActionListener {
 	static JavaLabel player;
 	public static ArrayList<Cloud> clouds = new ArrayList<Cloud>();
 	public static ArrayList<Coin> coins = new ArrayList<Coin>();
-	public static ArrayList<JavaObject> trail = new ArrayList<JavaObject>();
+	public static ArrayList<JavaObject> trails = new ArrayList<JavaObject>();
 	public static Set<String> backgrKeys, objectKeys;
 	public static Rectangle playerHitbox;
 
@@ -69,10 +69,13 @@ public class GameScreen implements ActionListener {
 	}
 
 	public static void movePlayerIcon() {
-		trail.add(new JavaObject(player.getX(),player.getY(), player.getWidth(),player.getHeight(), player.getIcon(), -distanceX, distanceY));
-		if (trail.size() > 50) {
-			trail.get(0).despawn();
-			trail.remove(0);
+		if (trail) {
+			trails.add(new JavaObject(player.getX(), player.getY(), player.getWidth(), player.getHeight(),
+					player.getIcon(), -distanceX, distanceY));
+			if (trails.size() > 50) {
+				trails.get(0).despawn();
+				trails.remove(0);
+			}
 		}
 		checkPlayerMovement();
 		if (Math.abs(playerSpeedX) < maxSpeed) {
@@ -221,8 +224,10 @@ public class GameScreen implements ActionListener {
 			}
 		}
 		Coin.setAnimationFrame();
-		for (JavaObject trail : trail) {
-			trail.checkForDespawn(-distanceX, distanceY);
+		if (trail) {
+			for (JavaObject trail : trails) {
+				trail.checkForDespawn(-distanceX, distanceY);
+			}
 		}
 	}
 
@@ -325,9 +330,13 @@ public class GameScreen implements ActionListener {
 				+ df.format(Math.abs(playerSpeedY * 3600 / 1000)) + " km/h");
 		labels.get("Coins").setText("Coins = " + coinCount);
 	}
+	
+	public static void setTrail() {
+		trail = !trail;
+		MainMenu.buttons.get("Trail").setText(trail+"");
+	}
 
 	static void setupParameters() { // GIVES VARIABLES THEIR START VALUES
-
 		paused = false;
 		controllable = false;
 		gameStarted = false;
@@ -360,7 +369,7 @@ public class GameScreen implements ActionListener {
 	static void setupLabels() {
 		player = new JavaLabel("Player", layers.get("gameLayer"), xPlayer, yPlayer, 32, 32, labels, 3, fPath, false);
 		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - fWidth * 16 / 1000, yPlayer - fWidth * 32 / 1000, 64,
-				64, objects, 3, fPath, false);
+				64, objects, 4, fPath, false);
 		new JavaLabel("PowerBase", layers.get("gameLayer"), xPlayer - fWidth * 16 / 1000, yPlayer + fWidth * 32 / 1000,
 				196, 32, objects, 1, fPath, false);
 		new JavaLabel("PowerFrame", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
