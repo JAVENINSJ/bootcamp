@@ -112,10 +112,10 @@ public class GameScreen implements ActionListener {
 			if (Math.abs(playerSpeedX) < maxSpeed && Math.abs(playerSpeedY) < maxSpeed) {
 				controllable = true;
 			}
-			if (playerX < fWidth / 4 + fWidth / 8) { // MOVES PLAYER TO RIGHT WALL
+			if (playerX < fWidth / 6) { // MOVES PLAYER TO RIGHT WALL
 				playerX -= playerSpeedX * launchAngle;
 			}
-			if (playerY > fHeight / 2 + -1 * fHeight / 4) { // MOVES PLAYER TO TOP WALL
+			if (playerY > fHeight / 3) { // MOVES PLAYER TO TOP WALL
 				playerY -= playerSpeedY * (1 - launchAngle);
 			}
 		}
@@ -137,10 +137,9 @@ public class GameScreen implements ActionListener {
 		}
 		if (playerSpeedY < -9) {
 			YDir = "D";
-		} else if (playerSpeedY > 9 ||XDir.isBlank() ) {
+		} else if (playerSpeedY > 9 || XDir.isBlank()) {
 			YDir = "U";
 		}
-		System.out.println(XDir + YDir);
 		player.setIcon(playerIcons.get(XDir + YDir));
 	}
 
@@ -437,8 +436,8 @@ public class GameScreen implements ActionListener {
 		coinCount = 0;
 		coinWidth = 64;
 		coinHeight = 64;
-		ground = setupImageIcon(fWidth, fHeight, "BackgroundGrass");
-		backdrop = setupImageIcon(fWidth, fHeight, "Background" + theme);
+		ground = setupImageIcon(1000, 500, "BackgroundGrass");
+		backdrop = setupImageIcon(1000, 500, "Background" + theme);
 		playerIcons.put("U", setupImageIcon(playerWidth, playerHeight, "Player"));
 		playerIcons.put("RU", setupImageIcon(playerWidth, playerHeight, "PlayerRU"));
 		playerIcons.put("R", setupImageIcon(playerWidth, playerHeight, "PlayerR"));
@@ -456,24 +455,22 @@ public class GameScreen implements ActionListener {
 	}
 
 	static void setupLabels() {
-		player = new JavaLabel("", layers.get("gameLayer"), playerX, playerY, playerWidth, playerHeight, labels,
-				3, fPath, false);
-		new JavaLabel("Cannon", layers.get("gameLayer"), playerX - fWidth * 16 / 1000, playerY - fWidth * 32 / 1000, 64,
-				64, objects, 4, fPath, false);
-		new JavaLabel("PowerBase", layers.get("gameLayer"), playerX - fWidth * 16 / 1000, playerY + fWidth * 32 / 1000,
-				196, 32, objects, 1, fPath, false);
+		player = new JavaLabel("", layers.get("gameLayer"), playerX, playerY, playerWidth, playerHeight, labels, 3,
+				fPath, false);
+		new JavaLabel("Cannon", layers.get("gameLayer"), playerX - 1000 * 16 / 1000, playerY - 1000 * 32 / 1000, 64, 64,
+				objects, 4, fPath, false);
+		new JavaLabel("PowerBase", layers.get("gameLayer"), playerX - 1000 * 16 / 1000, playerY + 1000 * 32 / 1000, 196,
+				32, objects, 1, fPath, false);
 		new JavaLabel("PowerFrame", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
 		new JavaLabel("PowerSlider", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
-		new JavaLabel("Angle", layers.get("gameLayer"), playerX + fWidth * 64 / 1000, playerY - fWidth * 64 / 1000, 16,
-				16, objects, 1, fPath, false);
+		new JavaLabel("Angle", layers.get("gameLayer"), playerX + 1000 * 64 / 1000, playerY - 1000 * 64 / 1000, 16, 16,
+				objects, 1, fPath, false);
 
-		new JavaLabel("Backgr1", layers.get("gameLayer"), 0, groundLVL - fHeight, fWidth, fHeight, backgrounds, 0,
-				fPath, false);
-		new JavaLabel("Backgr2", layers.get("gameLayer"), fWidth, groundLVL - fHeight, fWidth, fHeight, backgrounds, 0,
-				fPath, false);
-		new JavaLabel("Backgr3", layers.get("gameLayer"), fWidth, groundLVL, fWidth, fHeight, backgrounds, 0, fPath,
+		new JavaLabel("Backgr1", layers.get("gameLayer"), 0, groundLVL - 500, 1000, 500, backgrounds, 0, fPath, false);
+		new JavaLabel("Backgr2", layers.get("gameLayer"), 1000, groundLVL - 500, 1000, 500, backgrounds, 0, fPath,
 				false);
-		new JavaLabel("Backgr4", layers.get("gameLayer"), 0, groundLVL, fWidth, fHeight, backgrounds, 0, fPath, false);
+		new JavaLabel("Backgr3", layers.get("gameLayer"), 1000, groundLVL, 1000, 500, backgrounds, 0, fPath, false);
+		new JavaLabel("Backgr4", layers.get("gameLayer"), 0, groundLVL, 1000, 500, backgrounds, 0, fPath, false);
 		new JavaLabel("Distance", layers.get("gameLayer"), 300, 0, 400, 32, labels, 10, fPath, true);
 		new JavaLabel("Speed", layers.get("gameLayer"), 300, 32, 400, 32, labels, 10, fPath, true);
 		new JavaLabel("Coins", layers.get("gameLayer"), 300, 64, 400, 32, labels, 10, fPath, true);

@@ -51,13 +51,8 @@ public class JavaLabel extends JLabel {
 	public JavaLabel(String name, Object location, int x, int y, int width, int height, HashMap<String, JavaLabel> list,
 			Integer layer, String fPath, boolean setText) {// CONSTRUCTS JLABEL
 		super("", JLabel.CENTER);
-		if (width == fWidth && height == fHeight) {
-			this.setIcon(new ImageIcon(new ImageIcon(fRoute + fPath + name + ".png").getImage().getScaledInstance(width,
-					height, Image.SCALE_SMOOTH)));
-		} else {
-			this.setIcon(new ImageIcon(new ImageIcon(fRoute + fPath + name + ".png").getImage()
-					.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH)));
-		}
+		this.setIcon(new ImageIcon(new ImageIcon(fRoute + fPath + name + ".png").getImage()
+				.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH)));
 		if (setText) {
 			this.setText(name);
 		}
@@ -78,11 +73,6 @@ public class JavaLabel extends JLabel {
 		this.setHorizontalTextPosition(JLabel.CENTER);
 		this.setForeground(Color.white);
 		this.setBounds(fWidth * x / 1000, fHeight * y / 500, fWidth * width / 1000, fWidth * height / 1000);
-		if (width == fWidth && height == fHeight) {
-			this.setBounds(x, y, width, height);
-		} else if (list.equals(GameScreen.objects) || name.equals("Player")) {
-			this.setBounds(x, y,fWidth * width / 1000, fWidth * height / 1000);
-		}
 		list.put(name, this);
 	}
 
