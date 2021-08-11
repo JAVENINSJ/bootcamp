@@ -70,8 +70,6 @@ public class accesstoDB {
 			stmt.setString(2, "%"+password+"%");
 			
 			ResultSet rs = stmt.executeQuery();
-			int rows=rs.getRow();
-			System.out.println(rows);
 			if(rs!=null)
 				isFound = true;
 			return isFound;	
