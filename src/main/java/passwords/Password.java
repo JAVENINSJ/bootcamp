@@ -46,15 +46,12 @@ public class Password {
 		String hex = Integer.toHexString(temp1);
 
 		return salt + ":" + hex;
-
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void addPassword(String user, String password) {
-		if (json == null)
-			return;
-		if (json.containsKey(user))
-			json.remove(user);
+		if (json == null) return;
+		if (json.containsKey(user))	json.remove(user);
 		Map<String, String> map = new HashMap<>();
 		String salt = saltMine();
 		String pass = encrypt(password, salt);

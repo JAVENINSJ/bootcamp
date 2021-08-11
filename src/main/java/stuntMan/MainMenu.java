@@ -94,6 +94,8 @@ public class MainMenu implements ActionListener {
 		if (password.length() < 3) {
 			fail = fail("Password must be atleast 3 characters long!");
 		}
+		
+		//if exists, then: fail = fail("User already exists!");
 		if (!fail) {
 			if (createUser) {
 				createUser(name, password);
@@ -186,13 +188,12 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("Create User", layers.get("Login"), 100, 300, 400, 75, buttons);
 		new JavaLabel("Enter Username:", layers.get("Login"), 500, 135, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Enter Password:", layers.get("Login"), 500, 270, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), 0, 215, 520, 32, labels, 1,
-				fPath, true);
-		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), 0, 250, 520, 32, labels, 1,
-				fPath, true);
+		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), 0, 215, 520, 32, labels, 1, fPath, true);
+		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), 0, 250, 520, 32, labels, 1, fPath, true);
 		new JavaLabel("User not found!", layers.get("Login"), 500, 225, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Wrong Password!", layers.get("Login"), 500, 350, 400, 32, labels, 1, fPath, true);
-
+		new JavaLabel("User already exists!", layers.get("Login"), 500, 225, 400, 32, labels, 1, fPath, true);
+		
 		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Play", layers.get("Menu"), 300, 20, 400, 75, buttons);
 		new JavaLabel("Upgrades", layers.get("Menu"), 300, 115, 400, 75, buttons);
