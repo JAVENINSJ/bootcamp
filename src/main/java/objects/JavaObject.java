@@ -16,7 +16,8 @@ public class JavaObject extends JLabel {
 	static Random random = new Random();
 	static int fWidth = GameScreen.fWidth, fHeight = GameScreen.fHeight;
 	String name;
-	int x, y;
+	public int x;
+	public int y;
 	public double speedX = 0, speedY = 0, distanceX, distanceY;
 	public Rectangle hitbox;
 
@@ -29,8 +30,10 @@ public class JavaObject extends JLabel {
 			String pngName) {
 		super(new ImageIcon(new ImageIcon(JavaLabel.fRoute + "//GameAssets//" + pngName + ".png").getImage()
 				.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH)), JLabel.CENTER);
-		x = random.nextInt((rangeX - (fWidth * width / 1000)) / 10) * 10 + x;
-		y = random.nextInt((rangeY - (fWidth * height / 1000)) / 10) * 10 + y;
+		if (rangeX != 0 && rangeY != 0) {
+			x = random.nextInt((rangeX - (fWidth * width / 1000)) / 10) * 10 + x;
+			y = random.nextInt((rangeY - (fWidth * height / 1000)) / 10) * 10 + y;
+		}
 		this.x = x;
 		this.y = y;
 		this.distanceX = posX;
@@ -40,12 +43,12 @@ public class JavaObject extends JLabel {
 		GameScreen.layers.get("gameLayer").add(this, (Integer) 2);
 	}
 
-	public JavaObject(int x, int y, int width, int height, String pngName, double posX, double posY) {
+	public JavaObject(int x, int y, int width, int height, String pngName, double posX, double posY) { // !! FOR TRAIL
 		super(new ImageIcon(new ImageIcon(JavaLabel.fRoute + "//GameAssets//" + pngName + ".png").getImage()
-				.getScaledInstance(width, height, Image.SCALE_SMOOTH)), JLabel.CENTER);
+				.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH)), JLabel.CENTER);
 		this.setBounds(x, y, width, height);
-		this.x = x + width / 2;
-		this.y = y + height / 2;
+		this.x = x + width * 3 / 2;
+		this.y = y + height * 3 / 2;
 		this.distanceX = posX;
 		this.distanceY = posY;
 		GameScreen.layers.get("gameLayer").add(this, (Integer) 1);
