@@ -5,6 +5,7 @@ import inputClasses.*;
 import objects.Cloud;
 import objects.Coin;
 import objects.JavaObject;
+import objects.PowerUp;
 
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -12,6 +13,7 @@ import java.awt.event.*;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 import java.util.Set;
 
 public class GameScreen implements ActionListener {
@@ -19,7 +21,8 @@ public class GameScreen implements ActionListener {
 	public static JFrame screen;
 	public static ImageIcon ground, backdrop;
 	public static Timer gameTimer, preGameTimer;
-	public static int xPlayer, yPlayer, horizontalDir, verticalDir, coinCount, fWidth, fHeight, time, groundLVL;
+	public static int playerX, playerY, horizontalDir, verticalDir, coinCount, time, groundLVL, powerUpTime;
+	public static int fWidth, fHeight, coinWidth, coinHeight, playerWidth, playerHeight;
 	public static double speedMove, playerSpeedX, playerSpeedY, xBackgr, yBackgr, minSpeed, maxSpeed;
 	public static double drag, gravity, distanceX, distanceY, startSpeed, launchAngle, powerLevel, powerGain;
 	public static boolean changeBG, paused, controllable, gameStarted;
@@ -29,9 +32,12 @@ public class GameScreen implements ActionListener {
 			objects = new HashMap<String, JavaLabel>(), //
 			buttons = new HashMap<String, JavaLabel>(), //
 			backgrounds = new HashMap<String, JavaLabel>(); //
+	public static HashMap<String, ImageIcon> playerIcons = new HashMap<String, ImageIcon>();
 	static JavaLabel player;
+	static Random random = new Random();
 	public static ArrayList<Cloud> clouds = new ArrayList<Cloud>();
 	public static ArrayList<Coin> coins = new ArrayList<Coin>();
+	public static ArrayList<PowerUp> powerUps = new ArrayList<PowerUp>();
 	public static ArrayList<JavaObject> trails = new ArrayList<JavaObject>();
 	public static Set<String> backgrKeys, objectKeys;
 	public static Rectangle playerHitbox;
@@ -65,34 +71,33 @@ public class GameScreen implements ActionListener {
 			movePlayerIcon();
 			moveObjects();
 			updateLabels();
+			if (powerUpTime > 0) {
+				powerUpTime -= 1;
+			}
+			if (trail) {
+				generateTrail();
+			}
 		}
 	}
 
 	public static void movePlayerIcon() {
-		if (trail) {
-			trails.add(new JavaObject(player.getX(), player.getY(), player.getWidth()/2, player.getHeight()/2,
-					"Trail", -distanceX, distanceY));
-			if (trails.size() > 50) {
-				trails.get(0).despawn();
-				trails.remove(0);
-			}
-		}
 		checkPlayerMovement();
 		if (Math.abs(playerSpeedX) < maxSpeed) {
 			playerSpeedX -= horizontalDir;
-			xPlayer += horizontalDir * (boundCheck(xPlayer + horizontalDir, fHeight / 2, horizontalDir));
+			playerX += horizontalDir * (boundCheck(playerX + horizontalDir, fHeight / 2, horizontalDir));
 		}
 		if (Math.abs(playerSpeedY) < maxSpeed) {
 			if (verticalDir == -1) {
 				playerSpeedY -= verticalDir;
 			}
-			yPlayer += verticalDir * (boundCheck(yPlayer + verticalDir, fWidth / 4, verticalDir));
+			playerY += verticalDir * (boundCheck(playerY + verticalDir, fWidth / 4, verticalDir));
 		}
-		if (yPlayer + 1 < fHeight / 2 + fHeight / 4 && verticalDir != -1 && controllable && gravity != 0) {
-			yPlayer += 1; // GRAVITY
+		if (playerY + 1 < fHeight / 2 + fHeight / 4 && verticalDir != -1 && controllable && gravity != 0) {
+			playerY += 1; // GRAVITY
 		}
-		player.setLocation(xPlayer, yPlayer);
+		player.setLocation(playerX, playerY);
 		playerHitbox = player.getBounds();
+		setPlayerIcon();
 	}
 
 	static double boundCheck(int pos, int bound, int direction) {
@@ -107,11 +112,11 @@ public class GameScreen implements ActionListener {
 			if (Math.abs(playerSpeedX) < maxSpeed && Math.abs(playerSpeedY) < maxSpeed) {
 				controllable = true;
 			}
-			if (xPlayer < fWidth / 4 + fWidth / 8) { // FOR LAUNCH
-				xPlayer -= playerSpeedX * launchAngle;
+			if (playerX < fWidth / 4 + fWidth / 8) { // MOVES PLAYER TO RIGHT WALL
+				playerX -= playerSpeedX * launchAngle;
 			}
-			if (yPlayer > fHeight / 2 + -1 * fHeight / 4) { // FOR LAUNCH
-				yPlayer -= playerSpeedY * (1 - launchAngle);
+			if (playerY > fHeight / 2 + -1 * fHeight / 4) { // MOVES PLAYER TO TOP WALL
+				playerY -= playerSpeedY * (1 - launchAngle);
 			}
 		}
 		if (Math.abs(playerSpeedX) > maxSpeed + 5) { // + 5 is not specific
@@ -120,6 +125,23 @@ public class GameScreen implements ActionListener {
 		if (Math.abs(playerSpeedY) > maxSpeed + 5) { // + 5 is not specific
 			controllable = false;
 		}
+	}
+
+	public static void setPlayerIcon() { // X negative, Y positive
+		String YDir = "";
+		String XDir = "";
+		if (playerSpeedX < -5) {
+			XDir = "R";
+		} else if (playerSpeedX > 5) {
+			XDir = "L";
+		}
+		if (playerSpeedY < -9) {
+			YDir = "D";
+		} else if (playerSpeedY > 9 ||XDir.isBlank() ) {
+			YDir = "U";
+		}
+		System.out.println(XDir + YDir);
+		player.setIcon(playerIcons.get(XDir + YDir));
 	}
 
 	public static void moveBackground() {
@@ -133,7 +155,7 @@ public class GameScreen implements ActionListener {
 					verticalDir = 0;
 					gravity = 0;
 					playerSpeedY = 0;
-					yPlayer = groundLVL - fWidth * 32 / 1000;
+					playerY = groundLVL - fWidth * 32 / 1000;
 					distanceY = 0;
 					setToGround = true;
 					break;
@@ -156,10 +178,20 @@ public class GameScreen implements ActionListener {
 					background.setIcon(ground);
 				} else {
 					background.setIcon(backdrop);
-					if (distanceY > 2500) {
-						new Cloud(tempX, tempY, fWidth, fHeight, -distanceX, distanceY);
+					int spawnType = random.nextInt(20) + 1;
+					if (distanceY > 2500 && spawnType > 8) {
+						if (powerUpTime > 0) {
+							new Coin(tempX, tempY, coinWidth, coinHeight, fWidth, fHeight, -distanceX, distanceY);
+						} else {
+							new Cloud(tempX, tempY, fWidth, fHeight, -distanceX, distanceY);
+						}
 					}
-					new Coin(tempX, tempY, 64, 64, fWidth, fHeight, -distanceX, distanceY, "CoinBase");
+					if (spawnType < 14) {
+						new Coin(tempX, tempY, coinWidth, coinHeight, fWidth, fHeight, -distanceX, distanceY);
+					}
+					if (spawnType == 10) {
+						new PowerUp(tempX, tempY, fWidth, fHeight, -distanceX, distanceY);
+					}
 				}
 			}
 			background.setLocation(tempX, tempY);
@@ -208,8 +240,8 @@ public class GameScreen implements ActionListener {
 			if (clouds.get(i).colisionCheck()) {
 				clouds.get(i).speedX = 0.5 * playerSpeedX;
 				clouds.get(i).speedY = 0.5 * playerSpeedY;
-				playerSpeedX = 0.95 * playerSpeedX;
-				playerSpeedY = 0.95 * playerSpeedY;
+				playerSpeedX = (0.99 - drag * 10) * playerSpeedX;
+				playerSpeedY = (0.99 - drag * 10) * playerSpeedY;
 			}
 		}
 		for (int i = 0; i < coins.size(); i++) {
@@ -224,9 +256,15 @@ public class GameScreen implements ActionListener {
 			}
 		}
 		Coin.setAnimationFrame();
-		if (trail) {
-			for (JavaObject trail : trails) {
-				trail.checkForDespawn(-distanceX, distanceY);
+		for (int i = 0; i < powerUps.size(); i++) {
+			if (powerUps.get(i).checkForDespawn(-distanceX, distanceY)) {
+				i -= powerUps.get(i).despawn();
+				continue;
+			}
+			if (powerUps.get(i).colisionCheck()) {
+				GameScreen.convertCloudsToCoins();
+				powerUpTime = 1337;
+				i -= powerUps.get(i).despawn();
 			}
 		}
 	}
@@ -299,6 +337,8 @@ public class GameScreen implements ActionListener {
 		}
 		if (preGameTimer.isRunning()) {
 			if (key == KeyEvent.VK_SPACE) {
+				playerX = fWidth / 3;
+				playerY = fHeight / 4;
 				playerSpeedX = -(startSpeed * launchAngle / 100 * powerLevel);
 				playerSpeedY = startSpeed * (1 - launchAngle) / 100 * powerLevel;
 				preGameTimer.stop();
@@ -309,8 +349,8 @@ public class GameScreen implements ActionListener {
 			} else if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT) && pressed && launchAngle - 0.2 > 0) {
 				launchAngle -= 0.2;
 			}
-			objects.get("Angle").setLocation(xPlayer + (int) (fWidth * 128 / 1000 * launchAngle),
-					yPlayer - (int) (fHeight * 128 / 500 * (1 - launchAngle)));
+			objects.get("Angle").setLocation(playerX + (int) (fWidth * 128 / 1000 * launchAngle),
+					playerY - (int) (fHeight * 128 / 500 * (1 - launchAngle)));
 		}
 	}
 
@@ -330,19 +370,43 @@ public class GameScreen implements ActionListener {
 				+ df.format(Math.abs(playerSpeedY * 3600 / 1000)) + " km/h");
 		labels.get("Coins").setText("Coins = " + coinCount);
 	}
-	
+
+	public static void convertCloudsToCoins() {
+		System.out.println("B " + clouds.size() + " " + coins.size());
+		for (int i = 0; i < clouds.size(); i++) {
+			new Coin(clouds.get(i).getX(), clouds.get(i).getY(), coinWidth, coinHeight, 0, 0, clouds.get(i).distanceX,
+					clouds.get(i).distanceY);
+			i -= clouds.get(i).despawn();
+		}
+		System.out.println("A " + clouds.size() + " " + coins.size());
+	}
+
+	static void generateTrail() {
+		if (trail) {
+			trails.add(new JavaObject(player.getX(), player.getY(), player.getWidth() / 4, player.getHeight() / 4,
+					"Trail", -distanceX, distanceY));
+			if (trails.size() > 50) {
+				trails.get(0).despawn();
+				trails.remove(0);
+			}
+			for (JavaObject trail : trails) {
+				trail.checkForDespawn(-distanceX, distanceY);
+			}
+		}
+	}
+
 	public static void setTheme() {
 		if ("Stars".equals(theme)) {
 			theme = "DayTime";
 		} else {
 			theme = "Stars";
 		}
-		MainMenu.buttons.get("Theme").setText(theme+"");
+		MainMenu.labels.get("Theme Display").setText(theme + "");
 	}
-	
+
 	public static void setTrail() {
 		trail = !trail;
-		MainMenu.buttons.get("Trail").setText(trail+"");
+		MainMenu.labels.get("Trail Display").setText(trail + "");
 	}
 
 	static void setupParameters() { // GIVES VARIABLES THEIR START VALUES
@@ -351,10 +415,12 @@ public class GameScreen implements ActionListener {
 		gameStarted = false;
 		fWidth = MainMenu.fWidth;
 		fHeight = fWidth / 2;
-		groundLVL = fHeight / 4 * 3;
+		groundLVL = fHeight * 3 / 4;
+		playerWidth = 64;
+		playerHeight = 64;
 		speedMove = 5;
-		xPlayer = fWidth * 64 / 1000;
-		yPlayer = groundLVL - fWidth * 32 / 1000;
+		playerX = fWidth * 64 / 1000;
+		playerY = groundLVL - fWidth * 32 / 1000;
 		distanceX = 0;
 		distanceY = 16;
 		playerSpeedX = 0;
@@ -369,21 +435,36 @@ public class GameScreen implements ActionListener {
 		maxSpeed = 30;
 		time = 0;
 		coinCount = 0;
-		ground = new ImageIcon(new ImageIcon(JavaLabel.fRoute + fPath + "BackgroundGrass.png").getImage()
-				.getScaledInstance(fWidth, fHeight, Image.SCALE_SMOOTH));
-		backdrop = new ImageIcon(new ImageIcon(JavaLabel.fRoute + fPath + "Background"+ theme +".png").getImage()
-				.getScaledInstance(fWidth, fHeight, Image.SCALE_SMOOTH));
+		coinWidth = 64;
+		coinHeight = 64;
+		ground = setupImageIcon(fWidth, fHeight, "BackgroundGrass");
+		backdrop = setupImageIcon(fWidth, fHeight, "Background" + theme);
+		playerIcons.put("U", setupImageIcon(playerWidth, playerHeight, "Player"));
+		playerIcons.put("RU", setupImageIcon(playerWidth, playerHeight, "PlayerRU"));
+		playerIcons.put("R", setupImageIcon(playerWidth, playerHeight, "PlayerR"));
+		playerIcons.put("RD", setupImageIcon(playerWidth, playerHeight, "PlayerRD"));
+		playerIcons.put("D", setupImageIcon(playerWidth, playerHeight, "PlayerD"));
+		playerIcons.put("LD", setupImageIcon(playerWidth, playerHeight, "PlayerLD"));
+		playerIcons.put("L", setupImageIcon(playerWidth, playerHeight, "PlayerL"));
+		playerIcons.put("LU", setupImageIcon(playerWidth, playerHeight, "PlayerLU"));
+	}
+
+	public static ImageIcon setupImageIcon(int width, int height, String name) {
+		ImageIcon icon = new ImageIcon(new ImageIcon(JavaLabel.fRoute + fPath + name + ".png").getImage()
+				.getScaledInstance(fWidth * width / 1000, fWidth * height / 1000, Image.SCALE_SMOOTH));
+		return icon;
 	}
 
 	static void setupLabels() {
-		player = new JavaLabel("Player", layers.get("gameLayer"), xPlayer, yPlayer, 32, 32, labels, 3, fPath, false);
-		new JavaLabel("Cannon", layers.get("gameLayer"), xPlayer - fWidth * 16 / 1000, yPlayer - fWidth * 32 / 1000, 64,
+		player = new JavaLabel("", layers.get("gameLayer"), playerX, playerY, playerWidth, playerHeight, labels,
+				3, fPath, false);
+		new JavaLabel("Cannon", layers.get("gameLayer"), playerX - fWidth * 16 / 1000, playerY - fWidth * 32 / 1000, 64,
 				64, objects, 4, fPath, false);
-		new JavaLabel("PowerBase", layers.get("gameLayer"), xPlayer - fWidth * 16 / 1000, yPlayer + fWidth * 32 / 1000,
+		new JavaLabel("PowerBase", layers.get("gameLayer"), playerX - fWidth * 16 / 1000, playerY + fWidth * 32 / 1000,
 				196, 32, objects, 1, fPath, false);
 		new JavaLabel("PowerFrame", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
 		new JavaLabel("PowerSlider", objects.get("PowerBase"), 0, 0, 196, 32, labels, 1, fPath, false);
-		new JavaLabel("Angle", layers.get("gameLayer"), xPlayer + fWidth * 64 / 1000, yPlayer - fWidth * 64 / 1000, 16,
+		new JavaLabel("Angle", layers.get("gameLayer"), playerX + fWidth * 64 / 1000, playerY - fWidth * 64 / 1000, 16,
 				16, objects, 1, fPath, false);
 
 		new JavaLabel("Backgr1", layers.get("gameLayer"), 0, groundLVL - fHeight, fWidth, fHeight, backgrounds, 0,
