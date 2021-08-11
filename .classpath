@@ -13,6 +13,6 @@
 	<classpathentry kind="var" path="M2_REPO/com/googlecode/soundlibs/vorbisspi/1.0.3-1/vorbisspi-1.0.3-1.jar" sourcepath="M2_REPO/com/googlecode/soundlibs/vorbisspi/1.0.3-1/vorbisspi-1.0.3-1-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/googlecode/soundlibs/jorbis/0.0.17-2/jorbis-0.0.17-2.jar" sourcepath="M2_REPO/com/googlecode/soundlibs/jorbis/0.0.17-2/jorbis-0.0.17-2-sources.jar"/>
 	<classpathentry kind="var" path="M2_REPO/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1.jar" sourcepath="M2_REPO/com/googlecode/json-simple/json-simple/1.1.1/json-simple-1.1.1-sources.jar"/>
-	<classpathentry kind="lib" path="/home/student/mysql-connector-java-8.0.20.jar"/>
+	<classpathentry kind="lib" path="/home/student/eclipse-workspace/bootcamp/lib/mysql-connector-java-8.0.20.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

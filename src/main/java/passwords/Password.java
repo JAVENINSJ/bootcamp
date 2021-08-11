@@ -32,7 +32,8 @@ public class Password {
 		}
 		return false;
 	}
-
+	
+	
 	private static String saltMine() {
 		Random rand = new Random();
 		int temp1 = rand.nextInt();
