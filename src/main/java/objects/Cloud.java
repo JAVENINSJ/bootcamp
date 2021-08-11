@@ -1,14 +1,16 @@
 package objects;
 
+import java.util.Random;
+
 import stuntMan.GameScreen;
 
 public class Cloud extends JavaObject {
 	private static final long serialVersionUID = 1L;
-	
-	public static int width = 128, height = 128;
+	static Random random = new Random();
+	public static int width = 64, height = 64;
 
 	public Cloud(int x, int y, int rangeX, int rangeY, double posX, double posY) {
-		super(x, y, width, height, rangeX, rangeY, posX, posY, "Cloud");
+		super(x, y, (random.nextInt(4)+1) * width, (random.nextInt(4)+1) *height, rangeX, rangeY, posX, posY, "Cloud");
 		GameScreen.clouds.add(this);
 	}
 

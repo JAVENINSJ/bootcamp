@@ -10,16 +10,15 @@ import passwords.Password;
 import settings.*;
 
 public class MainMenu implements ActionListener {
-	public static int[] resolution = { 750, 1000, 1500 };
+	public static int[] resolution = { 750, 1000, 1250, 1500, 1750 };
 	public static Settings settings;
-	public static boolean audio = true, trail = true;
 	public static String fPath = "//MenuAssets//";
 	public static String MenuButtonPos = "Settings";
 	public static JFrame screen;
 	public static Timer timer;
 	static JTextField enterName;
 	static JPasswordField enterPassword;
-	public static int fWidth = resolution[1], fHeight = fWidth / 2, coins = 7420, moveToX = -fWidth, moveToY = 0,
+	public static int fWidth = resolution[1], fHeight = fWidth / 2, coins = 0, moveToX = -fWidth, moveToY = 0,
 			resolutionNR = 1;
 	public static HashMap<String, JLayeredPane> layers = new HashMap<String, JLayeredPane>();
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
@@ -33,7 +32,7 @@ public class MainMenu implements ActionListener {
 		setupLabels();
 		enterName = (JTextField) setupField(enterName, fWidth * 55 / 100, fHeight * 33 / 100, false);
 		enterPassword = (JPasswordField) setupField(enterPassword, fWidth * 55 / 100, fHeight * 6 / 10, true);
-		timer = new Timer(5, this);
+		timer = new Timer(14, this);
 		timer.start();
 	}
 
@@ -137,7 +136,7 @@ public class MainMenu implements ActionListener {
 		switchScreens("Menu");
 		new SettingsBuilder();
 		Audio.play(JavaLabel.fRoute + "//happyRock.wav");
-		//Audio.setAudio(); // TODO REMOVE THIS FOR INSTANT MUSIC
+		Audio.setAudio(); // TODO REMOVE THIS FOR INSTANT MUSIC
 	}
 
 	static void createUser(String username, String password) {
@@ -149,7 +148,7 @@ public class MainMenu implements ActionListener {
 		if (resolutionNR == resolution.length) {
 			resolutionNR = 0;
 		}
-		buttons.get("Resolution").setText(resolution[resolutionNR] + "");
+		labels.get("Res Display").setText(resolution[resolutionNR] + " - " + (resolution[resolutionNR] / 2));
 	}
 
 	public static void resetScreen() {
@@ -203,17 +202,24 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("Exit", layers.get("Menu"), 300, 400, 400, 75, buttons);
 
 		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-
 		new JavaLabel("Coins", layers.get("Upgrades"), 300, 0, 400, 38, labels, 1, fPath, true);
 
 		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
-		new JavaLabel("Audio", layers.get("Settings"), 100, 50, 300, 75, buttons);
-		new JavaLabel("Trail", layers.get("Settings"), 600, 50, 300, 75, buttons);
-		new JavaLabel("Theme", layers.get("Settings"), 100, 125, 300, 75, buttons);
-		new JavaLabel("Resolution", layers.get("Settings"), 600, 125, 300, 75, buttons);
+		new JavaLabel("Audio", layers.get("Settings"), 80, 20, 300, 75, buttons);
+		new JavaLabel("Audio Display", layers.get("Settings"), 380, 20, 150, 75, labels, 1, fPath, true);
+		new JavaLabel("Trail", layers.get("Settings"), 80, 100, 300, 75, buttons);
+		new JavaLabel("Trail Display", layers.get("Settings"), 380, 100, 150, 75, labels, 1, fPath, true);
+		new JavaLabel("Theme", layers.get("Settings"), 80, 180, 300, 75, buttons);
+		new JavaLabel("Theme Display", layers.get("Settings"), 380, 180, 150, 75, labels, 1, fPath, true);
+		new JavaLabel("Resolution", layers.get("Settings"), 600, 100, 300, 75, buttons);
+		new JavaLabel("Res Display", layers.get("Settings"), 600, 175, 300, 35, labels, 1, fPath, true);
 		new JavaLabel("Accept Settings", layers.get("Settings"), 250, 275, 500, 75, buttons);
 		new JavaLabel("Main Menu", layers.get("Settings"), 300, 400, 400, 100, buttons);
 
+		labels.get("Res Display").setText(resolution[resolutionNR] + " - " + (resolution[resolutionNR] / 2));
+		labels.get("Audio Display").setText(Audio.running+"");
+		labels.get("Trail Display").setText(GameScreen.trail+"");
+		labels.get("Theme Display").setText(GameScreen.theme+"");
 		labels.get("User not found!").setVisible(false);
 		labels.get("User not found!").setForeground(Color.red);
 		labels.get("Wrong Password!").setVisible(false);

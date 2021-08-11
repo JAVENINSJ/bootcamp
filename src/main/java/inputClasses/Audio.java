@@ -12,7 +12,7 @@ import stuntMan.MainMenu;
 public class Audio {
 	
 	static Clip clip;
-	static boolean running = true;
+	public static boolean running = true;
 	
 	public static void play(String filePath) {
         final File file = new File(filePath); 
@@ -28,7 +28,7 @@ public class Audio {
     }
 	
 	public static void setAudio() {
-		MainMenu.buttons.get("Audio").setText(!running+"");
+		MainMenu.labels.get("Audio Display").setText(!running+"");
 		running = !running;
 		if (!running) {
 			clip.stop();
