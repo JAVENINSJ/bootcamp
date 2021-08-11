@@ -136,7 +136,6 @@ public class MainMenu implements ActionListener {
 		switchScreens("Menu");
 		new SettingsBuilder();
 		Audio.play(JavaLabel.fRoute + "//happyRock.wav");
-		Audio.setAudio(); // TODO REMOVE THIS FOR INSTANT MUSIC
 	}
 
 	static void createUser(String username, String password) {
@@ -181,7 +180,7 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void setupLabels() {
-		new JavaLabel("BackGroundLogin", layers.get("Login"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
+		new JavaLabel("BackGroundLogin", layers.get("Login"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Enter As Guest", layers.get("Login"), 250, 0, 500, 75, buttons);
 		new JavaLabel("Log In", layers.get("Login"), 100, 125, 400, 75, buttons);
 		new JavaLabel("Create User", layers.get("Login"), 100, 300, 400, 75, buttons);
@@ -194,17 +193,17 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("User not found!", layers.get("Login"), 500, 225, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Wrong Password!", layers.get("Login"), 500, 350, 400, 32, labels, 1, fPath, true);
 
-		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
+		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Play", layers.get("Menu"), 300, 20, 400, 75, buttons);
 		new JavaLabel("Upgrades", layers.get("Menu"), 300, 115, 400, 75, buttons);
 		new JavaLabel("Settings", layers.get("Menu"), 300, 210, 400, 75, buttons);
 		new JavaLabel("Logout", layers.get("Menu"), 300, 305, 400, 75, buttons);
 		new JavaLabel("Exit", layers.get("Menu"), 300, 400, 400, 75, buttons);
 
-		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
+		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Coins", layers.get("Upgrades"), 300, 0, 400, 38, labels, 1, fPath, true);
 
-		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, fWidth, fHeight, backgr, 0, fPath, false);
+		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Audio", layers.get("Settings"), 80, 20, 300, 75, buttons);
 		new JavaLabel("Audio Display", layers.get("Settings"), 380, 20, 150, 75, labels, 1, fPath, true);
 		new JavaLabel("Trail", layers.get("Settings"), 80, 100, 300, 75, buttons);
@@ -217,9 +216,9 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("Main Menu", layers.get("Settings"), 300, 400, 400, 100, buttons);
 
 		labels.get("Res Display").setText(resolution[resolutionNR] + " - " + (resolution[resolutionNR] / 2));
-		labels.get("Audio Display").setText(Audio.running+"");
-		labels.get("Trail Display").setText(GameScreen.trail+"");
-		labels.get("Theme Display").setText(GameScreen.theme+"");
+		labels.get("Audio Display").setText(Audio.running + "");
+		labels.get("Trail Display").setText(GameScreen.trail + "");
+		labels.get("Theme Display").setText(GameScreen.theme + "");
 		labels.get("User not found!").setVisible(false);
 		labels.get("User not found!").setForeground(Color.red);
 		labels.get("Wrong Password!").setVisible(false);
