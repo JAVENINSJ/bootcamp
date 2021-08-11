@@ -82,6 +82,8 @@ public class MainMenu implements ActionListener {
 		labels.get("Password must be atleast 3 characters long!").setForeground(Color.white);
 		labels.get("User not found!").setVisible(false);
 		labels.get("Wrong Password!").setVisible(false);
+		labels.get("User already exists!").setVisible(false);
+		
 		if (name.isBlank()) {
 			fail = fail("Enter Username:");
 		}
@@ -224,6 +226,8 @@ public class MainMenu implements ActionListener {
 		labels.get("User not found!").setForeground(Color.red);
 		labels.get("Wrong Password!").setVisible(false);
 		labels.get("Wrong Password!").setForeground(Color.red);
+		labels.get("User already exists!").setVisible(false);
+		labels.get("User already exists!").setForeground(Color.red);
 		buttons.get("Main Menu").setVisible(false);
 	}
 
