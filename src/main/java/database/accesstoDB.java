@@ -10,6 +10,48 @@ public class accesstoDB {
 	protected static final String password="u14";
 
 
+	
+	public void updateParam(String username, String param, int i) {
+		
+		try {
+			String sql="UPDATE userProfiles.profiles SET "+param+" = ? WHERE username = ?;";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+		
+			stmt.setInt(1, i);
+			stmt.setString(2, username);
+			stmt.executeUpdate();
+			conn.commit();
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+	public int getParam(String username, String param) {
+		
+		int i=-1;
+		try {			
+			String sql = "SELECT * FROM "+"userProfiles"+".profiles where username like ?";
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, "%"+username+"%");
+			
+			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			i =rs.getInt(param);
+			return i;
+		} catch (Exception e) {		
+			try {
+				conn.rollback();
+			} catch (SQLException e1) {
+				e1.printStackTrace();
+			}
+			e.printStackTrace();
+		}
+		return i;
+
+	}
+	
 	public accesstoDB() {
 		
 		try {
@@ -70,6 +112,10 @@ public class accesstoDB {
 			stmt.setString(2, "%"+password+"%");
 			
 			ResultSet rs = stmt.executeQuery();
+			rs.next();
+			String passwd=rs.getString("password");
+			System.out.println(passwd);
+			
 			if(rs!=null)
 				isFound = true;
 			return isFound;	
@@ -91,6 +137,9 @@ public class accesstoDB {
 		u.createUser("n", "b");
 		u.createUser("b", "b");
 		u.createUser("anna", "bumbiere");
+		u.updateParam("a", "money",2000);
+		int i =u.getParam("a","money");
+		System.out.println(i);
 		boolean found=u.findProfile("anna", "bumbiere");
 		if(found)
 			System.out.println("User found!");
