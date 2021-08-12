@@ -97,7 +97,7 @@ public class MainMenu implements ActionListener {
 			fail = fail("Password must be atleast 3 characters long!");
 		}
 		
-		//if exists, then: fail = fail("User already exists!");
+		
 		if (!fail) {
 			if (createUser) {
 				createUser(name, password);
@@ -106,15 +106,6 @@ public class MainMenu implements ActionListener {
 				loginUser(name, password);
 			}
 		}
-	}
-
-	static void updateSettings() {
-		// audio = settings.getAudio();
-		settings.getDayTime();
-		settings.getTrail();
-		String resolution = settings.getResolution();
-		fWidth = Integer.parseInt(resolution.substring(0, resolution.indexOf('x')));
-		fHeight = Integer.parseInt(resolution.substring(resolution.indexOf('x') + 1));
 	}
 
 	static boolean fail(String labelName) {
@@ -135,15 +126,27 @@ public class MainMenu implements ActionListener {
 		settings = SettingsBuilder.getSettings(username);
 		updateSettings();
 	}
+	
+	static void updateSettings() {
+		Audio.running = settings.getAudio();
+		settings.getDayTime();
+		settings.getTrail();
+		String resolution = settings.getResolution();
+		fWidth = Integer.parseInt(resolution.substring(0, resolution.indexOf('x')));
+		fHeight = Integer.parseInt(resolution.substring(resolution.indexOf('x') + 1));
+	}
 
 	public static void setupMenuSettings() {
 		switchScreens("Menu");
 		new SettingsBuilder();
-		Audio.play(JavaLabel.fRoute + "//happyRock.wav");
 	}
 
 	static void createUser(String username, String password) {
 		// TODO DO THIS WHEN REINIS IS DONE WITH DATABASE
+		//if (exists) {
+		fail("User already exists!");
+		labels.get("User already exists!").setVisible(true);
+		//}
 	}
 
 	public static void setResolution() {
@@ -194,7 +197,7 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), 0, 250, 520, 32, labels, 1, fPath, true);
 		new JavaLabel("User not found!", layers.get("Login"), 500, 225, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Wrong Password!", layers.get("Login"), 500, 350, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("User already exists!", layers.get("Login"), 500, 225, 400, 32, labels, 1, fPath, true);
+		new JavaLabel("User already exists!", layers.get("Login"), 100, 375, 400, 32, labels, 1, fPath, true);
 		
 		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Play", layers.get("Menu"), 300, 20, 400, 75, buttons);
