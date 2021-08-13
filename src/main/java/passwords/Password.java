@@ -33,12 +33,13 @@ public class Password {
 			String sql = "SELECT * FROM "+"sql11430725"+".profiles where username like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "%"+user+"%");
-			
+		
 			ResultSet rs = stmt.executeQuery();
 			rs.next();
-			
-			if(rs!=null)
-				isFound = true;
+			String user1 = rs.getString("username");
+
+
+			if(!user1.equals("")) isFound = true;
 			return isFound;	
 		} catch (Exception e) {		
 			try {

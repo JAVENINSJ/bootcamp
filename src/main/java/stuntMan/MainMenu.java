@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Set;
 import javax.swing.*;
-
+import database.*;
 import ioClasses.*;
 import objects.Background;
 import passwords.Password;
@@ -26,6 +26,8 @@ public class MainMenu implements ActionListener {
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
 			buttons = new HashMap<String, JavaLabel>(), backgr = new HashMap<String, JavaLabel>();
 	public static Set<String> backgrKeys;
+	public static HashMap<String, Integer> upgrades;
+	
 
 	public MainMenu() {
 		JavaLabel.setSizing(fWidth);
@@ -104,7 +106,6 @@ public class MainMenu implements ActionListener {
 			if (createUser) {
 				createUser(name, password);
 			} else {
-				System.out.println(password);
 				loginUser(name, password);
 			}
 		}
@@ -125,10 +126,25 @@ public class MainMenu implements ActionListener {
 			return;
 		}
 		setupMenuSettings();
+		upgrades = getUpgrades(username);
 		settings = SettingsBuilder.getSettings(username);
 		updateSettings();
 	}
 	
+	private static HashMap<String, Integer> getUpgrades(String username) {
+		upgradeFunctions.accesstoDB();
+		HashMap<String,Integer> sol = new HashMap<String,Integer>();
+		sol.put("money",upgradeFunctions.getParam(username, "money"));
+		sol.put("wingsuit",upgradeFunctions.getParam(username, "wingsuit"));
+		sol.put("cannon",upgradeFunctions.getParam(username, "cannon-power"));
+		sol.put("angle",upgradeFunctions.getParam(username, "cannon-angle"));
+		sol.put("jetpack",upgradeFunctions.getParam(username, "jetpack"));
+		sol.put("fuel",upgradeFunctions.getParam(username, "jetpack-fuel"));
+		sol.put("radio",upgradeFunctions.getParam(username, "weather-radio"));
+		System.out.println(sol.toString());		
+		return sol;
+	}
+
 	static void updateSettings() {
 		Audio.running = settings.getAudio();
 		settings.getDayTime();
@@ -149,6 +165,7 @@ public class MainMenu implements ActionListener {
 			fail("User already exists!");
 			labels.get("User already exists!").setVisible(true);
 		}
+		
 	}
 
 	public static void setResolution() {

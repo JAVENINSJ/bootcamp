@@ -7,13 +7,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class upgradeFunctions {
-	protected Connection conn;
+	protected static Connection conn;
 	protected static final String user="u14";
 	protected static final String password="u14";
 
 
 	
-	public void updateParam(String username, String param, int i) {
+	public static void updateParam(String username, String param, int i) {
 		
 		try {
 			String sql="UPDATE userProfiles.profiles SET "+param+" = ? WHERE username = ?;";
@@ -30,7 +30,7 @@ public class upgradeFunctions {
 		
 	}
 	
-	public int getParam(String username, String param) {
+	public static int getParam(String username, String param) {
 		
 		int i=-1;
 		try {			
@@ -54,7 +54,7 @@ public class upgradeFunctions {
 
 	}
 	
-	public void accesstoDB() {
+	public static void accesstoDB() {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");

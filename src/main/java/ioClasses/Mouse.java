@@ -64,8 +64,15 @@ public class Mouse implements MouseListener {
 			MainMenu.buttons.get("Main Menu").setVisible(false);
 			MainMenu.switchScreens("Menu");
 		}
+//		money
+//		wingsuit
+//		cannon-power
+//		cannon-angle
+//		jetpack
+//		jetpack-fuel
+//		weather-radio
 		if ("Wingsuit".equals(button.name) && button.inZone) {
-			
+
 		}
 		if ("Radio".equals(button.name) && button.inZone) {
 			
@@ -76,7 +83,7 @@ public class Mouse implements MouseListener {
 		if ("Fuel".equals(button.name) && button.inZone) {
 			
 		}
-		if ("Powder".equals(button.name) && button.inZone) {
+		if ("Cannon".equals(button.name) && button.inZone) {
 			
 		}
 		if ("Angle".equals(button.name) && button.inZone) {
