@@ -213,15 +213,6 @@ public class MainMenu implements ActionListener {
 		wingsuitLVL = wingsuit;
 		fuelLVL = fuel;
 		cannonAngleLVL = cannonAngle;
-<<<<<<< HEAD
-		cannonLVL = 4;
-		jetpackLVL = 3;
-		weatherLVL = 2;
-		wingsuitLVL = 3;
-		fuelLVL = 1;
-		cannonAngleLVL = 5;
-=======
->>>>>>> 710036758b75813bca47a36827b06db70d4699b2
 	}
 
 	public static void resetScreen() {

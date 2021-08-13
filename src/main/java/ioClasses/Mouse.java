@@ -33,10 +33,6 @@ public class Mouse implements MouseListener {
 		if ("Play".equals(button.name) && button.inZone) {
 			JavaObject.setSizing(MainMenu.fWidth);
 			GameScreen.setMode(false);
-<<<<<<< HEAD
-			GameScreen.setUpgrades();
-=======
->>>>>>> 710036758b75813bca47a36827b06db70d4699b2
 			GameScreen.startGame();
 			MainMenu.screen.setVisible(false);
 			MainMenu.timer.stop();
