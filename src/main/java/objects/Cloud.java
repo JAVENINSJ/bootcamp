@@ -10,7 +10,7 @@ public class Cloud extends JavaObject {
 	public static int width = 64, height = 64;
 
 	public Cloud(int x, int y, int rangeX, int rangeY, double posX, double posY) {
-		super(x, y, (random.nextInt(4)+1) * width, (random.nextInt(4)+1) *height, rangeX, rangeY, posX, posY, "Cloud");
+		super(x, y, (random.nextInt(4)+1) * width, (random.nextInt(4)+1) *height, rangeX, rangeY, posX, posY, "Cloud", 6);
 		GameScreen.clouds.add(this);
 	}
 
