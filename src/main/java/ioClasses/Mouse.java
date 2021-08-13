@@ -64,6 +64,24 @@ public class Mouse implements MouseListener {
 			MainMenu.buttons.get("Main Menu").setVisible(false);
 			MainMenu.switchScreens("Menu");
 		}
+		if ("Wingsuit".equals(button.name) && button.inZone) {
+			
+		}
+		if ("Radio".equals(button.name) && button.inZone) {
+			
+		}
+		if ("Power".equals(button.name) && button.inZone) {
+			
+		}
+		if ("Fuel".equals(button.name) && button.inZone) {
+			
+		}
+		if ("Powder".equals(button.name) && button.inZone) {
+			
+		}
+		if ("Angle".equals(button.name) && button.inZone) {
+			
+		}
 		// SETTINGS ::
 		if ("Audio".equals(button.name) && button.inZone) {
 			Audio.setAudio();

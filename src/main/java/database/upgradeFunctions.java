@@ -40,7 +40,7 @@ public class upgradeFunctions {
 			
 			ResultSet rs = stmt.executeQuery();
 			rs.next();
-			i =rs.getInt(param);
+			i = rs.getInt(param);
 			return i;
 		} catch (Exception e) {		
 			try {
