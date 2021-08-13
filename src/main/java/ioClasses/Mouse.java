@@ -1,7 +1,8 @@
-package inputClasses;
+package ioClasses;
 
 import java.awt.event.*;
 
+import objects.Background;
 import objects.JavaObject;
 import stuntMan.*;
 
@@ -12,7 +13,9 @@ public class Mouse implements MouseListener {
 	}
 
 	public void mousePressed(MouseEvent e) {
-		((JavaLabel) e.getSource()).setIcon(2, true); // buttonPressed.png
+		if (!((JavaLabel) e.getSource()).name.equals("Sidebar")) {
+			((JavaLabel) e.getSource()).setIcon(2, true); // buttonPressed.png
+		}
 	}
 
 	public void mouseReleased(MouseEvent e) {
@@ -29,6 +32,14 @@ public class Mouse implements MouseListener {
 		}
 		if ("Play".equals(button.name) && button.inZone) {
 			JavaObject.setSizing(MainMenu.fWidth);
+			GameScreen.setMode(false);
+			GameScreen.startGame();
+			MainMenu.screen.setVisible(false);
+			MainMenu.timer.stop();
+		}
+		if ("Sandbox".equals(button.name) && button.inZone) {
+			JavaObject.setSizing(MainMenu.fWidth);
+			GameScreen.setMode(true);
 			GameScreen.startGame();
 			MainMenu.screen.setVisible(false);
 			MainMenu.timer.stop();
@@ -58,7 +69,7 @@ public class Mouse implements MouseListener {
 			Audio.setAudio();
 		}
 		if ("Theme".equals(button.name) && button.inZone) {
-			GameScreen.setTheme();
+			Background.setTheme();
 		}
 		if ("Trail".equals(button.name) && button.inZone) {
 			GameScreen.setTrail();
@@ -72,7 +83,9 @@ public class Mouse implements MouseListener {
 
 		// GAME SCREEN ::
 		if ("Back".equals(button.name) && button.inZone) {
-			MainMenu.coins += GameScreen.coinCount;
+			if (!GameScreen.sandbox) {
+				MainMenu.coins += GameScreen.coinCount;
+			}
 			GameScreen.gameClose();
 			MainMenu.timer.start();
 			MainMenu.screen.setVisible(true);
@@ -81,20 +94,34 @@ public class Mouse implements MouseListener {
 			GameScreen.gameClose();
 			GameScreen.startGame();
 		}
-		if (button.inZone && !button.selected) { // FOR ALL BUTTONS
-			button.setIcon(1, true); // buttonOn.png
+		if (button.inZone && !button.selected && !((JavaLabel) e.getSource()).name.equals("Sidebar")) {
+			button.setIcon(1, true); // buttonOn.png// FOR ALL BUTTONS
 		}
 	}
 
 	public void mouseEntered(MouseEvent e) {
-		if ((boolean) ((JavaLabel) e.getSource()).selected == false) {
-			((JavaLabel) e.getSource()).setIcon(1, true); // buttonON.png
+		if (!((JavaLabel) e.getSource()).name.equals("Sidebar")) {
+			if (((JavaLabel) e.getSource()).selected == false) {
+				((JavaLabel) e.getSource()).setIcon(1, true); // buttonON.png
+			}
+			if (((JavaLabel) e.getSource()).name.equals("Back") || ((JavaLabel) e.getSource()).name.equals("Reset")) {
+				GameScreen.setSidebarPos(true);
+			}
+		} else {
+			GameScreen.setSidebarPos(true);
 		}
 	}
 
 	public void mouseExited(MouseEvent e) {
-		if ((boolean) ((JavaLabel) e.getSource()).selected == false) {
-			((JavaLabel) e.getSource()).setIcon(0, false); // button.png
+		if (!((JavaLabel) e.getSource()).name.equals("Sidebar")) {
+			if (((JavaLabel) e.getSource()).selected == false) {
+				((JavaLabel) e.getSource()).setIcon(0, false); // button.png
+			}
+			if (((JavaLabel) e.getSource()).name.equals("Back") || ((JavaLabel) e.getSource()).name.equals("Reset")) {
+				GameScreen.setSidebarPos(false);
+			}
+		} else {
+			GameScreen.setSidebarPos(false);
 		}
 	}
 

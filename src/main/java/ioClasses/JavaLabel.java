@@ -1,11 +1,10 @@
-package inputClasses;
+package ioClasses;
 
 import java.awt.*;
 import java.io.File;
 import java.util.HashMap;
 import javax.swing.*;
 
-import stuntMan.GameScreen;
 import stuntMan.MainMenu;
 
 public class JavaLabel extends JLabel {
