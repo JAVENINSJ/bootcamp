@@ -41,7 +41,7 @@ public class Background extends JavaObject {
 			} else {
 				this.setIcon(backdrop);
 				int spawnType = random.nextInt(20) + 1;
-				if (distanceY > 2500 && spawnType > 8) {
+				if (distanceY > 2500 && spawnType > (9 - GameScreen.weatherLVL)) {
 					if (GameScreen.powerUpTime > 0) {
 						new Coin(tempX, tempY, GameScreen.coinWidth, GameScreen.coinHeight, fWidth, fHeight, distanceX,
 								distanceY);

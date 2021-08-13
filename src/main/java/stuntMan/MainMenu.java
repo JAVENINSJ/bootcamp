@@ -141,6 +141,7 @@ public class MainMenu implements ActionListener {
 			return;
 		}
 		setupMenuSettings();
+		System.out.println((upgradeFunctions.getParam(username, "cannon-power")) + "nooo");
 		setUpgrades(upgradeFunctions.getParam(username, "cannon-power"), 
 					upgradeFunctions.getParam(username, "jetpack"), 
 					upgradeFunctions.getParam(username, "weather-radio"), 
@@ -151,6 +152,7 @@ public class MainMenu implements ActionListener {
 		updateSettings();
 	}
 	
+	@SuppressWarnings("unused")
 	private static HashMap<String, Integer> getUpgrades(String username) {
 		upgradeFunctions.accesstoDB();
 		HashMap<String,Integer> sol = new HashMap<String,Integer>();
@@ -207,12 +209,31 @@ public class MainMenu implements ActionListener {
 	}
 
 	public static void setUpgrades(int cannon, int jetpack, int weather, int wingsuit, int fuel, int cannonAngle) {
+		System.out.println(cannon+" "+jetpack+ " "+ weather +" "+wingsuit+" "+fuel+" "+cannonAngle);
 		cannonLVL = cannon;
-		jetpackLVL = jetpack - 1;
+		if (cannonLVL == 0) {
+			cannonLVL = 3;
+		}
+		jetpackLVL = jetpack;
+		if (jetpackLVL == 0) {
+			jetpackLVL = 1;
+		}
 		weatherLVL = weather;
+		if (weatherLVL == 0) {
+			weatherLVL = 1;
+		}
 		wingsuitLVL = wingsuit;
+		if (wingsuitLVL == 0) {
+			wingsuitLVL = 1;
+		}
 		fuelLVL = fuel;
+		if (fuelLVL == 0) {
+			fuelLVL = 1;
+		}
 		cannonAngleLVL = cannonAngle;
+		if (cannonAngleLVL == 0) {
+			cannonAngleLVL = 5;
+		}
 	}
 
 	public static void resetScreen() {

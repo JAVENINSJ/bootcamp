@@ -45,8 +45,8 @@ public class upgradeFunctions {
 		} catch (Exception e) {		
 			try {
 				conn.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
+			} catch (Exception e1) {
+				//e1.printStackTrace();
 			}
 			e.printStackTrace();
 		}

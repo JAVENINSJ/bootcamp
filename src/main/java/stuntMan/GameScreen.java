@@ -452,7 +452,7 @@ public class GameScreen implements ActionListener {
 		playerSpeedY = 0;
 		startSpeed = 200 * cannonLVL;
 		minSpeed = 0.5;
-		maxSpeed = 30;
+		maxSpeed = 100;
 		dragY = 0.06 - 0.01 * wingsuitLVL;
 		dragX = 0.006 - 0.001 * wingsuitLVL;
 		movingSpeed = 0.1 / dragY;
