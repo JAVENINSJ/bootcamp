@@ -209,9 +209,17 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("Logout", layers.get("Menu"), 230, 350, 200, 70, buttons);
 		new JavaLabel("Exit", layers.get("Menu"), 580, 350, 200, 70, buttons);
 
+		
 		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Coins", layers.get("Upgrades"), 300, 0, 400, 38, labels, 1, fPath, true);
-
+		
+		new JavaLabel("Wingsuit", layers.get("Upgrades"),10, 90, 275, 100,buttons);
+		new JavaLabel("Radio", layers.get("Upgrades"),10,195,275,100,buttons);
+		new JavaLabel("Power", layers.get("Upgrades"),10,300,275,100,buttons);
+		new JavaLabel("Fuel", layers.get("Upgrades"),720,90,275,100,buttons);
+		new JavaLabel("Powder", layers.get("Upgrades"),720,197,275,100,buttons);
+		new JavaLabel("Angle", layers.get("Upgrades"),720,305,275,100,buttons);
+		
 		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Audio", layers.get("Settings"), 80, 20, 300, 75, buttons);
 		new JavaLabel("Audio Display", layers.get("Settings"), 380, 20, 150, 75, labels, 1, fPath, true);
