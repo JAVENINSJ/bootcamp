@@ -5,13 +5,13 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< HEAD
+//<<<<<<< HEAD
 
 import java.util.Random;
-=======
+//=======
 import java.util.Random;
 
->>>>>>> 90b412610cc850ae393c867e14817d1d2e3b4ff8
+//>>>>>>> 90b412610cc850ae393c867e14817d1d2e3b4ff8
 
 public class Password {
 
@@ -41,8 +41,8 @@ public class Password {
 			
 			ResultSet rs = stmt.executeQuery();
 			rs.next();
-			
-			if(rs!=null)
+			String user1 = rs.getString("username");
+			if(!user1.equals(""))
 				isFound = true;
 			return isFound;	
 		} catch (Exception e) {		
