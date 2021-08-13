@@ -40,7 +40,11 @@ public class JavaLabel extends JLabel {
 		try {
 			((JavaLayeredPane) location).add(this, (Integer) 20);
 		} catch (Exception e) {
-			((JFrame) location).add(this);
+			try {
+				((JFrame) location).add(this);
+			} catch (Exception e2) {
+				((JavaLabel) location).add(this);
+			}
 		}
 		new Mouse(this);
 		this.setFont(new Font("Verdana", Font.BOLD, fWidth * 46 / 1000));

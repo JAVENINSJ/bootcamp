@@ -26,6 +26,7 @@ public class MainMenu implements ActionListener {
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
 			buttons = new HashMap<String, JavaLabel>(), backgr = new HashMap<String, JavaLabel>();
 	public static Set<String> backgrKeys;
+	public static int cannonLVL, jetpackLVL, weatherLVL, wingsuitLVL, fuelLVL, cannonAngleLVL;
 
 	public MainMenu() {
 		JavaLabel.setSizing(fWidth);
@@ -46,6 +47,23 @@ public class MainMenu implements ActionListener {
 			layers.get("Main").setLocation(moveScreens(layers.get("Main").getX(), moveToX),
 					moveScreens(layers.get("Main").getY(), moveToY));
 		}
+		labels.get("UpgradesSliderWingsuit")
+				.setLocation(labels.get("UpgradesBaseWingsuit").getWidth() / 5 * wingsuitLVL, 0);
+		labels.get("UpgradesSliderRadio").setLocation(labels.get("UpgradesBaseWingsuit").getWidth() / 5 * weatherLVL,
+				0);
+		labels.get("UpgradesSliderPower").setLocation(labels.get("UpgradesBaseWingsuit").getWidth() / 5 * jetpackLVL,
+				0);
+		labels.get("UpgradesSliderFuel").setLocation(labels.get("UpgradesBaseWingsuit").getWidth() / 5 * fuelLVL, 0);
+		labels.get("UpgradesSliderCannon").setLocation(labels.get("UpgradesBaseWingsuit").getWidth() / 5 * cannonLVL,
+				0);
+		labels.get("UpgradesSliderCannonAngle")
+				.setLocation(labels.get("UpgradesBaseWingsuit").getWidth() / 5 * cannonAngleLVL, 0);
+		labels.get("UpgradesSliderWingsuit").setText(Math.pow(5, wingsuitLVL)+"");
+		labels.get("UpgradesSliderRadio").setText(Math.pow(5, weatherLVL)+"");
+		labels.get("UpgradesSliderPower").setText(Math.pow(5, jetpackLVL)+"");
+		labels.get("UpgradesSliderFuel").setText(Math.pow(5, fuelLVL)+"");
+		labels.get("UpgradesSliderCannon").setText(Math.pow(5, cannonLVL)+"");
+		labels.get("UpgradesSliderCannonAngle").setText(Math.pow(5, cannonAngleLVL)+"");
 	}
 
 	public static int moveScreens(int pos, int destinationPos) {
@@ -85,7 +103,7 @@ public class MainMenu implements ActionListener {
 		labels.get("User not found!").setVisible(false);
 		labels.get("Wrong Password!").setVisible(false);
 		labels.get("User already exists!").setVisible(false);
-		
+
 		if (name.isBlank()) {
 			fail = fail("Enter Username:");
 		}
@@ -98,8 +116,7 @@ public class MainMenu implements ActionListener {
 		if (password.length() < 3) {
 			fail = fail("Password must be atleast 3 characters long!");
 		}
-		
-		
+
 		if (!fail) {
 			if (createUser) {
 				createUser(name, password);
@@ -116,7 +133,7 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void loginUser(String username, String password) {
-		if (!Password.checkUser(username, password)){
+		if (!Password.checkUser(username, password)) {
 			labels.get("User not found!").setVisible(true);
 			return;
 		}
@@ -128,7 +145,7 @@ public class MainMenu implements ActionListener {
 		settings = SettingsBuilder.getSettings(username);
 		updateSettings();
 	}
-	
+
 	static void updateSettings() {
 		Audio.running = settings.getAudio();
 		settings.getDayTime();
@@ -139,13 +156,14 @@ public class MainMenu implements ActionListener {
 	}
 
 	public static void setupMenuSettings() {
+		setUpgrades(cannonLVL, jetpackLVL, weatherLVL, wingsuitLVL, fuelLVL, cannonAngleLVL);
 		switchScreens("Menu");
 		new SettingsBuilder();
 	}
 
 	static void createUser(String username, String password) {
 		boolean created = Password.addPassword(username, password);
-		if (!created)  {
+		if (!created) {
 			fail("User already exists!");
 			labels.get("User already exists!").setVisible(true);
 		}
@@ -158,9 +176,33 @@ public class MainMenu implements ActionListener {
 		}
 		labels.get("Res Display").setText(resolution[resolutionNR] + " - " + (resolution[resolutionNR] / 2));
 	}
-	
+
+	public static int buyUpgrade(int upgradeLVL) {
+		if (Math.pow(5, upgradeLVL) < coins) {
+			coins -= Math.pow(5, upgradeLVL);
+			labels.get("Coins").setText(coins + "");
+			return 1;
+		}
+		return 0;
+	}
+
+	public static void setUpgrades(int cannon, int jetpack, int weather, int wingsuit, int fuel, int cannonAngle) {
+		cannonLVL = cannon;
+		jetpackLVL = jetpack - 1;
+		weatherLVL = weather;
+		wingsuitLVL = wingsuit;
+		fuelLVL = fuel;
+		cannonAngleLVL = cannonAngle;
+		cannonLVL = 4;
+		jetpackLVL = 3;
+		weatherLVL = 2;
+		wingsuitLVL = 3;
+		fuelLVL = 1;
+		cannonAngleLVL = 5;
+	}
+
 	public static void sendUpgrades() {
-		GameScreen.setUpgrades(1, 1, 1, 1, 1, 5);
+		GameScreen.setUpgrades(5, 1, 1, 1, 1, 5);
 	}
 
 	public static void resetScreen() {
@@ -199,12 +241,14 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("Create User", layers.get("Login"), 100, 300, 400, 75, buttons);
 		new JavaLabel("Enter Username:", layers.get("Login"), 500, 135, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Enter Password:", layers.get("Login"), 500, 270, 400, 32, labels, 1, fPath, true);
-		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), 0, 215, 520, 32, labels, 1, fPath, true);
-		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), 0, 250, 520, 32, labels, 1, fPath, true);
+		new JavaLabel("Username must be atleast 3 characters long!", layers.get("Login"), 0, 215, 520, 32, labels, 1,
+				fPath, true);
+		new JavaLabel("Password must be atleast 3 characters long!", layers.get("Login"), 0, 250, 520, 32, labels, 1,
+				fPath, true);
 		new JavaLabel("User not found!", layers.get("Login"), 500, 225, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("Wrong Password!", layers.get("Login"), 500, 350, 400, 32, labels, 1, fPath, true);
 		new JavaLabel("User already exists!", layers.get("Login"), 100, 375, 400, 32, labels, 1, fPath, true);
-		
+
 		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Play", layers.get("Menu"), 300, 50, 400, 80, buttons);
 		new JavaLabel("Sandbox", layers.get("Menu"), 325, 150, 350, 70, buttons);
@@ -213,17 +257,35 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("Logout", layers.get("Menu"), 230, 350, 200, 70, buttons);
 		new JavaLabel("Exit", layers.get("Menu"), 580, 350, 200, 70, buttons);
 
-		
 		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Coins", layers.get("Upgrades"), 300, 0, 400, 38, labels, 1, fPath, true);
-		
-		new JavaLabel("Wingsuit", layers.get("Upgrades"),10, 90, 275, 100,buttons);
-		new JavaLabel("Radio", layers.get("Upgrades"),10,195,275,100,buttons);
-		new JavaLabel("Power", layers.get("Upgrades"),10,300,275,100,buttons);
-		new JavaLabel("Fuel", layers.get("Upgrades"),720,90,275,100,buttons);
-		new JavaLabel("Powder", layers.get("Upgrades"),720,197,275,100,buttons);
-		new JavaLabel("Angle", layers.get("Upgrades"),720,305,275,100,buttons);
-		
+
+		new JavaLabel("Wingsuit", layers.get("Upgrades"), 10, 90, 275, 80, buttons);
+		new JavaLabel("UpgradesBaseWingsuit", layers.get("Upgrades"), 50, 170, 195, 20, labels, 1, fPath, false);
+		new JavaLabel("UpgradesSliderWingsuit", labels.get("UpgradesBaseWingsuit"), 0, 0, 195, 20, labels, 1, fPath,
+				false);
+
+		new JavaLabel("Radio", layers.get("Upgrades"), 10, 195, 275, 80, buttons);
+		new JavaLabel("UpgradesBaseRadio", layers.get("Upgrades"), 50, 275, 195, 20, labels, 1, fPath, false);
+		new JavaLabel("UpgradesSliderRadio", labels.get("UpgradesBaseRadio"), 0, 0, 195, 20, labels, 1, fPath, false);
+
+		new JavaLabel("Power", layers.get("Upgrades"), 10, 300, 275, 80, buttons);
+		new JavaLabel("UpgradesBasePower", layers.get("Upgrades"), 50, 380, 195, 20, labels, 1, fPath, false);
+		new JavaLabel("UpgradesSliderPower", labels.get("UpgradesBasePower"), 0, 0, 195, 20, labels, 1, fPath, false);
+
+		new JavaLabel("Fuel", layers.get("Upgrades"), 720, 90, 275, 80, buttons);
+		new JavaLabel("UpgradesBaseFuel", layers.get("Upgrades"), 760, 170, 195, 20, labels, 1, fPath, false);
+		new JavaLabel("UpgradesSliderFuel", labels.get("UpgradesBaseFuel"), 0, 0, 195, 20, labels, 1, fPath, false);
+
+		new JavaLabel("Cannon", layers.get("Upgrades"), 720, 197, 275, 80, buttons);
+		new JavaLabel("UpgradesBaseCannon", layers.get("Upgrades"), 760, 275, 195, 20, labels, 1, fPath, false);
+		new JavaLabel("UpgradesSliderCannon", labels.get("UpgradesBaseCannon"), 0, 0, 195, 20, labels, 1, fPath, false);
+
+		new JavaLabel("Angle", layers.get("Upgrades"), 720, 300, 275, 80, buttons);
+		new JavaLabel("UpgradesBaseCannonAngle", layers.get("Upgrades"), 760, 380, 195, 20, labels, 1, fPath, false);
+		new JavaLabel("UpgradesSliderCannonAngle", labels.get("UpgradesBaseCannonAngle"), 0, 0, 195, 20, labels, 1,
+				fPath, false);
+
 		new JavaLabel("BackGroundSettings", layers.get("Settings"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Audio", layers.get("Settings"), 80, 20, 300, 75, buttons);
 		new JavaLabel("Audio Display", layers.get("Settings"), 380, 20, 150, 75, labels, 1, fPath, true);

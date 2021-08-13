@@ -228,8 +228,8 @@ public class GameScreen implements ActionListener {
 			if (clouds.get(i).colisionCheck()) {
 				clouds.get(i).speedX = 0.5 * playerSpeedX;
 				clouds.get(i).speedY = 0.5 * playerSpeedY;
-				playerSpeedX = (0.99 - dragX) * playerSpeedX;
-				playerSpeedY = (0.99 - dragY) * playerSpeedY;
+				playerSpeedX = (0.99) * playerSpeedX;
+				playerSpeedY = (0.99) * playerSpeedY;
 				cloudContact = true;
 			}
 		}
@@ -453,8 +453,8 @@ public class GameScreen implements ActionListener {
 		startSpeed = 200 * cannonLVL;
 		minSpeed = 0.5;
 		maxSpeed = 30;
-		dragY = 0.11 - 0.02 * wingsuitLVL;
-		dragX = 0.06 - 0.01 * wingsuitLVL;
+		dragY = 0.06 - 0.01 * wingsuitLVL;
+		dragX = 0.006 - 0.001 * wingsuitLVL;
 		movingSpeed = 0.1 / dragY;
 		speedBoost = 1;
 		if (sandbox) {
@@ -525,7 +525,6 @@ public class GameScreen implements ActionListener {
 		wingsuitLVL = wingsuit;
 		fuelLVL = fuel;
 		cannonAngleLVL = cannonAngle;
-		System.out.println("Cannon"+cannonLVL);
 	}
 
 	public static void gameClose() {

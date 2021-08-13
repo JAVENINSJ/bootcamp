@@ -66,22 +66,22 @@ public class Mouse implements MouseListener {
 			MainMenu.switchScreens("Menu");
 		}
 		if ("Wingsuit".equals(button.name) && button.inZone) {
-			
+			MainMenu.wingsuitLVL += MainMenu.buyUpgrade(MainMenu.wingsuitLVL);
 		}
 		if ("Radio".equals(button.name) && button.inZone) {
-			
+			MainMenu.weatherLVL += MainMenu.buyUpgrade(MainMenu.weatherLVL);
 		}
 		if ("Power".equals(button.name) && button.inZone) {
-			
+			MainMenu.jetpackLVL += MainMenu.buyUpgrade(MainMenu.jetpackLVL);
 		}
 		if ("Fuel".equals(button.name) && button.inZone) {
-			
+			MainMenu.fuelLVL += MainMenu.buyUpgrade(MainMenu.fuelLVL);
 		}
-		if ("Powder".equals(button.name) && button.inZone) {
-			
+		if ("Cannon".equals(button.name) && button.inZone) {
+			MainMenu.cannonLVL += MainMenu.buyUpgrade(MainMenu.cannonLVL);
 		}
 		if ("Angle".equals(button.name) && button.inZone) {
-			
+			MainMenu.cannonAngleLVL += MainMenu.buyUpgrade(MainMenu.cannonAngleLVL);
 		}
 		// SETTINGS ::
 		if ("Audio".equals(button.name) && button.inZone) {
@@ -112,6 +112,9 @@ public class Mouse implements MouseListener {
 		if ("Reset".equals(button.name) && button.inZone) {
 			GameScreen.gameClose();
 			GameScreen.startGame();
+			if (!GameScreen.sandbox) {
+				MainMenu.coins += GameScreen.coinCount;
+			}
 		}
 		if (button.inZone && !button.selected && !((JavaLabel) e.getSource()).name.equals("Sidebar")) {
 			button.setIcon(1, true); // buttonOn.png// FOR ALL BUTTONS
