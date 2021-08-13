@@ -17,13 +17,13 @@ import org.json.simple.parser.JSONParser;
 public class Password {
 
 	protected static Connection conn;
-	protected static final String user="u14";
-	protected static final String password="u14";
+	protected static final String user="sql11430725";
+	protected static final String password="pSUEsjIpnb";
 	
 	public static void getLoginFile() {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn=DriverManager.getConnection("jdbc:mysql://localhost/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", user, password);
+			conn=DriverManager.getConnection("jdbc:mysql://sql11.freemysqlhosting.net/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", user, password);
 			conn.setAutoCommit(false);
 			//System.out.println("Connections was successful!");
 			
@@ -37,7 +37,7 @@ public class Password {
 		
 		boolean isFound=false;
 		try {			
-			String sql = "SELECT * FROM "+"userProfiles"+".profiles where username like ?";
+			String sql = "SELECT * FROM "+"sql11430725"+".profiles where username like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "%"+user+"%");
 			
@@ -70,7 +70,7 @@ public class Password {
 		*/
 		boolean isFound=false;
 		try {			
-			String sql = "SELECT * FROM "+"userProfiles"+".profiles where username like ?";
+			String sql = "SELECT * FROM "+"sql11430725"+".profiles where username like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "%"+user+"%");
 			
@@ -117,7 +117,7 @@ public class Password {
 		boolean created=false;
 		int num=0;
 		try {
-			String sql1 = "SELECT * FROM "+"userProfiles"+".profiles where username like ?";
+			String sql1 = "SELECT * FROM "+"sql11430725"+".profiles where username like ?";
 			PreparedStatement stmt1 = conn.prepareStatement(sql1);
 			stmt1.setString(1, "%"+user+"%");		
 			ResultSet rs = stmt1.executeQuery();
@@ -135,7 +135,7 @@ public class Password {
 		}
 		if(num==0) {
 		try {
-			String sql="INSERT INTO "+"userProfiles"+".profiles (username, password) VALUES(?, ?);";
+			String sql="INSERT INTO "+"sql11430725"+".profiles (username, password) VALUES(?, ?);";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, user);
 			String salt = saltMine();
