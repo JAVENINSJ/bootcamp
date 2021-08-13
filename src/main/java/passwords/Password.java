@@ -5,13 +5,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-<<<<<<< HEAD
 
 import java.util.Random;
-=======
-import java.util.Random;
-
->>>>>>> 90b412610cc850ae393c867e14817d1d2e3b4ff8
 
 public class Password {
 
@@ -100,7 +95,6 @@ public class Password {
 		return salt + ":" + hex;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static boolean addPassword(String user, String password) {		
 		
 		boolean created=false;
