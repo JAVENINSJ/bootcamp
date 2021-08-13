@@ -38,8 +38,9 @@ public class Password {
 			
 			ResultSet rs = stmt.executeQuery();
 			rs.next();
+			String user1 = rs.getString("username");
 			
-			if(rs!=null)
+			if(!user1.equals(""))
 				isFound = true;
 			return isFound;	
 		} catch (Exception e) {		
