@@ -8,8 +8,13 @@ import java.sql.SQLException;
 
 public class upgradeFunctions {
 	protected static Connection conn;
+<<<<<<< HEAD
+	protected static final String user="u14";
+	protected static final String password="u14";
+=======
 	protected static final String user="sql11430725";
 	protected static final String password="pSUEsjIpnb";
+>>>>>>> 8491bcc809f5e5fbff1ed628dec3bad3270c8cdc
 
 
 	
@@ -60,7 +65,6 @@ public class upgradeFunctions {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn=DriverManager.getConnection("jdbc:mysql://sql11.freemysqlhosting.net/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", user, password);
 			conn.setAutoCommit(false);
-			System.out.println("Connections was successful!");
 			
 		} catch (Exception e) {
 			System.out.println("There has been an error!");

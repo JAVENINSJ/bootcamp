@@ -33,10 +33,7 @@ public class Mouse implements MouseListener {
 		if ("Play".equals(button.name) && button.inZone) {
 			JavaObject.setSizing(MainMenu.fWidth);
 			GameScreen.setMode(false);
-<<<<<<< HEAD
-			GameScreen.setUpgrades();
-=======
->>>>>>> 710036758b75813bca47a36827b06db70d4699b2
+			MainMenu.sendUpgrades();
 			GameScreen.startGame();
 			MainMenu.screen.setVisible(false);
 			MainMenu.timer.stop();
@@ -68,9 +65,19 @@ public class Mouse implements MouseListener {
 			MainMenu.buttons.get("Main Menu").setVisible(false);
 			MainMenu.switchScreens("Menu");
 		}
-
+//		money
+//		wingsuit
+//		cannon-power
+//		cannon-angle
+//		jetpack
+//		jetpack-fuel
+//		weather-radio
 		if ("Wingsuit".equals(button.name) && button.inZone) {
+<<<<<<< HEAD
+
+=======
 			MainMenu.wingsuitLVL += MainMenu.buyUpgrade(MainMenu.wingsuitLVL);
+>>>>>>> 8491bcc809f5e5fbff1ed628dec3bad3270c8cdc
 		}
 		if ("Radio".equals(button.name) && button.inZone) {
 			MainMenu.weatherLVL += MainMenu.buyUpgrade(MainMenu.weatherLVL);
@@ -82,7 +89,11 @@ public class Mouse implements MouseListener {
 			MainMenu.fuelLVL += MainMenu.buyUpgrade(MainMenu.fuelLVL);
 		}
 		if ("Cannon".equals(button.name) && button.inZone) {
+<<<<<<< HEAD
+			
+=======
 			MainMenu.cannonLVL += MainMenu.buyUpgrade(MainMenu.cannonLVL);
+>>>>>>> 8491bcc809f5e5fbff1ed628dec3bad3270c8cdc
 		}
 		if ("Angle".equals(button.name) && button.inZone) {
 			MainMenu.cannonAngleLVL += MainMenu.buyUpgrade(MainMenu.cannonAngleLVL);
