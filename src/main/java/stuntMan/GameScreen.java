@@ -518,13 +518,13 @@ public class GameScreen implements ActionListener {
 		sandbox = modeSandbox;
 	}
 
-	public static void setUpgrades(int cannon, int jetpack, int weather, int wingsuit, int fuel, int cannonAngle) {
-		cannonLVL = cannon;
-		jetpackLVL = jetpack - 1;
-		weatherLVL = weather;
-		wingsuitLVL = wingsuit;
-		fuelLVL = fuel;
-		cannonAngleLVL = cannonAngle;
+	public static void setUpgrades() {
+		cannonLVL = MainMenu.cannonLVL;
+		jetpackLVL = MainMenu.jetpackLVL - 1;
+		weatherLVL = MainMenu.weatherLVL;
+		wingsuitLVL = MainMenu.wingsuitLVL;
+		fuelLVL = MainMenu.fuelLVL;
+		cannonAngleLVL = MainMenu.cannonAngleLVL;
 	}
 
 	public static void gameClose() {

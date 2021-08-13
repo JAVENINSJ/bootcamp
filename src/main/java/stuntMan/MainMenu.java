@@ -58,12 +58,12 @@ public class MainMenu implements ActionListener {
 				0);
 		labels.get("UpgradesSliderCannonAngle")
 				.setLocation(labels.get("UpgradesBaseWingsuit").getWidth() / 5 * cannonAngleLVL, 0);
-		labels.get("UpgradesSliderWingsuit").setText(Math.pow(5, wingsuitLVL)+"");
-		labels.get("UpgradesSliderRadio").setText(Math.pow(5, weatherLVL)+"");
-		labels.get("UpgradesSliderPower").setText(Math.pow(5, jetpackLVL)+"");
-		labels.get("UpgradesSliderFuel").setText(Math.pow(5, fuelLVL)+"");
-		labels.get("UpgradesSliderCannon").setText(Math.pow(5, cannonLVL)+"");
-		labels.get("UpgradesSliderCannonAngle").setText(Math.pow(5, cannonAngleLVL)+"");
+		labels.get("UpgradesSliderWingsuit").setText(Math.pow(5, wingsuitLVL)+"                              ");
+		labels.get("UpgradesSliderRadio").setText(Math.pow(5, weatherLVL)+"                              ");
+		labels.get("UpgradesSliderPower").setText(Math.pow(5, jetpackLVL)+"                              ");
+		labels.get("UpgradesSliderFuel").setText(Math.pow(5, fuelLVL)+"                              ");
+		labels.get("UpgradesSliderCannon").setText(Math.pow(5, cannonLVL)+"                              ");
+		labels.get("UpgradesSliderCannonAngle").setText(Math.pow(5, cannonAngleLVL)+"                             ");
 	}
 
 	public static int moveScreens(int pos, int destinationPos) {
@@ -199,10 +199,6 @@ public class MainMenu implements ActionListener {
 		wingsuitLVL = 3;
 		fuelLVL = 1;
 		cannonAngleLVL = 5;
-	}
-
-	public static void sendUpgrades() {
-		GameScreen.setUpgrades(5, 1, 1, 1, 1, 5);
 	}
 
 	public static void resetScreen() {
