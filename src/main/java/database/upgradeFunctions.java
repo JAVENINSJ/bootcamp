@@ -7,16 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class upgradeFunctions {
-	protected Connection conn;
-	protected static final String user="u14";
-	protected static final String password="u14";
+	protected static Connection conn;
+	protected static final String user="sql11430725";
+	protected static final String password="pSUEsjIpnb";
 
 
 	
 	public void updateParam(String username, String param, int i) {
 		
 		try {
-			String sql="UPDATE userProfiles.profiles SET "+param+" = ? WHERE username = ?;";
+			String sql="UPDATE sql11430725.profiles SET "+param+" = ? WHERE username = ?;";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 		
 			stmt.setInt(1, i);
@@ -34,7 +34,7 @@ public class upgradeFunctions {
 		
 		int i=-1;
 		try {			
-			String sql = "SELECT * FROM "+"userProfiles"+".profiles where username like ?";
+			String sql = "SELECT * FROM "+"sql11430725"+".profiles where username like ?";
 			PreparedStatement stmt = conn.prepareStatement(sql);
 			stmt.setString(1, "%"+username+"%");
 			
@@ -58,9 +58,8 @@ public class upgradeFunctions {
 		
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
-			conn=DriverManager.getConnection("jdbc:mysql://localhost/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", user, password);
+			conn=DriverManager.getConnection("jdbc:mysql://sql11.freemysqlhosting.net/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", user, password);
 			conn.setAutoCommit(false);
-			System.out.println("Connections was successful!");
 			
 		} catch (Exception e) {
 			System.out.println("There has been an error!");
