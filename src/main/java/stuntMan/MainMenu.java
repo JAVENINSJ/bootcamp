@@ -5,7 +5,9 @@ import java.awt.event.*;
 import java.util.HashMap;
 import java.util.Set;
 import javax.swing.*;
-import inputClasses.*;
+
+import ioClasses.*;
+import objects.Background;
 import passwords.Password;
 import settings.*;
 
@@ -200,11 +202,12 @@ public class MainMenu implements ActionListener {
 		new JavaLabel("User already exists!", layers.get("Login"), 100, 375, 400, 32, labels, 1, fPath, true);
 		
 		new JavaLabel("BackGroundMenu", layers.get("Menu"), 0, 0, 1000, 500, backgr, 0, fPath, false);
-		new JavaLabel("Play", layers.get("Menu"), 300, 20, 400, 75, buttons);
-		new JavaLabel("Upgrades", layers.get("Menu"), 300, 115, 400, 75, buttons);
-		new JavaLabel("Settings", layers.get("Menu"), 300, 210, 400, 75, buttons);
-		new JavaLabel("Logout", layers.get("Menu"), 300, 305, 400, 75, buttons);
-		new JavaLabel("Exit", layers.get("Menu"), 300, 400, 400, 75, buttons);
+		new JavaLabel("Play", layers.get("Menu"), 300, 50, 400, 80, buttons);
+		new JavaLabel("Sandbox", layers.get("Menu"), 325, 150, 350, 70, buttons);
+		new JavaLabel("Upgrades", layers.get("Menu"), 180, 250, 300, 70, buttons);
+		new JavaLabel("Settings", layers.get("Menu"), 520, 250, 300, 70, buttons);
+		new JavaLabel("Logout", layers.get("Menu"), 230, 350, 200, 70, buttons);
+		new JavaLabel("Exit", layers.get("Menu"), 580, 350, 200, 70, buttons);
 
 		new JavaLabel("BackGroundUpgrades", layers.get("Upgrades"), 0, 0, 1000, 500, backgr, 0, fPath, false);
 		new JavaLabel("Coins", layers.get("Upgrades"), 300, 0, 400, 38, labels, 1, fPath, true);
@@ -224,7 +227,7 @@ public class MainMenu implements ActionListener {
 		labels.get("Res Display").setText(resolution[resolutionNR] + " - " + (resolution[resolutionNR] / 2));
 		labels.get("Audio Display").setText(Audio.running + "");
 		labels.get("Trail Display").setText(GameScreen.trail + "");
-		labels.get("Theme Display").setText(GameScreen.theme + "");
+		labels.get("Theme Display").setText(Background.theme + "");
 		labels.get("User not found!").setVisible(false);
 		labels.get("User not found!").setForeground(Color.red);
 		labels.get("Wrong Password!").setVisible(false);

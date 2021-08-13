@@ -1,4 +1,4 @@
-package inputClasses;
+package ioClasses;
 
 import java.io.File;
 

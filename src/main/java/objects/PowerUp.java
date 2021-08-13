@@ -9,7 +9,7 @@ public class PowerUp extends JavaObject {
 	String type;
 	
 	public PowerUp(int x, int y, int rangeX, int rangeY, double posX, double posY) {
-		super(x, y, width, height, rangeX, rangeY, posX, posY, "PowerUp");
+		super(x, y, width, height, rangeX, rangeY, posX, posY, "PowerUp",5);
 		GameScreen.powerUps.add(this);
 	}
 	

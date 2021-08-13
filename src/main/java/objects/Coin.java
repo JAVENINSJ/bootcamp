@@ -6,7 +6,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
-import inputClasses.JavaLabel;
+import ioClasses.JavaLabel;
 import stuntMan.GameScreen;
 
 public class Coin extends JavaObject {
@@ -17,7 +17,7 @@ public class Coin extends JavaObject {
 	JLabel coin;
 
 	public Coin(int x, int y, int width, int height, int rangeX, int rangeY, double posX, double posY) {
-		super(x, y, width, height, rangeX, rangeY, posX, posY, "CoinBase");
+		super(x, y, width, height, rangeX, rangeY, posX, posY, "CoinBase", 5);
 		addAnimation(width, height);
 		GameScreen.coins.add(this);
 	}
