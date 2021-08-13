@@ -1,18 +1,12 @@
 package passwords;
 
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import java.util.Random;
 
 public class Password {
 
@@ -25,10 +19,9 @@ public class Password {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			conn=DriverManager.getConnection("jdbc:mysql://sql11.freemysqlhosting.net/?autoReconnect=true&serverTimezone=UTC&characterEncoding=utf8", user, password);
 			conn.setAutoCommit(false);
-			//System.out.println("Connections was successful!");
 			
 		} catch (Exception e) {
-			System.out.println("There has been an error!");
+			//System.out.println("There has been an error!");
 			e.printStackTrace();
 		}
 	}
@@ -59,15 +52,6 @@ public class Password {
 	}
 	
 	public static boolean checkPassword(String user, String password) {
-		/*
-		String encryptedPassword = encrypt(password,(String) ((JSONObject) json.get(user)).get("salt"));
-		encryptedPassword = encryptedPassword.substring(encryptedPassword.indexOf(':') + 1);
-		
-		if (encryptedPassword.equals(((JSONObject) json.get(user)).get("pass"))) {
-			return true;
-		}
-		return false;
-		*/
 		boolean isFound=false;
 		try {			
 			String sql = "SELECT * FROM "+"sql11430725"+".profiles where username like ?";
@@ -121,7 +105,6 @@ public class Password {
 			PreparedStatement stmt1 = conn.prepareStatement(sql1);
 			stmt1.setString(1, "%"+user+"%");		
 			ResultSet rs = stmt1.executeQuery();
-			//conn.commit();
 			while(rs.next()) {
 				num++;
 			}				
