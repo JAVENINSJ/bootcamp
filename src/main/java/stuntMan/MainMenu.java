@@ -116,7 +116,7 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void loginUser(String username, String password) {
-		if (!Password.json.containsKey(username)) {
+		if (!Password.checkUser(username, password)){
 			labels.get("User not found!").setVisible(true);
 			return;
 		}
@@ -144,11 +144,11 @@ public class MainMenu implements ActionListener {
 	}
 
 	static void createUser(String username, String password) {
-		// TODO DO THIS WHEN REINIS IS DONE WITH DATABASE
-		//if (exists) {
-		fail("User already exists!");
-		labels.get("User already exists!").setVisible(true);
-		//}
+		boolean created = Password.addPassword(username, password);
+		if (!created)  {
+			fail("User already exists!");
+			labels.get("User already exists!").setVisible(true);
+		}
 	}
 
 	public static void setResolution() {
