@@ -23,11 +23,12 @@ public class GameScreen implements ActionListener {
 	public static JFrame screen;
 	public static Timer gameTimer, preGameTimer;
 	public static int playerX, playerY, playerStartX, playerStartY, horizontalDir, verticalDir, coinCount, time,
-			groundLVL, powerUpTime, xMarkerNR, yMarkerNR, markerSpacing, speedBoost;
+			groundLVL, powerUpTime, xMarkerNR, yMarkerNR, markerSpacing, speedBoost, jetpackFuel, launchAngleInt;
 	public static int fWidth, fHeight, coinWidth, coinHeight, playerWidth, playerHeight, moveToX;
 	public static double movingSpeed, playerSpeedX, playerSpeedY, xBackgr, yBackgr, minSpeed, maxSpeed, jetpackPower;
 	public static double dragY, dragX, gravitySpeed, distanceX, distanceY, startSpeed, launchAngle, powerLevel,
 			powerGain;
+	public static int cannonLVL, jetpackLVL, weatherLVL, wingsuitLVL, fuelLVL, cannonAngleLVL;
 	public static boolean paused, controllable, gameStarted, gameFinished, sandbox, gravity;
 	public static boolean up, left, right, down, jetpack, trail, cloudContact, groundContact;
 	public static HashMap<String, JLayeredPane> layers = new HashMap<String, JLayeredPane>();
@@ -108,12 +109,11 @@ public class GameScreen implements ActionListener {
 			tempDragX *= 10;
 		}
 		double tempDragY = dragY;
-		if (groundContact) {
+		if (groundContact || (playerSpeedY / Math.abs(playerSpeedY) == -1)) {
 			tempDragY = 0;
 		}
 		playerSpeedX -= playerSpeedX * tempDragX;
 		playerSpeedY -= playerSpeedY * tempDragY;
-		System.out.println(groundContact);
 		if (controllable && playerSpeedY - gravitySpeed > -maxSpeed && distanceY > 0 && !groundContact) {
 			playerSpeedY -= gravitySpeed;// BACKGROUND GRAVITY
 		}
@@ -141,10 +141,12 @@ public class GameScreen implements ActionListener {
 			playerSpeedY = 1;
 			player.setLocation(playerX, playerY - 1);
 		}
-		System.out.println(playerSpeedY);
 		player.setLocation(playerX, playerY);
 		playerHitbox = player.getBounds();
 		setPlayerIcon();
+		if (distanceY < -1000) {
+			gameTimer.stop();
+		}
 	}
 
 	static double boundCheck(int pos, int bound, int direction) {
@@ -226,8 +228,8 @@ public class GameScreen implements ActionListener {
 			if (clouds.get(i).colisionCheck()) {
 				clouds.get(i).speedX = 0.5 * playerSpeedX;
 				clouds.get(i).speedY = 0.5 * playerSpeedY;
-				playerSpeedX = (0.99 - dragX) * playerSpeedX;
-				playerSpeedY = (0.99 - dragY) * playerSpeedY;
+				playerSpeedX = (0.99) * playerSpeedX;
+				playerSpeedY = (0.99) * playerSpeedY;
 				cloudContact = true;
 			}
 		}
@@ -315,10 +317,12 @@ public class GameScreen implements ActionListener {
 		if (key == KeyEvent.VK_SPACE && !gameFinished) {
 			jetpack = keyPress(pressed);
 		}
-		if (jetpack) {
+		if (jetpack && jetpackFuel > 0) {
 			playerSpeedX -= jetpackPower;
 			playerSpeedY += jetpackPower;
+			jetpackFuel -= 2;
 		}
+		System.out.println(jetpackFuel);
 		if (sandbox) {
 			if (key == KeyEvent.VK_G && pressed) {
 				gravity = !gravity;
@@ -351,12 +355,16 @@ public class GameScreen implements ActionListener {
 				preGameTimer.stop();
 				gameTimer.start();
 				gameStarted = true;
-			} else if ((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_RIGHT) && pressed && launchAngle + 0.2 < 1) {
-				launchAngle += 0.2;
-			} else if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT) && pressed && launchAngle - 0.2 > 0) {
-				launchAngle -= 0.2;
+			} else if ((key == KeyEvent.VK_DOWN || key == KeyEvent.VK_RIGHT) && pressed && launchAngleInt + 2 < 10) {
+				launchAngleInt += 2;
+			} else if ((key == KeyEvent.VK_UP || key == KeyEvent.VK_LEFT) && pressed
+					&& launchAngleInt - 2 > 9 - 2 * cannonAngleLVL) {
+				launchAngleInt -= 2;
 			}
-			System.out.println(df.format(launchAngle * 10));
+			labels.get("Cannon" + cannonLVL).setLocation(0,
+					-objects.get("CannonBase").getWidth() * ((launchAngleInt - 1) / 2));
+			launchAngle = (double) (launchAngleInt) / 10;
+			System.out.println((launchAngleInt + 2) + " < " + 1);
 		}
 	}
 
@@ -430,7 +438,8 @@ public class GameScreen implements ActionListener {
 		coinHeight = 64;
 		markerSpacing = fWidth * 500 / 1000;
 		moveToX = fWidth - (fWidth * 16 / 1000);
-		launchAngle = 0.5; // random
+		launchAngle = 0.9; // random
+		launchAngleInt = 9;
 		powerLevel = 20;
 		powerGain = 2;
 		distanceX = 0; // cumulative
@@ -441,11 +450,11 @@ public class GameScreen implements ActionListener {
 		yMarkerNR = 1;
 		playerSpeedX = 0; // speed
 		playerSpeedY = 0;
-		startSpeed = 200;
+		startSpeed = 200 * cannonLVL;
 		minSpeed = 0.5;
 		maxSpeed = 30;
-		dragY = 0.02;
-		dragX = 0.01;
+		dragY = 0.06 - 0.01 * wingsuitLVL;
+		dragX = 0.006 - 0.001 * wingsuitLVL;
 		movingSpeed = 0.1 / dragY;
 		speedBoost = 1;
 		if (sandbox) {
@@ -453,21 +462,16 @@ public class GameScreen implements ActionListener {
 		}
 		horizontalDir = 0;
 		verticalDir = 0;
-		jetpackPower = 2;
-		
-		playerIcons.put("U", setupImageIcon(playerWidth, playerHeight, "Player")); // image icons
-		playerIcons.put("RU", setupImageIcon(playerWidth, playerHeight, "PlayerRU"));
-		playerIcons.put("R", setupImageIcon(playerWidth, playerHeight, "PlayerR"));
-		playerIcons.put("RD", setupImageIcon(playerWidth, playerHeight, "PlayerRD"));
-		playerIcons.put("D", setupImageIcon(playerWidth, playerHeight, "PlayerD"));
-		playerIcons.put("LD", setupImageIcon(playerWidth, playerHeight, "PlayerLD"));
-		playerIcons.put("L", setupImageIcon(playerWidth, playerHeight, "PlayerL"));
-		playerIcons.put("LU", setupImageIcon(playerWidth, playerHeight, "PlayerLU"));
-		cannonIcons.put("Cannon1,00", setupImageIcon(playerWidth, playerHeight, "Cannon1,00"));
-		cannonIcons.put("Cannon3,00", setupImageIcon(playerWidth, playerHeight, "Cannon3,00"));
-		cannonIcons.put("Cannon5,00", setupImageIcon(playerWidth, playerHeight, "Cannon5,00"));
-		cannonIcons.put("Cannon7,00", setupImageIcon(playerWidth, playerHeight, "Cannon7,00"));
-		cannonIcons.put("Cannon9,00", setupImageIcon(playerWidth, playerHeight, "Cannon9,00"));
+		jetpackPower = 2 * jetpackLVL;
+		jetpackFuel = 100 * fuelLVL;
+		playerIcons.put("U", setupImageIcon(playerWidth, playerHeight, "Player" + wingsuitLVL)); // image icons
+		playerIcons.put("RU", setupImageIcon(playerWidth, playerHeight, "PlayerRU" + wingsuitLVL));
+		playerIcons.put("R", setupImageIcon(playerWidth, playerHeight, "PlayerR" + wingsuitLVL));
+		playerIcons.put("RD", setupImageIcon(playerWidth, playerHeight, "PlayerRD" + wingsuitLVL));
+		playerIcons.put("D", setupImageIcon(playerWidth, playerHeight, "PlayerD" + wingsuitLVL));
+		playerIcons.put("LD", setupImageIcon(playerWidth, playerHeight, "PlayerLD" + wingsuitLVL));
+		playerIcons.put("L", setupImageIcon(playerWidth, playerHeight, "PlayerL" + wingsuitLVL));
+		playerIcons.put("LU", setupImageIcon(playerWidth, playerHeight, "PlayerLU" + wingsuitLVL));
 	}
 
 	public static ImageIcon setupImageIcon(int width, int height, String name) {
@@ -480,8 +484,9 @@ public class GameScreen implements ActionListener {
 		new JavaLabel("BackgroundWater", layers.get("gameLayer"), 0, 0, 1000, 500, labels, 0, fPath, false);
 		player = new JavaLabel("", layers.get("gameLayer"), playerX, playerY, playerWidth, playerHeight, labels, 4,
 				fPath, false);
-		new JavaLabel("Cannon", layers.get("gameLayer"), playerX - 1000 * 16 / 1000, playerY - 1000 * 32 / 1000, 64, 64,
-				objects, 5, fPath, false);
+		new JavaLabel("CannonBase", layers.get("gameLayer"), playerX - 1000 * 16 / 1000, playerY - 1000 * 32 / 1000, 64,
+				64, objects, 5, fPath, false);
+		new JavaLabel("Cannon" + cannonLVL, objects.get("CannonBase"), 0, 0, 64, 320, labels, 5, fPath, false);
 		new JavaLabel("PowerBase", layers.get("gameLayer"), playerX - 1000 * 16 / 1000, playerY + 1000 * 32 / 1000, 196,
 				32, objects, 2, fPath, false);
 		new JavaLabel("PowerFrame", objects.get("PowerBase"), 0, 0, 196, 32, labels, 0, fPath, false);
@@ -504,11 +509,22 @@ public class GameScreen implements ActionListener {
 		backgrKeys = backgrounds.keySet();
 		objectKeys = objects.keySet();
 		labels.get("Paused").setVisible(false);
+		labels.get("Cannon" + cannonLVL).setLocation(0,
+				-objects.get("CannonBase").getWidth() * ((launchAngleInt - 1) / 2));
 		new Mouse(labels.get("Sidebar"));
 	}
 
 	public static void setMode(boolean modeSandbox) {
 		sandbox = modeSandbox;
+	}
+
+	public static void setUpgrades(int cannon, int jetpack, int weather, int wingsuit, int fuel, int cannonAngle) {
+		cannonLVL = cannon;
+		jetpackLVL = jetpack - 1;
+		weatherLVL = weather;
+		wingsuitLVL = wingsuit;
+		fuelLVL = fuel;
+		cannonAngleLVL = cannonAngle;
 	}
 
 	public static void gameClose() {

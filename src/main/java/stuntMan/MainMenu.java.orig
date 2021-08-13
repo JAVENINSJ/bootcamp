@@ -26,7 +26,12 @@ public class MainMenu implements ActionListener {
 	public static HashMap<String, JavaLabel> labels = new HashMap<String, JavaLabel>(),
 			buttons = new HashMap<String, JavaLabel>(), backgr = new HashMap<String, JavaLabel>();
 	public static Set<String> backgrKeys;
+<<<<<<< HEAD
+	public static HashMap<String, Integer> upgrades;
+	
+=======
 	public static int cannonLVL, jetpackLVL, weatherLVL, wingsuitLVL, fuelLVL, cannonAngleLVL;
+>>>>>>> 8491bcc809f5e5fbff1ed628dec3bad3270c8cdc
 
 	public MainMenu() {
 		JavaLabel.setSizing(fWidth);
@@ -141,15 +146,11 @@ public class MainMenu implements ActionListener {
 			return;
 		}
 		setupMenuSettings();
-		setUpgrades(upgradeFunctions.getParam(username, "cannon-power"), 
-					upgradeFunctions.getParam(username, "jetpack"), 
-					upgradeFunctions.getParam(username, "weather-radio"), 
-					upgradeFunctions.getParam(username, "wingsuit"), 
-					upgradeFunctions.getParam(username, "jetpack-fuel"), 
-					upgradeFunctions.getParam(username, "cannon-angle"));
+		upgrades = getUpgrades(username);
 		settings = SettingsBuilder.getSettings(username);
 		updateSettings();
 	}
+<<<<<<< HEAD
 	
 	private static HashMap<String, Integer> getUpgrades(String username) {
 		upgradeFunctions.accesstoDB();
@@ -164,6 +165,8 @@ public class MainMenu implements ActionListener {
 		System.out.println(sol.toString());		
 		return sol;
 	}
+=======
+>>>>>>> 8491bcc809f5e5fbff1ed628dec3bad3270c8cdc
 
 	static void updateSettings() {
 		Audio.running = settings.getAudio();
@@ -213,6 +216,16 @@ public class MainMenu implements ActionListener {
 		wingsuitLVL = wingsuit;
 		fuelLVL = fuel;
 		cannonAngleLVL = cannonAngle;
+		cannonLVL = 4;
+		jetpackLVL = 3;
+		weatherLVL = 2;
+		wingsuitLVL = 3;
+		fuelLVL = 1;
+		cannonAngleLVL = 5;
+	}
+
+	public static void sendUpgrades() {
+		GameScreen.setUpgrades(5, 1, 1, 1, 1, 5);
 	}
 
 	public static void resetScreen() {
