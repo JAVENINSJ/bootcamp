@@ -158,6 +158,10 @@ public class MainMenu implements ActionListener {
 		}
 		labels.get("Res Display").setText(resolution[resolutionNR] + " - " + (resolution[resolutionNR] / 2));
 	}
+	
+	public static void sendUpgrades() {
+		GameScreen.setUpgrades(1, 1, 1, 1, 1, 5);
+	}
 
 	public static void resetScreen() {
 		timer.stop();
